@@ -1,0 +1,195 @@
+Issue Type,Summary,Description,Acceptance Criteria,Epic Name,Parent,Labels,Priority
+Epic,R1 · Confirmation recorded for the highest-volume integration,"Ships: every deprovisioning event on the highest-volume integration carries a recorded confirmation outcome and timestamp. No customer-facing change.
+
+Requirements: REQ-D1
+
+Depends on: —
+
+Test harness:
+- Remove a user; assert a confirmation result exists within 60s with outcome and timestamp
+- Fault injection: hold the integration's response past the window; assert a no-response outcome is recorded rather than nothing
+- Assert no write path touches events predating the flag
+- Assert the recorded outcome is not surfaced anywhere in the product yet",,R1 Confirmation recorded for the highest-volume integration,,working-backwards release-slice,Medium
+Story,REQ-D1 · Record a confirmation result per integration per deprovisioning event,"For every deprovisioning event, the platform records for each connected integration whether that integration confirmed removal, and the time the result arrived.
+
+Source: PR ¶3 / IFAQ-14
+
+Provenance: [OBSERVED] × 2
+
+Out of scope: showing any of this to an admin (REQ-DP1); integrations that expose no membership read (REQ-D3)
+
+Depends on: —","GIVEN a workspace with a connected integration that supports a membership read
+WHEN  an admin removes a user
+THEN  a confirmation result is recorded for that integration with an outcome and a timestamp
+AND   the result is recorded whether the outcome is confirmed, still-present, or no-response",,R1 Confirmation recorded for the highest-volume integration,working-backwards discovery,Medium
+Epic,R2 · The admin sees it,"Ships: the audit entry for a removal shows per-integration confirmation state, names any integration that did not confirm, and never renders an unrun check as complete.
+
+Requirements: REQ-DP1, REQ-DP3
+
+Depends on: R1
+
+Test harness:
+- Confirmed and unconfirmed events render their correct states and integration names
+- A confirmation arriving after first render updates state on next view
+- Code-path test: with no confirmation record present, assert no path renders complete
+- Accessibility and export parity check on the new entry block",,R2 The admin sees it,,working-backwards release-slice,Medium
+Story,REQ-DP1 · Show confirmation state on the audit entry,"The audit entry for a removal shows each connected integration with its confirmation outcome and timestamp.
+
+Source: PR ¶3 / EFAQ-05
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: remediating from the entry (see Flagged, REQ-DP9); email or webhook notification
+
+Depends on: REQ-D1","GIVEN a deprovisioning event with one integration confirmed and one not responding
+WHEN  an admin opens the audit entry for that removal
+THEN  the entry shows an incomplete state and names the integration that did not respond
+AND   a confirmation arriving after the entry was first rendered updates the state on next view",,R2 The admin sees it,working-backwards delivery,Medium
+Story,REQ-DP3 · Never render an unrun check as complete,"Where the confirmation mechanism did not run, the audit entry says so and does not display a complete state.
+
+Source: 03-demo-spec.md F5 / PR ¶2
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: alerting engineering when the mechanism fails
+
+Depends on: REQ-DP1","GIVEN the confirmation mechanism did not execute for a deprovisioning event
+WHEN  an admin opens the audit entry for that removal
+THEN  the entry states that the check did not run
+AND   no code path renders complete in the absence of a recorded confirmation result",,R2 The admin sees it,working-backwards delivery,Medium
+Epic,"R3 · All connected integrations, with honest coverage","Ships: confirmation across every connected integration; unreachable distinguished from failed; integrations that cannot be checked stated as such at connection and counted in the denominator; revocation state in the access-review export; a real propagation-rate baseline.
+
+Requirements: REQ-D2, REQ-D3, REQ-D4, REQ-DP2, REQ-DP4
+
+Depends on: R2
+
+Blocked by: BLK-05
+
+Test harness:
+- Per integration type: confirm, still-present, and unreachable each produce the correct distinct outcome
+- An integration with no membership read produces unverifiable-not-supported and appears in the rate denominator
+- Export carries all four states and names responsible integrations
+- Connection-time coverage statement appears once, not per removal
+- Rate computation over a seeded period matches a hand-computed figure",,"R3 All connected integrations, with honest coverage",,working-backwards release-slice blocked,Highest
+Story,REQ-D2 · Distinguish an unreachable integration from a failed propagation,"A confirmation result records unreachable and still-present as different outcomes, and the platform never reports the first as the second.
+
+Source: 03-demo-spec.md F3 / IFAQ-11
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: retry policy and backoff; alerting on provider outages
+
+Depends on: REQ-D1","GIVEN a connected integration that is returning transport errors
+WHEN  an admin removes a user and the integration cannot be reached inside the window
+THEN  the result is recorded as unverifiable-provider-unavailable, not as incomplete
+AND   a subsequent successful check on the same event overwrites it with the real outcome",,"R3 All connected integrations, with honest coverage",working-backwards discovery blocked,Medium
+Story,REQ-D3 · Enumerate which connected integrations can be checked at all,"The platform holds, per integration type, whether a membership read is available, and treats absence of that capability as a stated limitation rather than a passing check.
+
+Source: IFAQ-12 / EFAQ-03
+
+Provenance: [OBSERVED] × 1, [UNKNOWN] × 1
+
+Out of scope: building membership reads for integrations that lack them; renegotiating integration contracts
+
+Depends on: BLK-05","GIVEN an integration type with no membership read available
+WHEN  a deprovisioning event occurs on a workspace using it
+THEN  the result is recorded as unverifiable-not-supported
+AND   that integration is excluded from the numerator and included in the denominator of the propagation rate",,"R3 All connected integrations, with honest coverage",working-backwards discovery blocked,Highest
+Story,REQ-D4 · Establish a propagation-rate baseline,"Once confirmation results exist, the platform reports Revocation Propagation Rate over a period, with unverifiable events counted in the denominator.
+
+Source: PR ¶3 / IFAQ-15 / 05-telemetry.md
+
+Provenance: [OBSERVED] × 1, [UNKNOWN] × 1
+
+Out of scope: setting a target (Q-15, unanswered); any retroactive baseline (REQ-D6)
+
+Depends on: REQ-D1, REQ-D3","GIVEN confirmation results have been recorded for a full reporting period
+WHEN  the propagation rate is computed for that period
+THEN  the rate counts every deprovisioning event in the denominator including unverifiable ones
+AND   the report states the period and the number of events it covers",,"R3 All connected integrations, with honest coverage",working-backwards discovery blocked,Medium
+Story,REQ-DP2 · Carry revocation state into the access-review export,"Each removal in the access-review export carries its confirmation state and the names of any integrations that did not confirm.
+
+Source: PR ¶3 / EFAQ-05
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: changing the export's existing columns or file format
+
+Depends on: REQ-D1, REQ-D2, REQ-D3","GIVEN a date range containing removals in each of the four states
+WHEN  an admin runs the access-review export for that range
+THEN  every row carries one of complete, incomplete, unverifiable-provider-unavailable, or unverifiable-not-supported
+AND   rows that are not complete name the integrations responsible",,"R3 All connected integrations, with honest coverage",working-backwards delivery blocked,Medium
+Story,REQ-DP4 · State coverage at connection time,"When an admin connects or reviews an integration, the platform states whether removals through it can be confirmed.
+
+Source: 03-demo-spec.md F4 / 04-docs.md
+
+Provenance: [OBSERVED] × 1, [UNKNOWN] × 1
+
+Out of scope: preventing the connection
+
+Depends on: REQ-D3","GIVEN an integration type with no membership read available
+WHEN  an admin connects it or views its settings
+THEN  the platform states that removals through this integration cannot be confirmed
+AND   this is stated once at connection and in settings, not repeated on every removal",,"R3 All connected integrations, with honest coverage",working-backwards delivery blocked,Medium
+Epic,R4 · Account for what already happened,"Ships: the real exposure window per integration; a retrospective report of events that cannot be confirmed complete; notification to the customers it identifies.
+
+Requirements: REQ-D5, REQ-D6, REQ-DP5
+
+Depends on: R1
+
+Blocked by: BLK-01, BLK-02, BLK-03, BLK-06
+
+Test harness:
+- Per-integration retention values are either cited or explicitly unknown; assert no value is inherited across integrations
+- Report over a seeded historical range lists unconfirmable events and states where the range predates available data
+- Notification is issued once per workspace and the fact is recorded
+- Acyclic:** yes.
+- Every requirement in exactly one slice:** all except REQ-DP9, below.
+- Duplicated requirements:** none.
+- Orphan requirements (in no slice):** REQ-DP9 — deliberately. It has no source (see
+- Duplicated requirements:** none.",,R4 Account for what already happened,,working-backwards release-slice blocked,Highest
+Story,REQ-D5 · Determine the real exposure window per integration,"For each connected integration, the platform records the documented interval between a failed propagation and the loss of cached read access.
+
+Source: PR ¶2 / IFAQ-07
+
+Provenance: [OBSERVED] × 1, [ASSUMED] × 1 → RESTS ON ASSUMPTION
+
+Out of scope: changing any integration's retention; measuring actual access during the window (Q-10)
+
+Depends on: BLK-01","GIVEN a connected integration type
+WHEN  its cache retention behaviour is recorded
+THEN  the recorded value is either a documented interval with a citation, or explicitly unknown
+AND   no integration carries a value inherited from a different integration",,R4 Account for what already happened,working-backwards discovery rests-on-assumption blocked,Highest
+Story,REQ-D6 · Produce a retrospective affected-account report,"An operator can request, for a date range, the deprovisioning events that cannot be confirmed complete.
+
+Source: PR ¶7 / IFAQ-14 / EFAQ-06
+
+Provenance: [OBSERVED] × 1, [UNKNOWN] × 1
+
+Out of scope: notifying the customers it identifies (REQ-DP5)
+
+Depends on: BLK-06, REQ-D1
+
+Conditional on: BLK-06 — if historical integration state cannot be reconstructed, this becomes ""report from the instrumentation date forward only,"" PR ¶7 has to be rewritten, and REQ-DP5 loses its input entirely","GIVEN historical deprovisioning events exist for a workspace
+WHEN  an operator requests an affected-account report for a date range
+THEN  the report lists every event in range that cannot be confirmed complete
+AND   where the range predates available data, the report says so rather than returning an empty result",,R4 Account for what already happened,working-backwards discovery shape-pending blocked,Highest
+Story,REQ-DP5 · Notify customers identified as affected,"Customers identified by the affected-account report are notified, through a channel and on a timeline set by legal counsel.
+
+Source: EFAQ-10 / IFAQ-06
+
+Provenance: [OBSERVED] × 1, [ASSUMED] × 1 → RESTS ON ASSUMPTION
+
+Out of scope: everything about the notification's content
+
+Depends on: BLK-02, BLK-03, BLK-06, REQ-D6
+
+Conditional on: BLK-03 (what is owed), BLK-02 (whether it is reportable), BLK-06 (whether the population can be named at all). All three OPEN. The content, the channel, and whether this requirement exists at all are not decidable here.","GIVEN the affected-account report has identified a set of workspaces
+WHEN  the notification defined by BLK-03 is issued
+THEN  each identified workspace receives it once, with the events and date range that apply to them
+AND   the fact and time of notification is recorded per workspace",,R4 Account for what already happened,working-backwards delivery rests-on-assumption shape-pending blocked,Highest
+Story,REQ-DP9 · Force removal from the audit entry,"An admin can trigger removal in a non-confirming integration directly from the audit entry.
+
+Source: NONE — FLAGGED, not customer-derived
+
+Depends on: BLK-05",,,,working-backwards delivery unsliced,Highest

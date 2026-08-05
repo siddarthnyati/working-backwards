@@ -1,0 +1,109 @@
+{
+  "session_id": "ghost-seats",
+  "created": "2026-08-05",
+  "updated": "2026-08-05",
+  "initiative": "Ghost Seats — deprovisioning doesn't propagate",
+  "fictional": true,
+  "mode": "full",
+  "stages": {
+    "planned": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "skipped": [],
+    "current": 8,
+    "completed": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  },
+  "context": {
+    "tier": 0,
+    "path": "wb/context/",
+    "files": [],
+    "dimensions_not_evaluable": [4, 6],
+    "deliberate": true,
+    "note": "Run without a context pack on purpose, to show the honest degraded case."
+  },
+  "critic": {
+    "verdicts": [
+      { "stage": 0, "artifact": "00-intake.md", "verdict": "PASS", "date": "2026-08-05" },
+      { "stage": 1, "artifact": "01-press-release-draft1.md", "verdict": "PASS", "date": "2026-08-05", "questions": ["Q-04", "Q-18", "Q-19", "Q-20"], "note": "Passed all six structural dimensions. Q-04 found the rationale absent; the author revised anyway." },
+      { "stage": 1, "artifact": "01-press-release.md", "verdict": "PASS", "date": "2026-08-05", "questions": ["Q-04", "Q-18", "Q-19", "Q-20"] },
+      { "stage": 2, "artifact": "02-faq-external.md,02-faq-internal.md,02-faq-regional.md", "verdict": "PASS", "date": "2026-08-05" },
+      { "stage": 3, "artifact": "03-demo-spec.md", "verdict": "REVISE", "dimension": 8, "resolved": true, "date": "2026-08-05" },
+      { "stage": 4, "artifact": "04-docs.md", "verdict": "PASS", "date": "2026-08-05" },
+      { "stage": 5, "artifact": "05-telemetry.md", "verdict": "REVISE", "dimension": 2, "resolved": false, "overridden": true, "date": "2026-08-05" },
+      { "stage": 6, "artifact": "06-requirements.md", "verdict": "REVISE", "dimension": 5, "resolved": true, "date": "2026-08-05" },
+      { "stage": 7, "artifact": "07-release-plan.md", "verdict": "PASS", "date": "2026-08-05" },
+      { "stage": 8, "artifact": "08-readiness.md", "verdict": "PASS", "date": "2026-08-05" }
+    ],
+    "overrides": [
+      {
+        "stage": 5,
+        "dimension": 2,
+        "dimension_name": "evidence presence",
+        "date": "2026-08-05",
+        "critic_reasoning": "The north star and four of five input metrics carry [UNKNOWN] baselines and [UNKNOWN] targets; a metric plan in which nothing is measured asserts a measurement capability with nothing observed behind it.",
+        "user_justification": "The baseline is unknowable — there is no confirmation field today, so the propagation rate has never been measured. Filling it in would mean inventing a figure. Every [UNKNOWN] carries the reason it is unknown and the question that resolves it. That is the finding, not a defect in the document."
+      }
+    ],
+    "voluntary_revisions": [
+      {
+        "stage": 1,
+        "trigger": "Q-04",
+        "verdict_at_time": "PASS",
+        "date": "2026-08-05",
+        "note": "Critic did not require the change. Author revised ¶1 and ¶6 in response to the question. Q-04 remains OPEN."
+      }
+    ]
+  },
+  "blockers": [
+    { "id": "BLK-01", "category": "SECURITY", "severity": "high", "surfaced_by": "IFAQ-07", "owner_role": "security lead", "blocks": ["REQ-D5", "R4"], "status": "OPEN" },
+    { "id": "BLK-02", "category": "PRIVACY", "severity": "high", "surfaced_by": "RFAQ-01,RFAQ-02", "owner_role": "privacy counsel / DPO", "blocks": ["REQ-DP5", "R4"], "status": "OPEN" },
+    { "id": "BLK-03", "category": "LEGAL", "severity": "high", "surfaced_by": "IFAQ-04,IFAQ-06,EFAQ-10", "owner_role": "legal counsel", "blocks": ["REQ-DP5", "R4"], "status": "OPEN" },
+    { "id": "BLK-04", "category": "REGULATORY", "severity": "high", "surfaced_by": "RFAQ-06", "owner_role": "compliance lead / SOC 2 control owner", "blocks": [], "status": "OPEN" },
+    { "id": "BLK-05", "category": "DEPENDENCY", "severity": "high", "surfaced_by": "IFAQ-10,IFAQ-12", "owner_role": "platform engineering lead and partnerships lead, jointly", "blocks": ["REQ-D3", "REQ-DP9", "R3"], "status": "OPEN" },
+    { "id": "BLK-06", "category": "DATA", "severity": "high", "surfaced_by": "IFAQ-14", "owner_role": "platform engineering lead", "blocks": ["REQ-D6", "REQ-DP5", "R4"], "status": "OPEN" }
+  ],
+  "questions": {
+    "total": 20,
+    "open": 20,
+    "no_owner": ["Q-19", "Q-20"]
+  },
+  "claims": {
+    "observed": 4,
+    "reported": 1,
+    "assumed": 2,
+    "unknown": 2,
+    "ledger": "00-intake.md C1-C9",
+    "assumed_ids": ["C6", "C7"],
+    "derived_unknown": 9
+  },
+  "requirements": {
+    "total": 12,
+    "discovery": 6,
+    "delivery": 6,
+    "unsourced_flagged": ["REQ-DP9"],
+    "rests_on_assumption": ["REQ-D5", "REQ-DP5"],
+    "shape_pending": ["REQ-D6", "REQ-DP5"]
+  },
+  "release": {
+    "slices": 4,
+    "schedulable": ["R1", "R2"],
+    "not_schedulable": ["R3", "R4"]
+  },
+  "artifacts": {
+    "00-intake.md": "complete",
+    "01-press-release-draft1.md": "kept — first draft",
+    "01-press-release.md": "complete",
+    "02-faq-external.md": "complete",
+    "02-faq-internal.md": "complete",
+    "02-faq-regional.md": "complete",
+    "03-demo-spec.md": "complete",
+    "04-docs.md": "complete",
+    "05-telemetry.md": "complete",
+    "06-requirements.md": "complete",
+    "07-release-plan.md": "complete",
+    "08-readiness.md": "complete",
+    "BLOCKERS.md": "complete",
+    "DECISIONS.md": "complete",
+    "QUESTIONS.md": "complete",
+    "CONFIDENCE.md": "complete",
+    "jira-import.csv": "generated by scripts/export_jira.py"
+  }
+}

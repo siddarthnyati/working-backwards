@@ -1,0 +1,35 @@
+{
+  "name": "working-backwards",
+  "owner": {
+    "name": "Siddarth Nyati",
+    "url": "https://github.com/siddarthnyati"
+  },
+  "metadata": {
+    "description": "Amazon's Working Backwards process, run as a critic-gated pipeline that ends in engineer-ready requirements.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "working-backwards",
+      "source": "./plugins/working-backwards",
+      "description": "Runs Amazon's Working Backwards process end to end — press release, FAQs, telemetry, requirements with acceptance criteria, and a release plan — with a critic gating each stage and every requirement citing the customer narrative it derives from.",
+      "version": "0.1.0",
+      "author": {
+        "name": "Siddarth Nyati"
+      },
+      "license": "MIT",
+      "category": "product",
+      "keywords": [
+        "working-backwards",
+        "pr-faq",
+        "press-release",
+        "prd",
+        "brd",
+        "product-management",
+        "requirements",
+        "acceptance-criteria",
+        "discovery"
+      ]
+    }
+  ]
+}

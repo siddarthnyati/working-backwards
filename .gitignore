@@ -1,0 +1,10 @@
+# Build brief — working document, not a published artifact
+working-backwards-build-brief.md
+
+# Live sessions produced by the skill at the repo root. Root-anchored on purpose —
+# examples/ghost-seats-with-context/wb/context/ is committed content, not a live session.
+/wb/
+
+.DS_Store
+__pycache__/
+*.pyc

@@ -1,0 +1,24 @@
+{
+  "name": "working-backwards",
+  "version": "0.1.0",
+  "description": "Runs Amazon's Working Backwards process end to end — press release, external/internal/regional FAQs, demo spec, docs, telemetry, requirements with acceptance criteria, and a release plan — with a critic gating each stage. Every requirement cites the press release paragraph or FAQ answer it derives from.",
+  "author": {
+    "name": "Siddarth Nyati",
+    "url": "https://github.com/siddarthnyati"
+  },
+  "homepage": "https://siddarthnyati.github.io/working-backwards",
+  "repository": "https://github.com/siddarthnyati/working-backwards",
+  "license": "MIT",
+  "keywords": [
+    "working-backwards",
+    "pr-faq",
+    "press-release",
+    "prd",
+    "brd",
+    "product-management",
+    "requirements",
+    "acceptance-criteria",
+    "release-planning",
+    "discovery"
+  ]
+}

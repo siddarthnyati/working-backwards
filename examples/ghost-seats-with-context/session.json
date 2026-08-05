@@ -1,0 +1,59 @@
+{
+  "session_id": "ghost-seats-ctx",
+  "created": "2026-08-05",
+  "updated": "2026-08-05",
+  "initiative": "Ghost Seats — deprovisioning doesn't propagate (with context)",
+  "fictional": true,
+  "mode": "full",
+  "stages": {
+    "planned": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "skipped": [],
+    "current": 2,
+    "completed": [0, 1, 2],
+    "note": "Stages 3-8 not run. This example exists to contrast Stages 1-2 with the tier-0 run in examples/ghost-seats/."
+  },
+  "context": {
+    "tier": 1,
+    "path": "wb/context/",
+    "files": ["2026-platform-strategy.md"],
+    "dimensions_not_evaluable": [6],
+    "dimensions_now_citable": [4]
+  },
+  "critic": {
+    "verdicts": [
+      { "stage": 1, "artifact": "01-press-release-draft1.md", "verdict": "PASS", "date": "2026-08-05", "questions": ["Q-04", "Q-18", "Q-19", "Q-20"], "note": "Identical to the tier-0 run. Absence of a rationale is a presence check either way." },
+      { "stage": 1, "artifact": "01-press-release.md", "verdict": "PASS", "date": "2026-08-05", "dimension_4": "cited, not adjudicated", "questions": ["Q-04b", "Q-18", "Q-19", "Q-20"] },
+      { "stage": 2, "artifact": "02-faq-internal.md,02-faq-regional.md", "verdict": "PASS", "date": "2026-08-05", "questions": ["Q-21"] }
+    ],
+    "overrides": []
+  },
+  "blockers": [
+    { "id": "BLK-01", "category": "SECURITY", "severity": "high", "status": "OPEN" },
+    { "id": "BLK-02", "category": "PRIVACY", "severity": "high", "status": "OPEN" },
+    { "id": "BLK-03", "category": "LEGAL", "severity": "high", "status": "OPEN" },
+    { "id": "BLK-04", "category": "REGULATORY", "severity": "high", "status": "OPEN" },
+    { "id": "BLK-05", "category": "DEPENDENCY", "severity": "high", "status": "OPEN", "note": "Now cited to wb/context/2026-platform-strategy.md, 'known gaps' section. Escalated, not resolved." },
+    { "id": "BLK-06", "category": "DATA", "severity": "high", "status": "OPEN" }
+  ],
+  "questions": {
+    "total": 15,
+    "open": 13,
+    "no_owner": ["Q-19", "Q-20"],
+    "closed_by_context": ["Q-04", "Q-07"],
+    "added_by_context": ["Q-21"],
+    "sharpened_by_context": ["Q-04b", "Q-08"]
+  },
+  "claims": {
+    "observed": 4,
+    "reported": 1,
+    "assumed": 2,
+    "unknown": 2,
+    "ledger": "examples/ghost-seats/00-intake.md C1-C9"
+  },
+  "comparison": {
+    "against": "examples/ghost-seats/",
+    "questions_open_at_stage_2": { "tier_0": 17, "tier_1": 13 },
+    "blockers_open_at_stage_2": { "tier_0": 6, "tier_1": 6 },
+    "headline": "One document closed four questions, opened one, sharpened two, and closed zero blockers."
+  }
+}
