@@ -8,1128 +8,965 @@
 <style>
 /* ─────────────────────────────────────────────────────────────
    Working Backwards — a document-craft tool, set like a page.
-   One accent. It appears only on critic verdicts and blocker
-   severity. Everywhere else the work is done by type.
+   One accent, reserved for critic verdicts and blocker severity.
    ───────────────────────────────────────────────────────────── */
-
 :root{
-  --paper:#f2eee5;
-  --paper-2:#eae5d9;
-  --paper-3:#e0d9c9;
-  --ink:#1c1815;
-  --ink-2:#4a423a;
-  --ink-3:#7d7263;
-  --rule:#cdc4b1;
-  --accent:#9c2f1c;
-  --accent-soft:#f0d9d2;
-  --accent-ink:#7a2415;
+  --paper:#f2eee5; --paper-2:#eae5d9; --paper-3:#e0d9c9;
+  --ink:#1c1815; --ink-2:#4a423a; --ink-3:#7d7263; --rule:#cdc4b1;
+  --accent:#9c2f1c; --accent-soft:#f0d9d2; --accent-ink:#7a2415;
+  --ok:#3d5a3f; --ok-soft:#dde5d9;
   --mono:"SF Mono",ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
-  --measure:34rem;
 }
 @media (prefers-color-scheme:dark){
   :root{
-    --paper:#16130f;--paper-2:#1e1a15;--paper-3:#272119;
-    --ink:#ece5d8;--ink-2:#b8ae9d;--ink-3:#8a7f6e;
-    --rule:#3a3227;--accent:#e2705a;--accent-soft:#3a1f18;--accent-ink:#f0917d;
+    --paper:#16130f; --paper-2:#1e1a15; --paper-3:#272119;
+    --ink:#ece5d8; --ink-2:#b8ae9d; --ink-3:#8a7f6e; --rule:#3a3227;
+    --accent:#e2705a; --accent-soft:#3a1f18; --accent-ink:#f0917d;
+    --ok:#9dbb9a; --ok-soft:#24301f;
   }
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{
-  margin:0;background:var(--paper);color:var(--ink);
-  font-family:var(--serif);font-size:19px;line-height:1.62;
-  font-feature-settings:"kern","liga","onum";
-  overflow-x:hidden;
-}
-.wrap{max-width:72rem;margin:0 auto;padding:0 1.6rem}
-.measure{max-width:var(--measure)}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+  font-size:19px;line-height:1.6;font-feature-settings:"kern","liga","onum";overflow-x:hidden}
+.wrap{max-width:76rem;margin:0 auto;padding:0 1.5rem}
 h1,h2,h3,h4{font-weight:400;letter-spacing:-.012em;line-height:1.18;margin:0}
-h2{font-size:clamp(1.9rem,4.4vw,2.9rem);margin-bottom:.5rem}
-h3{font-size:1.32rem;line-height:1.28}
-h4{font-size:1.02rem;letter-spacing:.06em;text-transform:uppercase;font-family:var(--mono);
-   font-weight:500;color:var(--ink-3);font-size:.72rem}
-p{margin:0 0 1.05rem}
+h2{font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:.5rem}
+h3{font-size:1.22rem}
+h4{font-family:var(--mono);font-weight:500;font-size:.7rem;letter-spacing:.08em;
+   text-transform:uppercase;color:var(--ink-3)}
+p{margin:0 0 1rem}
 a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:.18em}
 a:hover{color:var(--accent)}
-code,kbd{font-family:var(--mono);font-size:.82em}
+code{font-family:var(--mono);font-size:.82em}
+section{padding:4.2rem 0;border-top:1px solid var(--rule)}
+.sec-no{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;color:var(--ink-3);
+  text-transform:uppercase;margin-bottom:1.2rem;display:block}
+.lede{font-size:1.1rem;color:var(--ink-2);max-width:44rem}
+.note{font-size:.85rem;color:var(--ink-3);line-height:1.55}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
-/* structural rhythm */
-section{padding:5.5rem 0;border-top:1px solid var(--rule)}
-section:first-of-type{border-top:0}
-.sec-no{font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;color:var(--ink-3);
-        text-transform:uppercase;margin-bottom:1.4rem;display:block}
-.lede{font-size:1.16rem;color:var(--ink-2);max-width:var(--measure)}
-.note{font-size:.86rem;color:var(--ink-3);line-height:1.55}
-hr.rule{border:0;border-top:1px solid var(--rule);margin:2.6rem 0}
-
-/* ── hero ─────────────────────────────────────────── */
-.hero{padding:6.5rem 0 5rem}
+/* hero */
+.hero{padding:5rem 0 3.6rem}
 .hero .kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;
-  text-transform:uppercase;color:var(--ink-3);margin-bottom:2rem}
-.hero h1{font-size:clamp(2.6rem,7.4vw,5.2rem);line-height:1.02;max-width:19ch;
-  letter-spacing:-.028em;margin-bottom:1.6rem}
+  text-transform:uppercase;color:var(--ink-3);margin-bottom:1.8rem}
+.hero h1{font-size:clamp(2.4rem,6.6vw,4.6rem);line-height:1.03;max-width:19ch;
+  letter-spacing:-.028em;margin-bottom:1.4rem}
 .hero h1 em{font-style:italic;color:var(--accent)}
-.hero .sub{font-size:1.22rem;color:var(--ink-2);max-width:44rem;margin-bottom:2.4rem}
-.btns{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:2rem}
-.btn{display:inline-block;padding:.62rem 1.15rem;border:1px solid var(--ink);
-  font-family:var(--mono);font-size:.76rem;letter-spacing:.05em;text-decoration:none;
+.hero .sub{font-size:1.16rem;color:var(--ink-2);max-width:44rem;margin-bottom:1rem}
+.btns{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1.6rem}
+.btn{display:inline-block;padding:.6rem 1.1rem;border:1px solid var(--ink);
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.05em;text-decoration:none;
   color:var(--ink);background:transparent;cursor:pointer;transition:background .15s,color .15s}
 .btn:hover{background:var(--ink);color:var(--paper)}
 .btn.solid{background:var(--ink);color:var(--paper)}
 .btn.solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
-.hero-stats{display:flex;gap:2.6rem;flex-wrap:wrap;margin-top:3.4rem;
-  padding-top:1.6rem;border-top:1px solid var(--rule)}
-.hero-stats div{font-family:var(--mono);font-size:.74rem;color:var(--ink-3);line-height:1.5}
-.hero-stats b{display:block;font-family:var(--serif);font-size:1.7rem;color:var(--ink);
-  font-weight:400;letter-spacing:-.02em}
 
-/* ── pipeline ─────────────────────────────────────── */
-.modes{display:flex;gap:0;margin:2rem 0 2.4rem;border:1px solid var(--rule);width:max-content;max-width:100%}
-.modes button{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;padding:.5rem .95rem;
+/* system design */
+.sysd{border:1px solid var(--rule);background:var(--paper-2);padding:1.2rem}
+.sysd svg{display:block;min-width:880px;width:100%;height:auto}
+.sysd text{font-family:var(--mono)}
+
+/* walkthrough rail */
+.modes{display:flex;border:1px solid var(--rule);width:max-content;max-width:100%;margin:1.6rem 0 1.4rem}
+.modes button{font-family:var(--mono);font-size:.71rem;letter-spacing:.05em;padding:.5rem .9rem;
   background:none;border:0;border-right:1px solid var(--rule);cursor:pointer;color:var(--ink-3)}
 .modes button:last-child{border-right:0}
 .modes button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
-.stages{display:grid;grid-template-columns:repeat(9,1fr);gap:2px;margin-bottom:2rem;
-  overflow-x:auto;padding-bottom:2px}
-.stage{background:var(--paper-2);border:1px solid var(--rule);padding:.75rem .5rem;cursor:pointer;
-  text-align:center;min-width:0;transition:background .15s,opacity .2s;position:relative}
-.stage .n{font-family:var(--mono);font-size:1.15rem;display:block;line-height:1}
-.stage .t{font-size:.68rem;font-family:var(--mono);color:var(--ink-3);display:block;margin-top:.35rem;
-  line-height:1.25;word-break:break-word}
+.stages-scroll{overflow-x:auto;padding-bottom:2px}
+.stages{display:grid;grid-template-columns:repeat(9,1fr);gap:2px;min-width:40rem}
+.stage{background:var(--paper-2);border:1px solid var(--rule);padding:.6rem .4rem;cursor:pointer;
+  text-align:center;position:relative;transition:background .15s,opacity .2s}
+.stage .n{font-family:var(--mono);font-size:1.05rem;display:block;line-height:1}
+.stage .t{font-size:.64rem;font-family:var(--mono);color:var(--ink-3);display:block;margin-top:.3rem;line-height:1.25}
 .stage[aria-selected=true]{background:var(--ink);border-color:var(--ink)}
 .stage[aria-selected=true] .n,.stage[aria-selected=true] .t{color:var(--paper)}
 .stage.skipped{opacity:.28}
 .stage.skipped::after{content:"";position:absolute;inset:0;
   background:repeating-linear-gradient(-45deg,transparent,transparent 4px,var(--rule) 4px,var(--rule) 5px)}
-.panes{display:grid;grid-template-columns:1fr 1fr 1.35fr;gap:0;border:1px solid var(--rule)}
-.pane{padding:1.4rem;border-right:1px solid var(--rule);min-width:0}
-.pane:last-child{border-right:0;background:var(--paper-2)}
-.pane h4{margin-bottom:.85rem}
-.pane ul{margin:0;padding-left:1.05rem;font-size:.92rem;color:var(--ink-2)}
-.pane li{margin-bottom:.4rem}
-.pane .art{font-family:var(--mono);font-size:.76rem;line-height:1.62;white-space:pre-wrap;
-  color:var(--ink-2);max-height:19rem;overflow-y:auto;margin:0}
-.dim{display:flex;gap:.55rem;align-items:baseline;font-size:.86rem;margin-bottom:.3rem;
+.skipnote{padding:.7rem 1.2rem;background:var(--paper-3);border:1px solid var(--rule);border-top:0;
+  font-family:var(--mono);font-size:.72rem;color:var(--ink-2)}
+
+/* the carousel pane */
+.car{border:1px solid var(--rule);margin-top:1rem}
+.car-head{padding:1.1rem 1.4rem;border-bottom:1px solid var(--rule);display:flex;
+  justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
+.car-head .why{font-style:italic;color:var(--ink-2);font-size:.98rem}
+.car-head .stg{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);letter-spacing:.08em}
+.car-pane{display:grid;grid-template-columns:15.5rem minmax(0,1fr) 16.5rem;min-height:24rem}
+.car-pane.enter{animation:slidein .32s ease}
+@keyframes slidein{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.col-prompt{padding:1.2rem;border-right:1px solid var(--rule);background:var(--paper-2)}
+.col-art{padding:1.3rem 1.4rem;min-width:0}
+.col-critic{padding:1.2rem;border-left:1px solid var(--rule);background:var(--paper-2)}
+.promptbox{font-family:var(--mono);font-size:.73rem;line-height:1.65;color:var(--ink-2);
+  white-space:pre-wrap;border-left:2px solid var(--ink-3);padding-left:.75rem;margin-top:.8rem}
+.col-prompt .h,.col-art .h,.col-critic .h{margin-bottom:.4rem}
+.dim{display:flex;gap:.5rem;align-items:baseline;font-size:.8rem;margin-bottom:.28rem;
   font-family:var(--mono);color:var(--ink-2)}
-.dim .v{margin-left:auto;font-size:.7rem;letter-spacing:.06em}
-.v.pass{color:var(--ink-3)}
-.v.revise,.v.block{color:var(--accent);font-weight:600}
+.dim .v{margin-left:auto;font-size:.66rem;letter-spacing:.05em;text-align:right}
+.v.pass{color:var(--ink-3)} .v.revise,.v.block{color:var(--accent);font-weight:600}
 .v.q{color:var(--ink-3);font-style:italic}
-.skipnote{padding:.8rem 1.4rem;background:var(--paper-3);border:1px solid var(--rule);border-top:0;
-  font-family:var(--mono);font-size:.74rem;color:var(--ink-2)}
+.verdict-line{font-family:var(--mono);font-size:.76rem;padding:.55rem .7rem;border:1px solid var(--rule);
+  margin:1rem 0 .9rem;background:var(--paper)}
+.verdict-line.rev{border-color:var(--accent);color:var(--accent-ink)}
+.gatenote{font-size:.84rem;color:var(--ink-2);line-height:1.5}
+.car-nav{display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--rule);
+  padding:.7rem 1.4rem;gap:1rem}
+.car-nav button{font-family:var(--mono);font-size:.74rem;padding:.5rem .9rem;background:none;
+  border:1px solid var(--rule);cursor:pointer;color:var(--ink)}
+.car-nav button:hover:not(:disabled){border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.car-nav button:disabled{opacity:.3;cursor:default}
+.car-nav .pos{font-family:var(--mono);font-size:.68rem;color:var(--ink-3);letter-spacing:.1em}
 
-/* ── critic ───────────────────────────────────────── */
-.critic-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:0;border:1px solid var(--rule)}
-.critic-doc{padding:1.7rem;border-right:1px solid var(--rule);min-width:0}
-.critic-score{padding:1.7rem;background:var(--paper-2);min-width:0}
-.toggle{display:flex;border:1px solid var(--rule);width:max-content;margin-bottom:1.3rem;max-width:100%}
-.toggle button{font-family:var(--mono);font-size:.71rem;padding:.42rem .8rem;background:none;border:0;
-  border-right:1px solid var(--rule);cursor:pointer;color:var(--ink-3)}
-.toggle button:last-child{border-right:0}
-.toggle button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
-.para{font-size:.97rem;line-height:1.68;margin-bottom:1rem}
-.para .mark{font-family:var(--mono);font-size:.68rem;color:var(--ink-3);letter-spacing:.06em;
-  display:inline-block;margin-right:.4rem;vertical-align:.08em}
-.chg{background:var(--accent-soft);box-shadow:0 0 0 3px var(--accent-soft)}
-.del{text-decoration:line-through;text-decoration-color:var(--accent);color:var(--ink-3)}
-blockquote{margin:0 0 1rem;padding-left:1rem;border-left:2px solid var(--rule);
-  font-style:italic;font-size:.97rem;color:var(--ink-2)}
-.verdict-line{font-family:var(--mono);font-size:.8rem;padding:.6rem .8rem;border:1px solid var(--rule);
-  margin:1.2rem 0 1.4rem;background:var(--paper)}
-.verdict-line b{letter-spacing:.08em}
-.qbox{border:1px solid var(--accent);background:var(--accent-soft);padding:1.05rem;margin-top:1.3rem}
-.qbox .qid{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--accent-ink);
-  display:block;margin-bottom:.5rem;font-weight:600}
-.qbox p{font-size:.92rem;margin-bottom:.6rem;color:var(--ink)}
-.qbox .ask{font-family:var(--mono);font-size:.75rem;color:var(--accent-ink);margin:0}
-.logbox{font-family:var(--mono);font-size:.76rem;line-height:1.66;white-space:pre-wrap;
-  background:var(--paper-2);border:1px solid var(--rule);padding:1.1rem;margin:0;overflow-x:auto}
-
-/* ── provenance ───────────────────────────────────── */
-.tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;white-space:nowrap;padding:0 .18em}
+/* artifact rendering */
+.filelink{font-family:var(--mono);font-size:.68rem;margin-top:1rem}
+.filelink a{color:var(--ink-3)}
+table{border-collapse:collapse;width:100%;font-size:.84rem}
+th,td{text-align:left;padding:.42rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+   color:var(--ink-3);font-weight:500}
+.tag{font-family:var(--mono);font-size:.63rem;letter-spacing:.04em;white-space:nowrap;padding:0 .18em}
 .t-obs{border-bottom:2px solid var(--ink-3)}
 .t-rep{border-bottom:2px dashed var(--ink-3)}
 .t-asm{background:var(--accent-soft);color:var(--accent-ink);border-bottom:2px solid var(--accent)}
 .t-unk{background:var(--accent-soft);color:var(--accent-ink);border:1px solid var(--accent)}
-.legend{display:flex;gap:1.4rem;flex-wrap:wrap;font-family:var(--mono);font-size:.72rem;
-  color:var(--ink-3);margin:1.2rem 0}
+blockquote{margin:0 0 .9rem;padding-left:.9rem;border-left:2px solid var(--rule);
+  font-style:italic;font-size:.93rem;color:var(--ink-2)}
+.para{font-size:.93rem;line-height:1.66;margin-bottom:.85rem}
+.para .mark{font-family:var(--mono);font-size:.65rem;color:var(--ink-3);letter-spacing:.06em;margin-right:.4rem}
+.chg{background:var(--accent-soft);box-shadow:0 0 0 3px var(--accent-soft)}
+.toggle{display:flex;border:1px solid var(--rule);width:max-content;max-width:100%;margin-bottom:1rem}
+.toggle button{font-family:var(--mono);font-size:.69rem;padding:.4rem .75rem;background:none;border:0;
+  border-right:1px solid var(--rule);cursor:pointer;color:var(--ink-3)}
+.toggle button:last-child{border-right:0}
+.toggle button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.qbox{border:1px solid var(--accent);background:var(--accent-soft);padding:.9rem;margin-top:1rem}
+.qbox .qid{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--accent-ink);
+  display:block;margin-bottom:.4rem;font-weight:600}
+.qbox p{font-size:.85rem;margin-bottom:.5rem}
+.qbox .ask{font-family:var(--mono);font-size:.7rem;color:var(--accent-ink);margin:0}
+.logbox{font-family:var(--mono);font-size:.72rem;line-height:1.62;white-space:pre-wrap;
+  background:var(--paper-2);border:1px solid var(--rule);padding:1rem;margin:0;overflow-x:auto}
+.col-art .logbox{background:var(--paper)}
+.callout{border:1px dashed var(--accent);padding:.85rem 1rem;margin-top:1rem;font-size:.88rem}
+.callout b{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;color:var(--accent-ink);display:block;margin-bottom:.35rem}
 
-/* ── generic blocks ───────────────────────────────── */
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr));gap:0;
-  border:1px solid var(--rule);border-right:0;border-bottom:0}
-.card{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:1.3rem;min-width:0}
-.card .cat{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;color:var(--accent);
-  display:flex;justify-content:space-between;margin-bottom:.7rem}
-.card .cat .sev{color:var(--ink-3);letter-spacing:.06em}
-.card h3{font-size:1.02rem;margin-bottom:.6rem;line-height:1.35}
-.card .surf{font-family:var(--mono);font-size:.7rem;color:var(--ink-3);margin-bottom:.5rem}
-.card .ask{font-size:.9rem;color:var(--ink-2);margin-bottom:.8rem}
-.card .owner{font-family:var(--mono);font-size:.71rem;color:var(--ink-2);
-  padding-top:.6rem;border-top:1px solid var(--rule)}
-.card .owner .st{color:var(--accent);float:right}
+/* fake-UI mockup (demo spec) */
+.mock{border:1px solid var(--ink-3);background:var(--paper);max-width:34rem;
+  box-shadow:4px 4px 0 var(--paper-3);font-size:.86rem}
+.mock-bar{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);padding:.45rem .8rem;border-bottom:1px solid var(--rule);background:var(--paper-2)}
+.mock-head{padding:.7rem .8rem;border-bottom:1px solid var(--rule);display:flex;
+  justify-content:space-between;gap:.6rem;align-items:center;flex-wrap:wrap}
+.mock-row{padding:.5rem .8rem;border-bottom:1px solid var(--rule);display:flex;
+  justify-content:space-between;gap:.6rem;align-items:center}
+.mock-row:last-of-type{border-bottom:0}
+.mock-foot{padding:.55rem .8rem;font-size:.72rem;color:var(--ink-3);border-top:1px solid var(--rule);
+  font-family:var(--mono);line-height:1.5}
+.pill{font-family:var(--mono);font-size:.62rem;letter-spacing:.05em;padding:.14rem .5rem;border:1px solid}
+.pill.ok{color:var(--ok);border-color:var(--ok);background:var(--ok-soft)}
+.pill.bad{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-soft)}
+.pill.warn{color:var(--ink-2);border-color:var(--ink-3);background:var(--paper-3)}
+.fchips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
+.fchip{font-family:var(--mono);font-size:.66rem;border:1px solid var(--rule);padding:.3rem .55rem;color:var(--ink-2)}
+.fchip b{color:var(--accent-ink);font-weight:600}
 
-table{border-collapse:collapse;width:100%;font-size:.88rem}
-th,td{text-align:left;padding:.5rem .7rem;border-bottom:1px solid var(--rule);vertical-align:top}
-th{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
-   color:var(--ink-3);font-weight:500}
-.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* doc page (stage 4) */
+.docpage{border:1px solid var(--rule);background:var(--paper);padding:1.2rem 1.4rem;max-width:36rem}
+.docpage h5{font-family:var(--serif);font-weight:400;font-size:1.05rem;margin:0 0 .5rem}
+.docpage p{font-size:.88rem}
 
-/* ── traceability ─────────────────────────────────── */
-.trace{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule)}
-.trace>div{padding:1.5rem;min-width:0}
-.trace>div:first-child{border-right:1px solid var(--rule)}
-.src-para{font-size:.97rem;line-height:1.7;transition:background .18s}
-.src-para.lit{background:var(--accent-soft);box-shadow:0 0 0 4px var(--accent-soft)}
-.req{border:1px solid var(--rule);padding:.9rem 1rem;margin-bottom:.7rem;cursor:default;
-  transition:border-color .18s,background .18s;background:var(--paper)}
+/* requirement cards + trace */
+.req{border:1px solid var(--rule);padding:.8rem .9rem;margin-bottom:.6rem;background:var(--paper);
+  transition:border-color .18s,background .18s}
 .req:hover,.req.on{border-color:var(--accent);background:var(--accent-soft)}
-.req .rid{font-family:var(--mono);font-size:.76rem;letter-spacing:.04em;display:block;margin-bottom:.25rem}
-.req .rsrc{font-family:var(--mono);font-size:.68rem;color:var(--accent-ink);display:block;margin-bottom:.5rem}
-.req .rst{font-size:.88rem;color:var(--ink-2);margin-bottom:.5rem}
-.req .gwt{font-family:var(--mono);font-size:.72rem;line-height:1.6;color:var(--ink-2);white-space:pre-wrap;margin:0}
+.req .rid{font-family:var(--mono);font-size:.72rem;display:block;margin-bottom:.2rem}
+.req .rsrc{font-family:var(--mono);font-size:.64rem;color:var(--accent-ink);display:block;margin-bottom:.4rem}
+.req .rst{font-size:.84rem;color:var(--ink-2);margin-bottom:.4rem}
+.req .gwt{font-family:var(--mono);font-size:.67rem;line-height:1.55;color:var(--ink-2);white-space:pre-wrap;margin:0}
+.src-para{font-size:.9rem;line-height:1.65;transition:background .18s;padding:.2rem}
+.src-para.lit{background:var(--accent-soft);box-shadow:0 0 0 3px var(--accent-soft)}
+.trace2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
 
-/* ── dag ──────────────────────────────────────────── */
-.dag{font-family:var(--mono);font-size:.82rem;line-height:1.8;white-space:pre;overflow-x:auto;
-  background:var(--paper-2);border:1px solid var(--rule);padding:1.4rem;margin:0 0 1.6rem}
+/* dag */
+.dag{font-family:var(--mono);font-size:.78rem;line-height:1.75;white-space:pre;overflow-x:auto;
+  background:var(--paper-2);border:1px solid var(--rule);padding:1rem 1.2rem;margin:0 0 1rem}
 .dag .blk{color:var(--accent)}
 
-/* ── context builder ──────────────────────────────── */
+/* blockers */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(18.5rem,1fr));gap:0;
+  border:1px solid var(--rule);border-right:0;border-bottom:0}
+.card{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:1.15rem;min-width:0}
+.card .cat{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--accent);
+  display:flex;justify-content:space-between;margin-bottom:.6rem}
+.card .cat .sev{color:var(--ink-3)}
+.card .surf{font-family:var(--mono);font-size:.66rem;color:var(--ink-3);margin-bottom:.45rem}
+.card .ask{font-size:.87rem;color:var(--ink-2);margin-bottom:.7rem}
+.card .owner{font-family:var(--mono);font-size:.67rem;color:var(--ink-2);padding-top:.5rem;border-top:1px solid var(--rule)}
+.card .owner .st{color:var(--accent);float:right}
+
+/* context builder */
 .builder{display:grid;grid-template-columns:1.25fr 1fr;gap:0;border:1px solid var(--rule)}
-.slots{padding:1.5rem;border-right:1px solid var(--rule);min-width:0}
-.meter{padding:1.5rem;background:var(--paper-2);min-width:0}
-.slot{display:flex;gap:.8rem;align-items:flex-start;padding:.75rem;border:1px dashed var(--rule);
-  margin-bottom:.5rem;cursor:pointer;transition:border-color .15s,background .15s;background:var(--paper)}
+.slots{padding:1.3rem;border-right:1px solid var(--rule);min-width:0}
+.meter{padding:1.3rem;background:var(--paper-2);min-width:0}
+.slot{display:flex;gap:.7rem;align-items:flex-start;padding:.65rem;border:1px dashed var(--rule);
+  margin-bottom:.45rem;cursor:pointer;transition:border-color .15s,background .15s;background:var(--paper)}
 .slot:hover{border-color:var(--ink-3)}
 .slot.on{border-style:solid;border-color:var(--accent);background:var(--accent-soft)}
 .slot.drag{border-color:var(--accent);border-style:solid}
-.slot input{margin:.25rem 0 0;accent-color:var(--accent);flex:none}
-.slot .sl-t{font-size:.93rem;line-height:1.4;display:block}
-.slot .sl-u{font-size:.79rem;color:var(--ink-3);line-height:1.45;display:block;margin-top:.15rem}
-.slot .sl-f{font-family:var(--mono);font-size:.7rem;color:var(--accent-ink);display:block;margin-top:.3rem;
-  word-break:break-all}
-.privacy{font-family:var(--mono);font-size:.72rem;color:var(--ink-2);border:1px solid var(--rule);
-  padding:.7rem .85rem;margin-bottom:1.1rem;background:var(--paper-2);line-height:1.55}
-.bar{height:3px;background:var(--paper-3);margin:.5rem 0 1.2rem;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .35s ease}
-
-/* two-column blocks — classed rather than inline so the
-   mobile breakpoint can actually override them */
-.two{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem}
-.two-b{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--rule)}
-.tb-l{padding:1.6rem;border-right:1px solid var(--rule);min-width:0}
-.tb-r{padding:1.6rem;min-width:0}
-
-/* ── install ──────────────────────────────────────── */
-pre.cmd{font-family:var(--mono);font-size:.8rem;background:var(--paper-2);border:1px solid var(--rule);
-  padding:.85rem 1rem;overflow-x:auto;margin:.6rem 0 0}
-.cols3{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));gap:0;
+.slot input{margin:.22rem 0 0;accent-color:var(--accent);flex:none}
+.slot .sl-t{font-size:.9rem;display:block}
+.slot .sl-u{font-size:.76rem;color:var(--ink-3);line-height:1.4;display:block;margin-top:.12rem}
+.slot .sl-f{font-family:var(--mono);font-size:.66rem;color:var(--accent-ink);display:block;margin-top:.25rem;word-break:break-all}
+.privacy{font-family:var(--mono);font-size:.7rem;color:var(--ink-2);border:1px solid var(--rule);
+  padding:.65rem .8rem;margin-bottom:1rem;background:var(--paper-2);line-height:1.5}
+.cols3{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:0;
   border:1px solid var(--rule);border-right:0;border-bottom:0}
-.cols3>div{padding:1.4rem;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
-
-footer{padding:3.5rem 0 5rem;border-top:1px solid var(--rule);font-size:.86rem;color:var(--ink-3)}
+.cols3>div{padding:1.2rem;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);min-width:0}
+pre.cmd{font-family:var(--mono);font-size:.76rem;background:var(--paper-2);border:1px solid var(--rule);
+  padding:.75rem .9rem;overflow-x:auto;margin:.5rem 0 0}
+footer{padding:3rem 0 4rem;border-top:1px solid var(--rule);font-size:.84rem;color:var(--ink-3)}
 footer a{color:var(--ink-2)}
 
-/* ── responsive ───────────────────────────────────── */
-@media (max-width:900px){
+@media (max-width:960px){
   body{font-size:17.5px}
-  .panes,.critic-grid,.trace,.builder,.cols3,.two,.two-b{grid-template-columns:1fr}
-  .pane,.critic-doc,.slots,.tb-l{border-right:0;border-bottom:1px solid var(--rule)}
-  .two{gap:2.4rem}
-  .trace>div:first-child{border-right:0;border-bottom:1px solid var(--rule)}
-  .stages{grid-template-columns:repeat(9,minmax(3.9rem,1fr));min-width:36rem}
-  .stages-scroll{overflow-x:auto;margin:0 -1.6rem;padding:0 1.6rem 4px}
-  section{padding:4rem 0}
-  .hero{padding:4rem 0 3rem}
+  .car-pane{grid-template-columns:1fr}
+  .col-prompt{border-right:0;border-bottom:1px solid var(--rule)}
+  .col-critic{border-left:0;border-top:1px solid var(--rule)}
+  .trace2,.builder{grid-template-columns:1fr}
+  .slots{border-right:0;border-bottom:1px solid var(--rule)}
+  section{padding:3.2rem 0}
+  .hero{padding:3.4rem 0 2.6rem}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 
-<!-- ══════════════ 1 · HERO ══════════════ -->
+<!-- ══════ HERO ══════ -->
 <header class="hero wrap">
   <div class="kicker">An open Claude Skill · MIT</div>
   <h1>Working Backwards that <em>doesn't stop</em> at the press release.</h1>
-  <p class="sub">Amazon's PR/FAQ is excellent at deciding <i>whether</i> to build something. By design it
-  ends there — and that handoff is where the method dies. A PM writes a beautiful narrative, leadership
-  nods, and then the PM opens a blank ticket and starts from zero.</p>
-  <p class="sub">This runs the whole process and terminates in vertical release slices with acceptance
-  criteria, a dependency graph, and an importable CSV. A critic gates every stage. Every requirement cites
-  the paragraph it came from — because a requirement that can't cite anything is a fairly precise
-  definition of scope creep.</p>
+  <p class="sub">Amazon's PR/FAQ decides <i>whether</i> to build. It ends there by design — and that
+  handoff is where the method dies: the narrative gets admired, then someone opens a blank ticket and
+  starts from zero.</p>
+  <p class="sub">This runs all nine stages — press release, FAQs, demo, docs, telemetry, requirements,
+  release plan, readiness — with a critic gating each one. Every requirement cites the paragraph it
+  came from, because a requirement that can't cite anything is a fairly precise definition of scope creep.</p>
   <div class="btns">
-    <a class="btn solid" href="#install">Install it</a>
-    <a class="btn" href="#pipeline">See the worked example</a>
+    <a class="btn solid" href="#walk">Walk the pipeline</a>
+    <a class="btn" href="#install">Install it</a>
     <a class="btn" href="https://github.com/siddarthnyati/working-backwards">Repository</a>
-  </div>
-  <div class="hero-stats">
-    <div><b>9</b>stages, three run modes</div>
-    <div><b>8</b>critic dimensions —<br>six authoritative, two not</div>
-    <div><b>6</b>blockers found in the worked<br>example before a requirement existed</div>
-    <div><b>0</b>invented figures</div>
   </div>
 </header>
 
-<!-- ══════════════ 2 · PIPELINE ══════════════ -->
-<section id="pipeline"><div class="wrap">
-  <span class="sec-no">§1 — The pipeline</span>
-  <h2>Nine stages. Not a monolith.</h2>
-  <p class="lede">Click a stage. Each one shows what it produces, which critic dimensions gate it, and the
-  real artifact from the worked example. Switch modes to see what a lighter problem skips — heavy process
-  applied to light problems is why methods get abandoned.</p>
+<!-- ══════ 1 · SYSTEM DESIGN ══════ -->
+<section id="sys"><div class="wrap">
+  <span class="sec-no">§1 — How it runs</span>
+  <h2>Three roles, one loop, per stage.</h2>
+  <p class="lede">An author produces the artifact. A critic reviews it against a fixed rubric — and is
+  architecturally barred from ruling on what it can't know. A human gates every transition. Session
+  state lives on disk, so a run resumes days later.</p>
+  <div class="sysd scroll">
+  <svg viewBox="0 0 960 330" role="img" aria-label="System design: author, critic, human gate loop with session state and outputs">
+    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)"/></marker>
+    <marker id="arA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
+    <!-- input -->
+    <rect x="14" y="96" width="152" height="104" fill="var(--paper)" stroke="var(--ink-3)"/>
+    <text x="90" y="120" text-anchor="middle" font-size="11" fill="var(--ink)">YOUR PROBLEM</text>
+    <text x="90" y="140" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">+ wb/context/ (optional)</text>
+    <text x="90" y="158" text-anchor="middle" font-size="9" fill="var(--ink-3)">tier 0 · none</text>
+    <text x="90" y="172" text-anchor="middle" font-size="9" fill="var(--ink-3)">tier 1 · attached docs</text>
+    <text x="90" y="186" text-anchor="middle" font-size="9" fill="var(--ink-3)">tier 2 · MCP into your systems</text>
+    <!-- author -->
+    <rect x="216" y="104" width="150" height="88" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.5"/>
+    <text x="291" y="132" text-anchor="middle" font-size="11" fill="var(--ink)">AUTHOR</text>
+    <text x="291" y="150" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">the skill · stage N</text>
+    <text x="291" y="166" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">provenance tags carried</text>
+    <text x="291" y="182" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">never invents a figure</text>
+    <!-- artifact -->
+    <rect x="416" y="112" width="140" height="72" fill="var(--paper-3)" stroke="var(--ink-3)"/>
+    <text x="486" y="140" text-anchor="middle" font-size="10.5" fill="var(--ink)">ARTIFACT</text>
+    <text x="486" y="158" text-anchor="middle" font-size="9" fill="var(--ink-2)">wb/&lt;session&gt;/0N-*.md</text>
+    <text x="486" y="172" text-anchor="middle" font-size="9" fill="var(--ink-2)">written to disk</text>
+    <!-- critic -->
+    <rect x="606" y="96" width="168" height="104" fill="var(--paper)" stroke="var(--accent)" stroke-width="1.5"/>
+    <text x="690" y="120" text-anchor="middle" font-size="11" fill="var(--accent-ink)">CRITIC</text>
+    <text x="690" y="138" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">rubric · 8 dimensions</text>
+    <text x="690" y="156" text-anchor="middle" font-size="9" fill="var(--ink-2)">6 structural → PASS/REVISE/BLOCK</text>
+    <text x="690" y="172" text-anchor="middle" font-size="9" fill="var(--ink-2)">2 substantive → questions only,</text>
+    <text x="690" y="186" text-anchor="middle" font-size="9" fill="var(--ink-2)">routed to a named human role</text>
+    <!-- gate -->
+    <rect x="620" y="14" width="140" height="52" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="4 3"/>
+    <text x="690" y="36" text-anchor="middle" font-size="10.5" fill="var(--ink)">HUMAN GATE</text>
+    <text x="690" y="52" text-anchor="middle" font-size="8.5" fill="var(--ink-2)">accept · send back · override</text>
+    <!-- outputs -->
+    <rect x="816" y="80" width="130" height="136" fill="var(--paper)" stroke="var(--ink-3)"/>
+    <text x="881" y="102" text-anchor="middle" font-size="10" fill="var(--ink)">RECORDS</text>
+    <text x="881" y="122" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">BLOCKERS.md · owners</text>
+    <text x="881" y="137" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">QUESTIONS.md · asks</text>
+    <text x="881" y="152" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">DECISIONS.md · verdicts</text>
+    <text x="881" y="167" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">CONFIDENCE.md · gaps</text>
+    <text x="881" y="186" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">→ jira-import.csv</text>
+    <text x="881" y="201" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">→ 08-readiness.md</text>
+    <!-- arrows -->
+    <line x1="166" y1="148" x2="212" y2="148" stroke="var(--ink-3)" marker-end="url(#ar)"/>
+    <line x1="366" y1="148" x2="412" y2="148" stroke="var(--ink-3)" marker-end="url(#ar)"/>
+    <line x1="556" y1="148" x2="602" y2="148" stroke="var(--ink-3)" marker-end="url(#ar)"/>
+    <line x1="774" y1="148" x2="812" y2="148" stroke="var(--ink-3)" marker-end="url(#ar)"/>
+    <line x1="690" y1="96" x2="690" y2="70" stroke="var(--ink-3)" marker-end="url(#ar)"/>
+    <!-- pass loop (top) -->
+    <path d="M 620 40 L 291 40 L 291 100" fill="none" stroke="var(--ink-3)" marker-end="url(#ar)"/>
+    <text x="440" y="32" text-anchor="middle" font-size="9" fill="var(--ink-3)">PASS → stage N+1 unlocks</text>
+    <!-- revise loop (bottom) -->
+    <path d="M 660 200 L 660 258 L 291 258 L 291 196" fill="none" stroke="var(--accent)" marker-end="url(#arA)"/>
+    <text x="475" y="250" text-anchor="middle" font-size="9" fill="var(--accent-ink)">REVISE → the sentence to change, not "strengthen this"</text>
+    <!-- override -->
+    <path d="M 760 40 L 881 40 L 881 76" fill="none" stroke="var(--ink-3)" stroke-dasharray="3 3" marker-end="url(#ar)"/>
+    <text x="856" y="32" text-anchor="middle" font-size="8.6" fill="var(--ink-3)">override → logged, not argued</text>
+    <!-- session state -->
+    <rect x="216" y="288" width="558" height="30" fill="var(--paper-2)" stroke="var(--rule)"/>
+    <text x="495" y="307" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">session.json — mode · current stage · verdicts · open blockers → a run resumes days later; a session that can't resume is just a long prompt</text>
+  </svg>
+  </div>
+  <p class="note" style="margin-top:.9rem">The critic judges <b>presence and provenance, never truth</b>.
+  It can tell whether a claim is made, specific, and sourced — not whether it's correct. Confident
+  verdicts on unknowable things simulate a review meeting without the knowledge that made review
+  meetings valuable; that failure mode is designed out, not prompted away.</p>
+</div></section>
+
+<!-- ══════ 2 · THE WALKTHROUGH ══════ -->
+<section id="walk"><div class="wrap">
+  <span class="sec-no">§2 — The walkthrough</span>
+  <h2>Nine stages. Prompt in, artifact out, critic between.</h2>
+  <p class="lede">A real run on <b>Ghost Seats</b> — a fictional B2B SaaS defect: user removal fires
+  locally, silently fails to propagate to connected integrations, and the audit log says the user is
+  gone while they keep read access. Step through: each stage shows the prompt that drove it, the
+  artifact it produced, and what the critic did about it.</p>
 
   <div class="modes" role="group" aria-label="Run mode">
     <button data-mode="full" aria-pressed="true">Full · 4–8 hrs</button>
     <button data-mode="targeted" aria-pressed="false">Targeted · 2–3 hrs</button>
     <button data-mode="lightweight" aria-pressed="false">Lightweight · &lt;1 hr</button>
   </div>
-
-  <div class="stages-scroll">
-    <div class="stages" id="stages" role="tablist"></div>
-  </div>
+  <div class="stages-scroll"><div class="stages" id="stages" role="tablist"></div></div>
   <div id="skipnote" class="skipnote" hidden></div>
-  <div class="panes">
-    <div class="pane"><h4>Produces</h4><div id="p-out"></div></div>
-    <div class="pane"><h4>Critic gate</h4><div id="p-dim"></div></div>
-    <div class="pane"><h4>Ghost Seats — the real artifact</h4><pre class="art" id="p-art"></pre></div>
-  </div>
-  <p class="note" style="margin-top:1rem">Ghost Seats is a fictional B2B SaaS defect: deprovisioning fires
-  locally and silently fails to propagate to connected integrations, so a removed user keeps read access
-  while the audit log says they're gone. Every artifact on this page is the skill's actual output, read
-  from <code>examples/ghost-seats/</code>. Nothing here was written as marketing copy.</p>
-</div></section>
 
-<!-- ══════════════ 3 · THE CRITIC ══════════════ -->
-<section id="critic"><div class="wrap">
-  <span class="sec-no">§2 — The critic</span>
-  <h2>It passed. The document was still wrong.</h2>
-  <p class="lede">Here is the first draft of the Ghost Seats press release. It describes the defect
-  accurately. All six structural dimensions pass. And the critic returned a question that sent it
-  back anyway.</p>
-
-  <div class="toggle" role="group" aria-label="Draft">
-    <button data-draft="1" aria-pressed="true">Draft 1</button>
-    <button data-draft="2" aria-pressed="false">Revised — show the diff</button>
-  </div>
-
-  <div class="critic-grid">
-    <div class="critic-doc" id="draft-doc"></div>
-    <div class="critic-score">
-      <h4>Eight dimensions</h4>
-      <div id="dims"></div>
-      <div class="verdict-line" id="verdict"></div>
-      <div class="qbox" id="qbox"></div>
+  <div class="car">
+    <div class="car-head">
+      <div><span class="stg" id="car-stg"></span><h3 id="car-title" style="margin-top:.2rem"></h3></div>
+      <div class="why" id="car-why"></div>
     </div>
-  </div>
-
-  <hr class="rule">
-  <div class="two">
-    <div>
-      <h3>The rule that makes it trustworthy</h3>
-      <p style="font-size:.97rem">The critic judges <b>presence and provenance, never truth</b>. It can
-      tell whether a claim is made, whether it's specific, whether it's sourced. It cannot tell whether
-      it's correct, whether the market is big enough, or whether engineering can build it.</p>
-      <p style="font-size:.97rem">So six dimensions get a real verdict — PASS, REVISE, BLOCK. Two get a
-      question and an owner role, and <i>never</i> a verdict. A critic that returns confident judgments on
-      things it cannot know is worse than no critic: it simulates a review meeting without the knowledge
-      that made review meetings valuable.</p>
+    <div class="car-pane" id="car-pane">
+      <div class="col-prompt"><h4 class="h">The prompt</h4><div class="promptbox" id="c-prompt"></div>
+        <p class="note" style="margin-top:1rem">Reusable versions of every stage prompt ship in the skill:
+        <a href="https://github.com/siddarthnyati/working-backwards/blob/main/plugins/working-backwards/skills/working-backwards/references/stage-prompts.md"><code>references/stage-prompts.md</code></a></p></div>
+      <div class="col-art"><h4 class="h">What it produced</h4><div id="c-art" style="margin-top:.8rem"></div></div>
+      <div class="col-critic"><h4 class="h">The critic gate</h4><div id="c-critic" style="margin-top:.8rem"></div></div>
     </div>
-    <div>
-      <h3>You can override it. It goes in the log.</h3>
-      <p style="font-size:.97rem">From the worked example — the critic was right by its own rule and wrong
-      about the artifact. Both positions are now on the record, and a reviewer in six months can see the
-      empty baselines were a decision rather than an omission.</p>
-      <pre class="logbox">OVERRIDE · Stage 5 · dimension 2 (evidence presence)
-
-Critic said: The north star and four of five input
-metrics carry [UNKNOWN] baselines and [UNKNOWN]
-targets; a metric plan in which nothing is measured
-asserts a measurement capability with nothing
-observed behind it.
-
-User justification: "The baseline is unknowable —
-there is no confirmation field today, so the
-propagation rate has never been measured. Filling it
-in would mean inventing a figure. That is the
-finding, not a defect in the document."
-
-Proceeded to Stage 6. Not re-litigated.</pre>
+    <div class="car-nav">
+      <button id="nav-prev">← <span id="nav-prev-t"></span></button>
+      <span class="pos" id="nav-pos"></span>
+      <button id="nav-next"><span id="nav-next-t"></span> →</button>
     </div>
   </div>
 </div></section>
 
-<!-- ══════════════ 4 · WHAT IT DOESN'T KNOW ══════════════ -->
+<!-- ══════ 3 · BLOCKERS ══════ -->
+<section id="blockers"><div class="wrap">
+  <span class="sec-no">§3 — What the FAQ stage found</span>
+  <h2>Six blockers, before a single requirement existed.</h2>
+  <p class="lede">This is the pipeline's payback moment. At Stage 2 — before requirements, before
+  design — the hostile-question banks surfaced six things that reshape the plan. Each is a
+  <i>question with an owner</i>, never a finding: the skill cannot assess legal exposure, so it names
+  the person who can, and it has no way to mark its own question resolved.</p>
+  <div class="cards" id="blk-cards"></div>
+  <p class="note" style="margin-top:1.2rem"><code>BLK-05</code> and <code>BLK-06</code> came from the
+  two internal-FAQ questions that reliably pay: <i>who owns the system this depends on</i>, and
+  <i>can we enumerate the affected population retroactively</i>. Both made half the release plan
+  unschedulable — which is the honest output, not a failure. Full records:
+  <a href="https://github.com/siddarthnyati/working-backwards/blob/main/examples/ghost-seats/BLOCKERS.md"><code>BLOCKERS.md</code></a></p>
+</div></section>
+
+<!-- ══════ 4 · WHAT IT DOESN'T KNOW ══════ -->
 <section id="unknown"><div class="wrap">
-  <span class="sec-no">§3 — What it doesn't know</span>
-  <h2>This produces the questions you take to the people who hold the context.</h2>
-  <p class="lede">Working Backwards works at Amazon because the PR/FAQ is a <i>meeting</i> — fifteen minutes
-  of silent reading and forty minutes of cross-functional interrogation. A solo user plus a model replaces
-  the document and not the room. So the honest framing is that this is a question-generation engine, not
-  an answer engine. Its output is the interrogation list, plus the scaffolding that survives their answers.</p>
-
-  <div class="two-b">
-    <div class="tb-l">
-      <h4>Rendered after every stage</h4>
-      <pre class="logbox" id="conf-block" style="border:0;padding:0;background:none"></pre>
-      <div class="bar"><i id="conf-bar"></i></div>
-      <p class="note" id="conf-note"></p>
+  <span class="sec-no">§4 — What it doesn't know</span>
+  <h2>A question-generation engine, honest about it.</h2>
+  <p class="lede">Amazon's PR/FAQ works because it's a <i>meeting</i> — the people in the room are the
+  context. A solo user plus a model replaces the document, not the room. So every claim carries
+  provenance, and the session ends with a completeness meter, not a confidence trick. Toggle the runs:</p>
+  <div class="toggle" role="group" aria-label="Context run" style="margin-bottom:1rem">
+    <button data-run="0" aria-pressed="true">No context pack</button>
+    <button data-run="1" aria-pressed="false">One strategy doc</button>
+  </div>
+  <div class="trace2">
+    <div>
+      <h4>CONFIDENCE.md — rendered after every stage</h4>
+      <pre class="logbox" id="conf-block" style="margin-top:.6rem"></pre>
+      <p class="note" id="conf-note" style="margin-top:.7rem"></p>
     </div>
-    <div class="tb-r">
-      <h4>Provenance, carried all the way down</h4>
-      <div class="toggle" role="group" aria-label="Context run" style="margin-bottom:1rem">
-        <button data-run="0" aria-pressed="true">No context pack</button>
-        <button data-run="1" aria-pressed="false">One strategy doc</button>
-      </div>
-      <p class="para" id="prov-para"></p>
-      <div class="legend">
-        <span><span class="tag t-obs">[OBSERVED]</span> data you can cite</span>
-        <span><span class="tag t-rep">[REPORTED]</span> a human said so</span>
-        <span><span class="tag t-asm">[ASSUMED]</span> no source — and it propagates</span>
-        <span><span class="tag t-unk">[NEEDS EVIDENCE]</span> a visible gap</span>
-      </div>
+    <div>
+      <h4>The problem paragraph, tags inline</h4>
+      <p class="para" id="prov-para" style="margin-top:.6rem"></p>
       <p class="note" id="prov-note"></p>
     </div>
   </div>
-
-  <hr class="rule">
-  <h3>Two assumptions entered at intake and reached the requirements untouched</h3>
-  <p class="measure" style="font-size:.97rem;color:var(--ink-2)">Citation without provenance just documents
-  the chain of custody on a guess. So any requirement whose source chain touches an <span class="tag t-asm">[ASSUMED]</span>
-  claim is flagged and listed separately in the readiness doc. These two are visible because they were
-  tagged at Stage 0 and carried — not because anyone remembered them.</p>
-  <div class="scroll"><table>
-    <tr><th>Requirement</th><th>Rests on</th><th>What breaks if it's false</th><th>How to check</th></tr>
-    <tr><td><code>REQ-D5</code><br>Real exposure window per integration</td>
-        <td><b>C6</b> — the 90-day cache window applies to all integrations, not just the two examined</td>
-        <td>The window in ¶2 is wrong, BLK-01's severity changes, and an integration caching until eviction
-            makes this materially worse than described</td>
-        <td>Read each integration's documented retention. Cheap. Nobody has done it.</td></tr>
-    <tr><td><code>REQ-DP5</code><br>Notify customers identified as affected</td>
-        <td><b>C7</b> — most affected customers have never discovered this</td>
-        <td>Some already know, and the communication problem started before this session did — proactive
-            notification becomes a response to a queue that already exists</td>
-        <td>Search support tickets for access-review disputes; ask the renewals lead</td></tr>
-  </table></div>
-  <p class="note" style="margin-top:1.6rem">The cost of all this, stated plainly: a press release studded
-  with tags and a visible <span class="tag t-unk">[NEEDS EVIDENCE]</span> placeholder looks weaker than a
-  confident one. That's the trade. Every other AI PRD generator is optimising for the screenshot.</p>
 </div></section>
 
-<!-- ══════════════ 5 · BLOCKERS ══════════════ -->
-<section id="blockers"><div class="wrap">
-  <span class="sec-no">§4 — Blockers</span>
-  <h2>Six of them, before a single requirement was written.</h2>
-  <p class="lede">All six came out of the FAQ stage — someone asking a hostile question, not the model
-  asserting a finding. Each carries an Ask, an owner role, and a status only the user can change. There is
-  no path by which the skill marks its own question resolved.</p>
-  <div class="cards" id="blk-cards"></div>
-  <p class="note" style="margin-top:1.4rem">All six are high severity. That's unusual and it isn't
-  inflation — each either blocks a release slice or changes what's owed to customers, which is the
-  definition the taxonomy uses. Two of them, <code>BLK-05</code> and <code>BLK-06</code>, came from the
-  two internal-FAQ questions that reliably pay: <i>who owns the system this depends on</i>, and <i>can we
-  enumerate the affected population retroactively</i>. Both reshaped the release plan.</p>
-</div></section>
-
-<!-- ══════════════ 6 · TRACEABILITY ══════════════ -->
-<section id="trace"><div class="wrap">
-  <span class="sec-no">§5 — Traceability</span>
-  <h2>Every requirement cites the paragraph it came from.</h2>
-  <p class="lede">Hover a requirement to light up its source. This one rule is what keeps scope honest —
-  and it's the mechanism that caught the one requirement everybody wanted.</p>
-  <div class="trace">
-    <div>
-      <h4>01-press-release.md · ¶3</h4>
-      <p class="src-para" id="src3">Ghost Seats closes the loop. Every deprovisioning event now waits on a
-      confirmation from each connected integration. Confirmations that arrive within 60 seconds mark the
-      event complete. Anything that does not arrive marks the event incomplete and names the integration
-      that failed, on the audit entry the admin already reads and in the access-review export they already
-      run.</p>
-      <hr class="rule" style="margin:1.6rem 0">
-      <h4>Caught by the same rule</h4>
-      <div class="req" style="border-color:var(--accent);border-style:dashed">
-        <span class="rid">REQ-DP9 · Force removal from the audit entry</span>
-        <span class="rsrc">Source: NONE — FLAGGED, not customer-derived</span>
-        <p class="rst" style="margin-bottom:0">The first thing anyone asks for after seeing the demo, and
-        nothing above it asks for it. Held, excluded from every release slice, exported with an
-        <code>unsliced</code> label — not deleted. The honest fix is upstream: put remediation in the press
-        release, re-run the Stage 1 critic, and let it flow down with a source. That costs a re-review,
-        which is exactly why people would rather add it here.</p>
-      </div>
-    </div>
-    <div>
-      <h4>Requirements citing ¶3</h4>
-      <div id="reqs"></div>
-    </div>
-  </div>
-</div></section>
-
-<!-- ══════════════ 7 · SHIP IT ══════════════ -->
-<section id="ship"><div class="wrap">
-  <span class="sec-no">§6 — Ship it</span>
-  <h2>Four vertical slices. Two of them can't be scheduled.</h2>
-  <p class="lede">Each slice is independently shippable and independently testable, cut by narrowing the
-  customer scenario rather than by layer. Six open blockers should produce a plan that is half blocked —
-  a plan that isn't is a plan that quietly picked answers.</p>
-  <pre class="dag">R1 ──▶ R2 ──▶ R3  <span class="blk">[BLOCKED BY BLK-05]</span>
- │
- └───▶ R4          <span class="blk">[BLOCKED BY BLK-01, BLK-02, BLK-03, BLK-06]</span></pre>
-  <div class="scroll"><table>
-    <tr><th>Slice</th><th>Ships</th><th>Status</th></tr>
-    <tr><td><code>R1</code> Confirmation recorded for the highest-volume integration</td>
-        <td>Every deprovisioning event on one integration carries a recorded outcome. No customer-facing
-        change — ships dark on purpose, because the real failure rate is the input to almost every open
-        question.</td><td>Schedulable</td></tr>
-    <tr><td><code>R2</code> The admin sees it</td>
-        <td>The audit entry shows per-integration state and never renders an unrun check as complete.</td>
-        <td>Schedulable</td></tr>
-    <tr><td><code>R3</code> All connected integrations, with honest coverage</td>
-        <td>Coverage across every integration; unreachable distinguished from failed; a real baseline.</td>
-        <td style="color:var(--accent)">Blocked — BLK-05 has no owner</td></tr>
-    <tr><td><code>R4</code> Account for what already happened</td>
-        <td>The real exposure window, a retrospective report, notification to affected customers.</td>
-        <td style="color:var(--accent)">Blocked — four blockers, three of which decide whether this slice
-        exists in this shape</td></tr>
-  </table></div>
-  <h4 style="margin:2.4rem 0 .7rem">jira-import.csv — generated, not hand-written</h4>
-  <pre class="logbox" style="font-size:.7rem">Issue Type,Summary,Description,Acceptance Criteria,Epic Name,Parent,Labels,Priority
-Epic,R1 · Confirmation recorded for the highest-volume integration,"Ships: every deprovisioning event…",,R1 Confirmation recorded…,,working-backwards release-slice,Medium
-Story,REQ-D1 · Record a confirmation result per integration per deprovisioning event,"The platform records… <b>Source: PR ¶3 / IFAQ-14</b>…","GIVEN a workspace with three connected integrations
-WHEN  an admin removes a user and integration B does not confirm within 60 seconds
-THEN  the deprovisioning event is recorded as incomplete and names integration B",,R1 Confirmation recorded…,working-backwards discovery,Medium
-Epic,R4 · Account for what already happened,…,,R4 Account for what already happened,,working-backwards release-slice blocked,Highest
-Story,REQ-DP5 · Notify customers identified as affected,…,…,,R4 Account for…,working-backwards delivery rests-on-assumption shape-pending blocked,Highest</pre>
-  <p class="note" style="margin-top:1rem">4 epics, 12 stories. Epic rows precede their stories. The
-  <code>Source:</code> line is preserved verbatim in Description — traceability has to survive the export
-  or it dies at the import. Blocked slices carry the <code>blocked</code> label and are exported rather
-  than dropped, because a blocked epic in the backlog is the record of why the work stopped.</p>
-</div></section>
-
-<!-- ══════════════ 8 · CONTEXT BUILDER ══════════════ -->
+<!-- ══════ 5 · CONTEXT BUILDER ══════ -->
 <section id="context"><div class="wrap">
-  <span class="sec-no">§7 — Bring your own context</span>
-  <h2>How is this useful when it knows nothing about your business?</h2>
-  <p class="lede">It works with none and gets materially sharper with each thing you give it. Tick what you
-  have. The confidence meter and the critic dimensions update as you go — this is the before/after argument
-  in about four seconds.</p>
-
-  <div class="privacy"><b>Nothing leaves your browser.</b> Dropping a file here reads its <i>name</i> and
-  discards the rest. There is no upload, no parsing, no network request on this page at all. A page that
-  appeared to ingest your strategy document would be doing theatre, and you'd spot it.</div>
-
+  <span class="sec-no">§5 — Bring your own context</span>
+  <h2>What each document you supply actually buys.</h2>
+  <p class="lede">Tick what you have — the confidence meter and critic dimensions update live. Note
+  what never changes: <b>blockers</b>. No document converts a legal or regulatory determination into a
+  lookup; context makes the question citable, not answered.</p>
+  <div class="privacy"><b>Nothing leaves your browser.</b> Dropping a file reads its <i>name</i> and
+  discards the rest — no upload, no parsing, no network requests on this page at all.</div>
   <div class="builder">
     <div class="slots" id="slots"></div>
     <div class="meter">
       <h4>CONFIDENCE.md</h4>
-      <pre class="logbox" id="bld-conf" style="background:var(--paper);font-size:.73rem"></pre>
-      <h4 style="margin-top:1.5rem">Critic dimensions</h4>
-      <div id="bld-dims"></div>
-      <div class="btns" style="margin-top:1.6rem">
+      <pre class="logbox" id="bld-conf" style="font-size:.7rem;margin-top:.5rem"></pre>
+      <h4 style="margin-top:1.2rem">Critic dimensions</h4>
+      <div id="bld-dims" style="margin-top:.5rem"></div>
+      <div class="btns" style="margin-top:1.2rem">
         <button class="btn" id="dl-context">Download CONTEXT.md</button>
         <button class="btn" id="dl-prompt">Copy kickoff prompt</button>
       </div>
-      <p class="note" id="dl-note" style="margin-top:.8rem">Two files, generated here in the browser.</p>
+      <p class="note" id="dl-note" style="margin-top:.7rem"></p>
     </div>
   </div>
-
-  <h3 style="margin-top:2.6rem">Three tiers, all supported</h3>
-  <div class="cols3" style="margin-top:1rem">
-    <div><h4>Tier 0 · none</h4><p style="font-size:.92rem;margin:0">Nothing supplied. Questions only,
-      everything tagged. Anywhere. This is what the worked example ran at, deliberately.</p></div>
-    <div><h4>Tier 1 · attached</h4><p style="font-size:.92rem;margin:0">Files in <code>wb/context/</code>,
-      a file attach, or a Project knowledge base. Claude.ai or Claude Code.</p></div>
-    <div><h4>Tier 2 · connected</h4><p style="font-size:.92rem;margin:0">An MCP server into your wiki, doc
-      store, issue tracker or metrics store. This is what makes it more than a personal tool.</p></div>
-  </div>
-  <p class="note" style="margin-top:1.2rem">The real upload button is Claude's own file attach, a Project
-  knowledge base, or an MCP connection. This widget just tells you what to put there.</p>
-
-  <hr class="rule">
-  <h3>What one document actually bought, in the worked example</h3>
-  <div class="scroll"><table>
-    <tr><th></th><th>No context</th><th>One strategy doc</th></tr>
-    <tr><td>Questions open at Stage 2</td><td>17</td><td>13</td></tr>
-    <tr><td>Questions with no owner</td><td>2</td><td>2</td></tr>
-    <tr><td><b>Blockers open</b></td><td><b>6</b></td><td><b>6</b></td></tr>
-    <tr><td>Dimension 4 · strategic fit</td><td>Not evaluable — a question</td><td>Cites the pillar,
-      quotes the conflicting budget line. Still doesn't rule.</td></tr>
-    <tr><td>Dimension 6 · falsifiability</td><td>Not evaluable</td><td>Not evaluable</td></tr>
-  </table></div>
-  <p class="measure" style="margin-top:1.4rem;font-size:.97rem">Six blockers either way. That's the honest
-  headline. What changed is the <i>quality</i> of the question: <span style="color:var(--accent-ink)">"does
-  this match strategy?"</span> became <span style="color:var(--accent-ink)">"the pillar says yes and the
-  budget line says no — here are both sentences, which wins?"</span> The first needs a meeting to make
-  progress. The second one <i>is</i> the meeting agenda. And the run found a conflict — the delivery plan
-  needs an integration-agreement change the strategy defers to next year — that the no-context run
-  structurally could not have seen.</p>
+  <p class="note" style="margin-top:1rem">The real upload path is Claude's file attach, a Project
+  knowledge base, or an MCP connection into your wiki and trackers — this widget just tells you what
+  to put there. In the worked example, one strategy doc closed four questions and zero blockers.</p>
 </div></section>
 
-<!-- ══════════════ 9 · INSTALL ══════════════ -->
+<!-- ══════ 6 · INSTALL ══════ -->
 <section id="install"><div class="wrap">
-  <span class="sec-no">§8 — Install</span>
+  <span class="sec-no">§6 — Install</span>
   <h2>Three ways in.</h2>
-  <div class="cols3" style="margin-top:1.8rem">
+  <div class="cols3" style="margin-top:1.5rem">
     <div><h4>Plugin marketplace</h4>
-      <p style="font-size:.92rem">In Claude Code:</p>
       <pre class="cmd">/plugin marketplace add \
   siddarthnyati/working-backwards</pre>
       <pre class="cmd">/plugin install working-backwards</pre></div>
     <div><h4>Drop it in</h4>
-      <p style="font-size:.92rem">No plugin machinery needed — the skill stands alone.</p>
+      <p style="font-size:.9rem">No plugin machinery — the skill stands alone.</p>
       <pre class="cmd">cp -r plugins/working-backwards/\
 skills/working-backwards \
   ~/.claude/skills/</pre></div>
     <div><h4>Claude.ai</h4>
-      <p style="font-size:.92rem">Download <code>dist/working-backwards.skill</code> from the repo and
-      upload it in settings. Then attach your context documents to the conversation or the Project — that's
-      tier 1.</p></div>
+      <p style="font-size:.9rem">Download <code>dist/working-backwards.skill</code> from the repo and
+      upload it in settings. Attach your context docs to the conversation — that's tier 1.</p></div>
   </div>
-  <h3 style="margin-top:2.6rem">Where this isn't useful</h3>
-  <p class="measure" style="font-size:.97rem;color:var(--ink-2)">Single-team, well-understood,
-  already-aligned work. That's a ticket, not a discovery session, and running nine stages on it is how
-  people conclude the method is overkill and never come back. Use Lightweight mode for a compliance
-  mandate where the <i>what</i> is fixed, and don't run Full mode on everything.</p>
+  <p class="note" style="margin-top:1.6rem"><b>Where this isn't useful:</b> single-team,
+  well-understood, already-aligned work. That's a ticket, not a discovery session — use Lightweight
+  mode for mandates, and don't run Full mode on everything.</p>
 </div></section>
 
 <footer><div class="wrap">
   <p>Working Backwards is Amazon's method, described publicly by Colin Bryar and Bill Carr in
-  <i>Working Backwards</i> (2021). This is an independent open implementation of the public method, adding
-  the critic gate, provenance tagging, and the requirements and release stages. Not affiliated with or
-  endorsed by Amazon.</p>
+  <i>Working Backwards</i> (2021). This is an independent open implementation of the public method,
+  adding the critic gate, provenance tagging, and the requirements and release stages. Not affiliated
+  with or endorsed by Amazon.</p>
   <p>Ghost Seats is fictional. Every artifact on this page is the skill's real output, read from
-  <code>examples/ghost-seats/</code>. MIT licensed. Built by
-  <a href="https://github.com/siddarthnyati">Siddarth Nyati</a> ·
-  <a href="https://github.com/siddarthnyati/working-backwards">source</a></p>
-  <p class="note">This page is fully static. No API keys, no model calls, no network requests, no
-  analytics. It works offline.</p>
+  <a href="https://github.com/siddarthnyati/working-backwards/tree/main/examples/ghost-seats"><code>examples/ghost-seats/</code></a>.
+  A second full run with its own runbook:
+  <a href="https://github.com/siddarthnyati/working-backwards/blob/main/examples/silent-stepdown/RUNBOOK.md"><code>examples/silent-stepdown/</code></a>.
+  MIT. Built by <a href="https://github.com/siddarthnyati">Siddarth Nyati</a>.</p>
+  <p class="note">Fully static — no API keys, no model calls, no network requests, works offline.</p>
 </div></footer>
 
 <script>
 "use strict";
-/* ═══════════ data — read from examples/ghost-seats/ ═══════════ */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const GH="https://github.com/siddarthnyati/working-backwards/blob/main/examples/ghost-seats/";
+const link=f=>`<p class="filelink">Full artifact: <a href="${GH}${f}">${f}</a></p>`;
 
+/* ── stage data: prompt · artifact · critic ── */
 const STAGES=[
- {n:0,t:"Intake",out:["00-intake.md","Trigger, customer segment, evidence ledger, constraint, who must agree","Mode selection and context tier"],
-  dims:[[1,"Customer specificity","PASS"],[2,"Evidence presence","PASS"],[8,"Template completeness","PASS"]],
-  art:`## Customer
+{n:0,t:"Intake",why:"Catch a solution wearing a problem costume — before anything gets written.",
+ prompt:`Run the working-backwards skill, Stage 0 only.
+The problem: deprovisioning events fire locally
+but silently fail to propagate to connected
+integrations — removed users keep read access
+up to 90 days while the audit log says they're
+gone. ~4,200 accounts a quarter.
 
-Segment: IT and workspace administrators at mid-market
-and enterprise B2B SaaS customers — 200 to 5,000 seats —
-with three or more third-party integrations connected and
-subject to a periodic access review.
+Tag every claim [OBSERVED] / [REPORTED] /
+[ASSUMED] / [UNKNOWN]. Push back if my customer
+is "everyone". Recommend a mode.
+Do not write the press release.`,
+ art:`<table><tr><th></th><th>Claim</th><th>Provenance</th></tr>
+<tr><td>C1</td><td>~4,200 accounts/quarter show failed propagation</td><td><span class="tag t-obs">[OBSERVED]</span> event log</td></tr>
+<tr><td>C2</td><td>No error is surfaced to the admin</td><td><span class="tag t-obs">[OBSERVED]</span> no error path</td></tr>
+<tr><td>C5</td><td>Admins discover only at access reviews</td><td><span class="tag t-rep">[REPORTED]</span> 2 support leads</td></tr>
+<tr><td>C6</td><td>90-day window applies to <i>all</i> integrations</td><td><span class="tag t-asm">[ASSUMED]</span> — 2 of N examined</td></tr>
+<tr><td>C7</td><td>Most affected customers never discovered it</td><td><span class="tag t-asm">[ASSUMED]</span></td></tr>
+<tr><td>C8</td><td>Can history be reconstructed?</td><td><span class="tag t-unk">[UNKNOWN]</span> → Q-09</td></tr></table>
+<div class="callout"><b>THE CUSTOMER, AFTER ONE PUSHBACK</b>
+"Admins" was rejected as a bare role. Accepted: IT administrators at 200–5,000-seat B2B SaaS
+customers with 3+ connected integrations, subject to periodic access review — a segment you could
+build a list of ten from, using two queryable fields.</div>`+link("00-intake.md"),
+ dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[8,"Completeness","PASS","pass"]],
+ verdict:"VERDICT: PASS",vclass:"",
+ gate:`C6 and C7 are flagged as the assumptions that will propagate. They resurface — tagged — in the requirements at Stage 6 and the readiness doc at Stage 8. Nothing along the way is allowed to launder them.`},
 
-Why this population and not all admins: an admin with one
-integration and no access review either doesn't have the
-failure or has no mechanism that would ever reveal it.
+{n:1,t:"Press release",why:"Write the ending first. If the win can't survive one page, there is no win.",
+ prompt:`Stage 1. Write the press release from the
+intake: heading, subheading, dated summary,
+problem in the customer's voice, what customers
+use today and why it falls short, a labelled
+illustrative quote, a spokesperson quote that
+carries the why-now, getting started.
 
-## Evidence
+Number the paragraphs ¶1–¶7 — requirements
+will cite them. Never invent a figure: write
+[NEEDS EVIDENCE] instead.
+Do not write the FAQs.`,
+ art:"DRAFT_TOGGLE",
+ dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[3,"Alternative named","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"],[4,"Strategic fit","Q-04","q"],[6,"Falsifiability","Q-18/19/20","q"]],
+ verdict:"VERDICT: PASS — and it was still wrong",vclass:"",
+ gate:"QBOX"},
 
-C1 ~4,200 accounts/quarter    [OBSERVED] event log
-C2 no error surfaced to admin [OBSERVED] no error path
-C5 admins find out at review  [REPORTED] two support leads
-C6 90-day window applies to
-   all integrations           [ASSUMED]
-C7 most customers never
-   discovered this            [ASSUMED]
-C8 can history be rebuilt     [UNKNOWN] → Q-09
+{n:2,t:"FAQs",why:"The risk-discovery engine. Hostile questions do what a review meeting would.",
+ prompt:`Stage 2. Three banks — external, internal,
+regional. Ask the HOSTILE version of every
+internal question, in the voice of the leader
+who would ask it. Tag every answer ANSWERED /
+OPEN / BLOCKER.
 
-C6 and C7 are the two that propagate. Both are
-load-bearing. Neither has a source.`},
- {n:1,t:"Press release",out:["01-press-release.md","Heading, subheading, dated summary, problem in the customer's voice, solution, what they use today, two quotes, getting started"],
-  dims:[[1,"Customer specificity","PASS"],[2,"Evidence presence","PASS"],[3,"Alternative named","PASS"],[5,"Traceability","PASS"],[7,"Clarity","PASS"],[8,"Template completeness","PASS"],[4,"Strategic fit","Q-04"],[6,"Falsifiability","Q-18/19/20"]],
-  art:`# Revocation you can prove
-
-When an IT admin removes a user, every connected
-integration confirms the removal within 60 seconds —
-or the admin finds out which one didn't.
-
-¶4 — Today an administrator has two options and both
-are bad. They can open each connected integration and
-search for the removed person by hand, which does not
-scale past a handful and gets skipped for the departures
-nobody remembers. Or they can trust the audit log, which
-records the local removal and not the propagation — so it
-is confidently wrong in exactly the cases that matter.
-There is no third option today, which is why the failure
-has been invisible for as long as it has.`},
- {n:2,t:"FAQs",out:["02-faq-external.md","02-faq-internal.md","02-faq-regional.md","Every answer tagged ANSWERED, OPEN or BLOCKER"],
-  dims:[[2,"Evidence presence","PASS"],[5,"Traceability","PASS"],[7,"Clarity","PASS"],[8,"Template completeness","PASS"],[6,"Falsifiability","Q-01…Q-17"]],
-  art:`IFAQ-10 · Engineering · BLOCKER
+Every blocker gets an owner role and stays
+OPEN — you resolve nothing.`,
+ art:`<pre class="logbox">IFAQ-10 · Engineering · <b>BLOCKER</b>
 Q: Who owns the integration contract — platform or
    partnerships? Not who works on it. Who is
    accountable when it changes.
 A: The FAQ surfaced no clear answer, which is itself
-   the answer. Platform owns the propagation handler.
-   Partnerships owns the commercial relationship. The
-   contract that defines what an integration must
-   expose sits between them, and this initiative needs
-   somebody to change it.
-   → BLK-05 · DEPENDENCY · severity high
-     Owner role: platform engineering lead and
-     partnerships lead, jointly — Status: OPEN
+   the answer. The contract sits between two teams,
+   and this initiative needs somebody to change it.
+   → BLK-05 · DEPENDENCY · high · Status: OPEN
 
-Tag counts: 10 OPEN · 6 BLOCKER · 0 ANSWERED
+IFAQ-14 · Data · <b>BLOCKER</b>
+Q: Can we enumerate the affected population
+   retroactively, or only going forward?
+A: Unknown — and it is the single question that most
+   changes the plan. If "forward only," the promised
+   affected-account report cannot be built as
+   described.
+   → BLK-06 · DATA · high · Status: OPEN</pre>
+<div class="callout"><b>THE TALLY</b> 21 questions across three banks → <b>6 BLOCKER · 10 OPEN · 0
+ANSWERED</b>. Zero ANSWERED is real, not a failure: a tier-0 run has no contracts or strategy docs to
+answer from. All six blockers are rendered below this walkthrough (§3).</div>`+link("02-faq-internal.md"),
+ dims:[[2,"Evidence presence","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"],[6,"Falsifiability","Q-01…Q-17","q"]],
+ verdict:"VERDICT: PASS",vclass:"",
+ gate:`An internal FAQ with no BLOCKER tags was not written honestly — every real initiative has something uncomfortable in it. Read BLOCKERS.md before continuing: if a blocker changes what the product <i>is</i>, go back to Stage 1 now, while it's cheap.`},
 
-Zero ANSWERED is unusual and it is real: this session
-ran with no context pack, so almost nothing in the
-internal bank could be answered from the document alone.`},
- {n:3,t:"Demo spec",out:["03-demo-spec.md","Screens or API surface, the primary flow, the failure states","An alignment device, not a design deliverable"],
-  dims:[[5,"Traceability","PASS"],[7,"Clarity","PASS"],[8,"Template completeness","REVISE"]],
-  art:`## Failure states
+{n:3,t:"Demo spec",why:"Prose can hide a hole. A demo script can't.",
+ prompt:`Stage 3. Narrate the experience end to end:
+the surfaces, the primary flow step by step,
+and the failure states — what fails and
+exactly what the admin sees.
 
-F1 integration says user still present
-   → incomplete · integration named
-F2 no response in 60s
-   → incomplete · updates if it arrives later
-F3 integration outage
-   → unverifiable — provider unavailable, NOT incomplete
-F5 the confirmation mechanism itself fails
-   → the entry says the check did not run. It never
-     says complete by default.
+Add "what this deliberately does not show",
+so the demo doesn't promise what the
+requirements won't fund.`,
+ art:`<div class="mock">
+  <div class="mock-bar">Audit log — user removal</div>
+  <div class="mock-head"><span>Removed <b>j.rivera</b> · 12 Nov, 14:02</span><span class="pill bad">INCOMPLETE</span></div>
+  <div class="mock-row"><span>Directory sync</span><span class="pill ok">confirmed · 4s</span></div>
+  <div class="mock-row"><span>Document store</span><span class="pill ok">confirmed · 11s</span></div>
+  <div class="mock-row"><span>File-share integration</span><span class="pill bad">no response — access may be retained</span></div>
+  <div class="mock-row"><span>Chat provider</span><span class="pill warn">unverifiable — provider unavailable</span></div>
+  <div class="mock-foot">F5 rule: silence never renders as success. With no confirmation record, this
+entry says "check did not run" — it can never show complete by default.</div>
+ </div>
+ <div class="fchips">
+  <span class="fchip"><b>F1</b> still has access → incomplete, named</span>
+  <span class="fchip"><b>F2</b> no response in 60s → updates if late</span>
+  <span class="fchip"><b>F3</b> provider outage ≠ failure — labelled apart</span>
+  <span class="fchip"><b>F4</b> can't be checked → stated once, at connect</span>
+  <span class="fchip"><b>F5</b> mechanism fails → never silent</span>
+ </div>
+ <p class="note" style="margin-top:.9rem">F3 decides whether the feature is trusted: if a partner's
+routine outage renders like genuine retained access, admins learn to ignore the red state within a
+month. Deliberately not shown: a "force removal" button — remediation has no agreed contract while
+BLK-05 is open, and the spec says so out loud.</p>`+link("03-demo-spec.md"),
+ dims:[[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","REVISE","revise"]],
+ verdict:"VERDICT: REVISE → fixed → PASS",vclass:"rev",
+ gate:`The critic's instruction: the spec had no scope boundary — a reader seeing F1 assumes they can remediate from there, and the press release never promises that. The "what this deliberately does not show" section exists because the critic demanded it.`},
 
-F3 is the one that came out of the internal FAQ and it
-decides whether this feature is trusted. If a partner's
-routine outage produces the same red state as genuine
-retained access, admins learn to ignore the red state
-within a month, and we will have built a worse version
-of nothing.
+{n:4,t:"Docs",why:"An honest complexity meter — written before a line of code exists.",
+ prompt:`Stage 4. Draft the customer-facing docs from
+the approved PR and external FAQ: what it
+does, how to use it, failure behaviour,
+limits, troubleshooting.
 
-CRITIC → REVISE (dim 8): the spec has no scope boundary.
-Add "what this deliberately does not show".`},
- {n:4,t:"Docs",out:["04-docs.md","User-facing documentation drafted from the approved PR and external FAQ","Writing docs early exposes what you can't yet explain"],
-  dims:[[3,"Alternative named","PASS"],[5,"Traceability","PASS"],[7,"Clarity","PASS"],[8,"Template completeness","PASS"]],
-  art:`## Could not be written yet
+Where a paragraph won't come, do NOT write
+around it — record it under "could not be
+written yet" with the blocker behind it.`,
+ art:`<div class="docpage">
+  <h5>Reading the confirmation block</h5>
+  <table><tr><th>State</th><th>Means</th></tr>
+  <tr><td><code>Complete</code></td><td>Every integration confirmed removal, times shown</td></tr>
+  <tr><td><code>Incomplete</code></td><td>An integration reported the user still present, or didn't respond — it is named</td></tr>
+  <tr><td><code>Unverifiable — provider unavailable</code></td><td>Not the same as incomplete: it means <i>we don't know</i></td></tr>
+  <tr><td><code>Unverifiable — not supported</code></td><td>This integration exposes no way to check</td></tr></table>
+ </div>
+ <div class="callout"><b>COULD NOT BE WRITTEN YET — the deliverable of this stage</b>
+"Which of your integrations are covered?" — the first question a reader will have, and the docs
+cannot answer it (→ BLK-05). "How far back does the report go?" — every phrasing either overpromises
+or advertises the gap (→ BLK-06). Neither question had been forced by Stages 1–3. Writing the docs
+early is what surfaced them.</div>`+link("04-docs.md"),
+ dims:[[3,"Alternative named","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"]],
+ verdict:"VERDICT: PASS",vclass:"",
+ gate:`Under dimension 8, an explicit gap is complete and a TBD is not. A doc that cannot be written is a feature that cannot ship — each "could not be written yet" entry gets assigned before the next stage.`},
 
-Two sections stalled. Each is a product gap.
+{n:5,t:"Telemetry",why:"If the PR claims it, telemetry must measure it — or the claim comes out.",
+ prompt:`Stage 5. North star plus input metrics, each
+tied to a specific PR claim by paragraph
+number. Instrumentation points — and whether
+each exists today. Baselines you don't have
+are [UNKNOWN], not estimates.
 
-"How far back does the affected-account report go?"
-The press release promises a historical view and this
-documentation cannot say what it covers, because nobody
-knows whether the data needed to reconstruct it exists.
-Every way of phrasing this either overpromises or
-advertises the gap.  → BLK-06
+Close with the claims that cannot be measured:
+each is a decision — instrument it, or cut it.`,
+ art:`<div class="callout" style="border-style:solid;border-color:var(--rule)"><b style="color:var(--ink-3)">NORTH STAR</b>
+<b>Revocation Propagation Rate</b> — % of deprovision events where every connected integration
+confirmed within 60s. Unverifiable events count in the denominator: a metric that excludes the cases
+it cannot see is the same mistake as the audit log.</div>
+<table style="margin-top:.9rem"><tr><th>Metric</th><th>Measures</th><th>Baseline</th></tr>
+<tr><td>M1 propagation latency p95</td><td>PR ¶3 "within 60 seconds"</td><td><span class="tag t-unk">[UNKNOWN]</span></td></tr>
+<tr><td>M2 silent-failure count</td><td>PR ¶2 "nothing surfaces"</td><td><span class="tag t-unk">[UNKNOWN]</span></td></tr>
+<tr><td>M3 admin-visible error rate</td><td>PR ¶3 "the admin finds out"</td><td>0 <span class="tag t-obs">[OBSERVED]</span> — no error path exists; success is this going <i>up</i></td></tr>
+<tr><td>M4 unverifiable share</td><td>PR ¶3, implicitly</td><td><span class="tag t-unk">[UNKNOWN]</span></td></tr></table>
+<div class="callout"><b>CANNOT BE MEASURED</b> PR ¶2's "keeps read access for 90 days" observes cache
+<i>policy</i>, not actual access — whether anyone opened a document is invisible to the platform.
+Decision recorded: keep the visible [NEEDS EVIDENCE] gap; do not substitute the 4,200 figure, which
+counts something else.</div>`+link("05-telemetry.md"),
+ dims:[[2,"Evidence presence","REVISE","revise"],[5,"Traceability","PASS","pass"],[8,"Completeness","PASS","pass"]],
+ verdict:"VERDICT: REVISE → OVERRIDDEN",vclass:"rev",
+ gate:`The critic flagged the empty baselines — correctly, by its own rule. The user overrode: the baseline is <i>unknowable</i> before instrumentation exists, and filling it in would mean inventing a figure. Both positions went to DECISIONS.md. Not re-litigated. That log entry is the mechanism working.`},
 
-"Which of your integrations are covered?"
-This is the first question a reader will have and the
-documentation cannot answer it.  → BLK-05
+{n:6,t:"Requirements",why:"Only now. And every one cites the paragraph it came from.",
+ prompt:`Stage 6. Requirements with Source: lines,
+Given/When/Then criteria, Discovery/Delivery
+grouping. Any requirement whose source chain
+touches [ASSUMED] is flagged RESTS ON
+ASSUMPTION.
 
-Writing the docs before building was worth it for the
-second one. "Which integrations does this cover" never
-came up in Stages 1–3 as a question anyone had to
-answer, and it is the one a customer asks first.`},
- {n:5,t:"Telemetry",out:["05-telemetry.md","North star plus input metrics, each tied to a specific PR claim","Instrumentation points, baseline, target"],
-  dims:[[2,"Evidence presence","REVISE"],[5,"Traceability","PASS"],[8,"Template completeness","PASS"]],
-  art:`North star: Revocation Propagation Rate
+Anything with no source goes to Flagged —
+don't delete it, don't source-wash it.`,
+ art:`<div class="trace2">
+  <div><h4 style="margin-bottom:.5rem">01-press-release.md · ¶3</h4>
+   <p class="src-para" id="src3">Ghost Seats closes the loop. Every deprovisioning event now waits on
+   a confirmation from each connected integration… anything that does not arrive marks the event
+   incomplete and names the integration that failed, on the audit entry the admin already reads.</p>
+   <p class="note" style="margin-top:.6rem">Hover a requirement → its source lights up. 12
+   requirements; all 24 citations machine-verified by <code>scripts/verify_sources.py</code>.</p></div>
+  <div id="reqs6"></div>
+ </div>
+ <div class="req" style="border-color:var(--accent);border-style:dashed;margin-top:.9rem">
+  <span class="rid">REQ-DP9 · Force removal from the audit entry</span>
+  <span class="rsrc">Source: NONE — FLAGGED, not customer-derived</span>
+  <p class="rst" style="margin-bottom:0">The first thing everyone asks for after the demo — and nothing
+  upstream asks for it. Held out of every release slice, exported with an <code>unsliced</code> label,
+  not deleted. The honest fix is upstream: add remediation to the press release and let it flow down
+  with a source. That costs a re-review — which is exactly why people would rather sneak it in here.</p>
+ </div>`,
+ dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[5,"Traceability","REVISE","revise"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"],[6,"Falsifiability","Q-16","q"]],
+ verdict:"VERDICT: REVISE → fixed → PASS",vclass:"rev",
+ gate:`The REVISE was REQ-DP9 — the scope-creep rule firing on the one requirement everybody wanted. Also carried here: REQ-D5 and REQ-DP5 are flagged RESTS ON ASSUMPTION, because intake claims C6 and C7 reached them with no source ever attached.`},
 
-Definition: of all deprovisioning events in the period,
-the percentage for which every connected integration
-returned a confirmation within 60 seconds.
+{n:7,t:"Release plan",why:"Vertical slices and a DAG — where this becomes an ADLC, not a writing exercise.",
+ prompt:`Stage 7. Cut the requirements into vertical
+slices — independently shippable, independently
+testable, narrowed by scenario, not by layer.
 
-Denominator is every event, including those on
-integrations that cannot be checked. A metric that
-excludes the cases it cannot see is the same mistake
-as the audit log.
+Reconcile: every requirement in exactly one
+slice, orphans declared, DAG acyclic. Blocked
+slices are NOT SCHEDULABLE, with the owner who
+unblocks them. Then run export_jira.py.`,
+ art:`<pre class="dag">R1 ──▶ R2 ──▶ R3  <span class="blk">[BLOCKED BY BLK-05]</span>
+ │
+ └───▶ R4          <span class="blk">[BLOCKED BY BLK-01 · 02 · 03 · 06]</span></pre>
+<table><tr><th></th><th>Ships</th><th>Status</th></tr>
+<tr><td><code>R1</code></td><td>Confirmation recorded, one integration — dark, on purpose: it measures the real failure rate</td><td>schedulable</td></tr>
+<tr><td><code>R2</code></td><td>The admin sees it — audit entry, never "complete" by default</td><td>schedulable</td></tr>
+<tr><td><code>R3</code></td><td>All integrations, honest coverage, real baseline</td><td style="color:var(--accent)">blocked — BLK-05 unowned</td></tr>
+<tr><td><code>R4</code></td><td>Historical enumeration + customer notification</td><td style="color:var(--accent)">blocked — four blockers</td></tr></table>
+<pre class="logbox" style="margin-top:.9rem;font-size:.64rem">jira-import.csv · 4 epics · 12 stories · epics precede stories · Source: lines survive verbatim
+Story,"REQ-D1 · Record a confirmation result…","…Source: PR ¶3 / IFAQ-14…","GIVEN a workspace with
+three connected integrations / WHEN an admin removes a user and integration B does not confirm…"</pre>`+link("07-release-plan.md"),
+ dims:[[5,"Traceability","PASS","pass"],[8,"Completeness","PASS","pass"]],
+ verdict:"VERDICT: PASS",vclass:"",
+ gate:`Two of four slices unschedulable is the correct output of six open blockers — a fully green plan would mean the pipeline quietly picked answers to questions that belong to counsel, compliance and two engineering leads.`},
 
-Baseline: [UNKNOWN] — not measurable before
-          instrumentation exists
-Target:   [UNKNOWN] — setting one before the baseline
-          is known would be inventing a figure
+{n:8,t:"Readiness",why:"The go/no-go — and what the session still doesn't know, stated plainly.",
+ prompt:`Stage 8. Confidence block first. Then: open
+blockers by severity, assumptions that must
+hold and what breaks if they don't, top three
+reasons this fails — most likely first, not
+most dramatic — and the smallest set of
+answers that would change the recommendation.
 
-M3 admin-visible error rate · baseline 0 [OBSERVED]
-   Its baseline is genuinely zero and its success
-   condition is that it goes up, because today the
-   number is zero for the wrong reason.
-
-→ REVISE on dimension 2. OVERRIDDEN by the user.`},
- {n:6,t:"Requirements",out:["06-requirements.md","Given/When/Then acceptance criteria","Discovery (D) and Delivery (DP) grouping","Every REQ carries a Source: line"],
-  dims:[[1,"Customer specificity","PASS"],[2,"Evidence presence","PASS"],[5,"Traceability","REVISE"],[7,"Clarity","PASS"],[8,"Template completeness","PASS"],[6,"Falsifiability","Q-16"]],
-  art:`REQ-D5 · Determine the real exposure window
-Source: PR ¶2 / IFAQ-07
-Provenance: [OBSERVED] × 1, [ASSUMED] × 1
-            → RESTS ON ASSUMPTION
-Statement: For each connected integration, the platform
-  records the documented interval between a failed
-  propagation and the loss of cached read access.
-Acceptance criteria:
-  GIVEN a connected integration type
-  WHEN  its cache retention behaviour is recorded
-  THEN  the recorded value is either a documented
-        interval with a citation, or explicitly unknown
-  AND   no integration carries a value inherited from
-        a different integration
-Out of scope: changing any integration's retention
-Depends on: BLK-01
-
-The last criterion exists specifically to stop the
-assumption being re-made during implementation.`},
- {n:7,t:"Release plan",out:["07-release-plan.md","jira-import.csv","Vertical slices, each independently shippable and testable","Dependency DAG"],
-  dims:[[5,"Traceability","PASS"],[8,"Template completeness","PASS"]],
-  art:`R1 · Confirmation for the highest-volume integration
-Requirements: REQ-D1
-Blocked by: —
-Ships: every deprovisioning event on the highest-volume
-  integration carries a recorded confirmation outcome.
-  No customer-facing change.
-Test harness:
-  - Remove a user; assert a result within 60s
-  - Fault injection: hold the response past the window;
-    assert a no-response outcome is recorded rather
-    than nothing
-  - Assert no write path touches events predating
-    the flag
-Why first: it is the cheapest way to learn the real
-  failure rate, and the real rate is the input to almost
-  every open question. Ships dark on purpose.
-
-Reconciliation: 11 of 12 requirements in exactly one
-slice. The twelfth is declared an orphan with a reason.`},
- {n:8,t:"Readiness",out:["08-readiness.md","Go / no-go, open blockers by severity","Assumptions that must hold, top three reasons this fails"],
-  dims:[[2,"Evidence presence","PASS"],[5,"Traceability","PASS"],[8,"Template completeness","PASS"],[6,"Falsifiability","carried"]],
-  art:`RECOMMENDATION: GO WITH CONDITIONS — R1 and R2 only.
-
-This is not a recommendation on whether to fund the
-initiative. That turns on Q-04 and on BLK-03 and BLK-04,
-none of which are evaluable here.
-
-## Top three reasons this fails
-
-1. BLK-06 comes back "going forward only." The report
-   can't be built as promised, ¶7 gets rewritten, and
-   "was I affected" becomes permanently unanswerable.
-   Most likely of the three, and not the most dramatic,
-   which is why it is first.
-2. Admins learn to ignore the incomplete state.
-3. BLK-05 stays unowned. A failure by stalling rather
-   than by decision — the hardest kind to notice.
-
-## What would change this recommendation
-1. An owner for BLK-05. One name, not two.
-2. BLK-06, from the platform engineering lead.
-3. Q-04, from the VP.
-Three conversations. Two of them under thirty minutes.`}
+If the honest answer is "not yet decidable,"
+write that.`,
+ art:`<pre class="logbox">SESSION CONFIDENCE · ghost-seats · after Stage 8
+Claims:        4 observed · 1 reported · 2 assumed · 2 unknown
+Requirements:  12 total · 2 resting on assumptions · 1 unsourced, flagged
+Release:       4 slices · 2 schedulable · 2 not schedulable
+Questions:     20 open · 2 with no owner assigned
+Blockers:      6 open (6 high)
+Context pack:  absent — strategic fit and feasibility not evaluated</pre>
+<div class="callout" style="border-style:solid"><b>RECOMMENDATION — GO WITH CONDITIONS, R1 + R2 only</b>
+Not a recommendation on funding the initiative — that turns on Q-04 and two legal blockers this
+session cannot evaluate. It is a recommendation on what can start while five people answer five
+questions. The ask: an owner for BLK-05, one conversation on BLK-06, and Q-04 from the VP. Three
+conversations; two under thirty minutes.</div>
+<p class="para" style="margin-top:.9rem"><b>Top reason this fails</b> — BLK-06 comes back "forward
+only": the promised report can't be built, ¶7 gets rewritten, and "was I affected?" becomes
+permanently unanswerable. Most likely, least dramatic — which is why it's ranked first.</p>`+link("08-readiness.md"),
+ dims:[[2,"Evidence presence","PASS","pass"],[5,"Traceability","PASS","pass"],[8,"Completeness","PASS","pass"],[6,"Falsifiability","carried","q"]],
+ verdict:"VERDICT: PASS",vclass:"",
+ gate:`The gate here is yours, not the skill's. It has given you the agenda — the questions, the owners, the assumptions, the order — and it has no opinion on the decision. A GO covering R3/R4 would have failed this review.`}
 ];
 
 const MODES={full:[0,1,2,3,4,5,6,7,8],targeted:[0,1,2,5,6,7],lightweight:[0,1,2,6]};
-const MODE_NOTE={
- full:"",
- targeted:"Targeted skips 3, 4 and 8 — scope is known and alignment is the problem, so the demo and the docs aren't where the argument is. Stage 2 runs the internal bank only.",
- lightweight:"Lightweight skips 3, 4, 5, 7 and 8 — a compliance mandate with a fixed deadline doesn't need a demo or a telemetry plan. The what is fixed; you need clean requirements. Stage 2 runs the internal bank only."
-};
+const MODE_NOTE={full:"",
+ targeted:"Targeted skips 3, 4, 8 — scope is known, alignment is the problem. Stage 2 runs the internal bank only.",
+ lightweight:"Lightweight skips 3, 4, 5, 7, 8 — mandate work: the what is fixed, you need clean requirements. Stage 2 runs the internal bank only."};
 
+/* draft toggle data (stage 1) */
 const DRAFTS={
- 1:{para1:`Today we are making user removal verifiable. When an administrator removes someone from a workspace, the platform now confirms that every connected third-party integration has actually dropped that person's access, and records the result on the audit entry. If an integration does not confirm, the administrator sees which one, and when.`,
-    quote:`Deprovisioning should be verifiable, not assumed. With Ghost Seats, administrators get confirmation from every connected integration within 60 seconds, and they find out immediately when one doesn't respond. We're pleased to bring this level of visibility to our customers.`,
-    dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[3,"Alternative named","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Template completeness","PASS","pass"],[4,"Strategic fit","Q-04 RAISED","q"],[6,"Falsifiability","Q-18, Q-19, Q-20","q"]],
-    verdict:`<b>VERDICT: PASS</b> — and the author revised anyway.`},
- 2:{para1:`Today we are making user removal verifiable. When an administrator removes someone from a workspace, the platform now confirms that every connected third-party integration has actually dropped that person's access, and records the result on the audit entry. If an integration does not confirm, the administrator sees which one, and when. <span class="chg">Every enterprise customer who signs a data processing agreement with us is already relying on that confirmation existing. Until today it did not, and the audit log we give them to prove it says the opposite.</span>`,
-    quote:`<span class="chg">We sell an audit log as evidence. An audit log that records an intention rather than an outcome is not evidence, and every customer who has ever handed one to their auditor was handing over something we had not actually verified. That is the reason this is the work we are doing now and not next year — not the 4,200 accounts, which is a number that will be smaller next quarter either way, but the fact that we have been asking customers to trust a record we couldn't stand behind.</span>`,
-    dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[3,"Alternative named","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Template completeness","PASS","pass"],[4,"Strategic fit","Q-04 STILL OPEN","q"],[6,"Falsifiability","Q-18, Q-19, Q-20","q"]],
-    verdict:`<b>VERDICT: PASS</b> — rationale now stated. Not adjudicated.`}
-};
+ 1:{doc:`<div class="toggle" id="drafttog"><button data-draft="1" aria-pressed="true">Draft 1</button><button data-draft="2" aria-pressed="false">Revised — the diff</button></div>
+<p class="para"><span class="mark">¶1</span>Today we are making user removal verifiable. When an
+administrator removes someone, the platform now confirms every connected integration has actually
+dropped that person's access — and records the result on the audit entry.</p>
+<p class="para"><span class="mark">¶6</span>Spokesperson:</p>
+<blockquote>"Deprovisioning should be verifiable, not assumed. With Ghost Seats, administrators get
+confirmation from every connected integration within 60 seconds. We're pleased to bring this level
+of visibility to our customers." — VP Product</blockquote>
+<p class="note">Describes the defect accurately. Six structural dimensions pass. And ¶6, whose one
+job is the why-now, restates the subheading.</p>`,
+ 2:`<div class="toggle" id="drafttog"><button data-draft="1" aria-pressed="false">Draft 1</button><button data-draft="2" aria-pressed="true">Revised — the diff</button></div>
+<p class="para"><span class="mark">¶1</span>…records the result on the audit entry. <span class="chg">Every
+enterprise customer who signs a data processing agreement with us is already relying on that
+confirmation existing. Until today it did not — and the audit log we give them to prove it says the
+opposite.</span></p>
+<p class="para"><span class="mark">¶6</span>Spokesperson:</p>
+<blockquote><span class="chg">"We sell an audit log as evidence. An audit log that records an intention
+rather than an outcome is not evidence — and every customer who handed one to their auditor was
+handing over something we had not verified. That is why this is the work now, not next year."</span>
+— VP Product</blockquote>
+<p class="note">The rationale is the author's, supplied after the critic observed its absence. Q-04
+stays OPEN: stated is not adjudicated.</p>`}};
 const QTEXT={
- 1:{p:`The document describes the defect accurately and never says why the company should spend a quarter fixing it now rather than next year. ¶1 states what shipped. ¶6, whose job is the why-now, restates the subheading in different words — "deprovisioning should be verifiable, not assumed" is the product, not the reason to fund it.<br><br>I can see the rationale is <i>absent</i>. I cannot tell you what the right one is, and I have no strategy document to check a candidate against.`,
-     ask:`Ask: your VP or strategy lead · Not evaluable from the document alone.`},
- 2:{p:`The rationale is now stated. Whether it is the <i>right</i> one is not something a document can tell me — I can confirm it is present; I cannot confirm it is true.<br><br>Note: the sentence added to ¶1 is a claim about what customers believe. Stage 5 later found it is also the one claim in the press release that no telemetry can reach. The critic's question and the measurement rule are pointing at the same soft spot from different directions.`,
-     ask:`Ask: your VP or strategy lead · Q-04 remains OPEN.`}
-};
+ 1:`<span class="qid">Q-04 · STRATEGIC FIT — not a verdict</span><p>The document never says why the
+company should spend a quarter fixing this now. I can see the rationale is <i>absent</i>. I cannot
+tell you what the right one is — I have no strategy document to check a candidate against.</p>
+<p class="ask">Ask: your VP · Not evaluable from the document alone.</p>`,
+ 2:`<span class="qid">Q-04 · STILL OPEN</span><p>The rationale is now stated. Whether it is the
+<i>right</i> one is not something a document can tell me. Stage 5 later found the added ¶1 sentence
+is also the one claim no telemetry can reach — the critic's question and the measurement rule point
+at the same soft spot.</p><p class="ask">Ask: your VP · Q-04 remains OPEN.</p>`};
 
-const BLOCKERS=[
- {id:"BLK-01",cat:"SECURITY",sev:"high",surf:"IFAQ-07",
-  ask:"What is the actual interval between a failed propagation and the loss of cached read access, for each integration — and is 90 days a ceiling or just the number we found on the two we examined?",
-  owner:"security lead",blocks:"REQ-D5, R4"},
- {id:"BLK-02",cat:"PRIVACY",sev:"high",surf:"RFAQ-01, RFAQ-02",
-  ask:"When a controller instructs removal and we do not propagate it to a sub-processor, does the retained read access constitute a failure of our processor obligations — is it reportable, on what clock, and by whom?",
-  owner:"privacy counsel / DPO",blocks:"REQ-DP5, R4"},
- {id:"BLK-03",cat:"LEGAL",sev:"high",surf:"IFAQ-04, IFAQ-06, EFAQ-10",
-  ask:"What do our DPAs commit us to on revocation timeliness, what is our exposure for occurrences already past, and what are we obliged to tell affected customers?",
-  owner:"legal counsel",blocks:"REQ-DP5, R4"},
- {id:"BLK-04",cat:"REGULATORY",sev:"high",surf:"RFAQ-06",
-  ask:"Our SOC 2 report attests to logical access controls including timely revocation. Does the observed behaviour mean the control has not operated as described — and what is owed to the auditor?",
-  owner:"compliance lead / control owner",blocks:"disclosure position; severity across the board"},
- {id:"BLK-05",cat:"DEPENDENCY",sev:"high",surf:"IFAQ-10, IFAQ-12",
-  ask:"Who is accountable for the integration contract — platform or partnerships — and, per integration, does it expose anything from which removal can be confirmed?",
-  owner:"platform + partnerships leads",blocks:"REQ-D3, R3"},
- {id:"BLK-06",cat:"DATA",sev:"high",surf:"IFAQ-14",
-  ask:"Can the affected population be enumerated retroactively from data we or the integrations hold, or only from the instrumentation date forward?",
-  owner:"platform engineering lead",blocks:"REQ-D6, REQ-DP5, R4"}
-];
-
-const REQS=[
+const REQS6=[
  {id:"REQ-D1 · Record a confirmation result per integration",src:"Source: PR ¶3 / IFAQ-14",
-  st:"For every deprovisioning event, the platform records for each connected integration whether that integration confirmed removal, and the time the result arrived.",
-  gwt:"GIVEN a workspace with a connected integration that supports a membership read\nWHEN  an admin removes a user\nTHEN  a confirmation result is recorded with an outcome and a timestamp"},
- {id:"REQ-D4 · Establish a propagation-rate baseline",src:"Source: PR ¶3 / IFAQ-15 / 05-telemetry.md",
-  st:"Once confirmation results exist, the platform reports Revocation Propagation Rate over a period, with unverifiable events counted in the denominator.",
-  gwt:"GIVEN confirmation results recorded for a full period\nWHEN  the propagation rate is computed\nTHEN  the rate counts every event in the denominator including unverifiable ones"},
+  st:"Records, per deprovision event, whether each integration confirmed removal — and when.",
+  gwt:"GIVEN three connected integrations\nWHEN  integration B does not confirm within 60s\nTHEN  the event is recorded incomplete and names B"},
  {id:"REQ-DP1 · Show confirmation state on the audit entry",src:"Source: PR ¶3 / EFAQ-05",
-  st:"The audit entry for a removal shows each connected integration with its confirmation outcome and timestamp.",
-  gwt:"GIVEN an event with one integration confirmed and one not responding\nWHEN  an admin opens the audit entry\nTHEN  the entry shows incomplete and names the integration that did not respond"},
- {id:"REQ-DP2 · Carry state into the access-review export",src:"Source: PR ¶3 / EFAQ-05",
-  st:"Each removal in the access-review export carries its confirmation state and the names of any integrations that did not confirm.",
-  gwt:"GIVEN a date range containing removals in each of the four states\nWHEN  an admin runs the export\nTHEN  every row carries one of the four states"}
-];
+  st:"The audit entry shows each integration's outcome and timestamp.",
+  gwt:"GIVEN an incomplete event\nWHEN  the admin opens the audit entry\nTHEN  it shows incomplete and names the integration"}];
 
-const RUNS={
- 0:{conf:`SESSION CONFIDENCE · ghost-seats · after Stage 8
-Claims:        4 observed · 1 reported · 2 assumed · 2 unknown
-Requirements:  12 total · 2 resting on assumptions
-               2 shape pending · 1 unsourced and flagged
-Release:       4 slices · 2 schedulable · 2 not schedulable
-Questions:     20 open · 2 with no owner assigned
-Blockers:      6 open (6 high · 0 medium · 0 low)
-Context pack:  absent — strategic fit and feasibility
-               were not evaluated`,
-   bar:18,
-   note:`PMs read this as a to-do list, which is exactly what it is. A tool that tells you what it doesn't know is more trustworthy than one that doesn't.`,
-   para:`Deprovisioning fails to reach at least one connected integration in roughly 4,200 accounts per quarter <span class="tag t-obs">[OBSERVED: deprovisioning event log]</span>, and nothing surfaces when it happens <span class="tag t-obs">[OBSERVED: no error path exists]</span>. The removed person keeps read access for as long as the integration's cache holds them, which on the two integrations we examined is 90 days <span class="tag t-obs">[OBSERVED]</span>, and we are assuming the same of the others <span class="tag t-asm">[ASSUMED]</span>. Administrators find out during an access review, if they find out at all <span class="tag t-rep">[REPORTED: two enterprise support leads]</span>. <span class="tag t-unk">[NEEDS EVIDENCE: how many removed users actually opened a document during a retained-access window]</span>`,
-   pnote:`The <span class="tag t-unk">[NEEDS EVIDENCE]</span> placeholder is the number the press release most wants and is least able to get. It stays visible. A plausible invented figure gets quoted back at the author in a review, and that is a much worse afternoon.`},
- 1:{conf:`SESSION CONFIDENCE · ghost-seats-ctx · after Stage 2
-Claims:        4 observed · 1 reported · 2 assumed · 2 unknown
-Questions:     13 open · 2 with no owner assigned
-Blockers:      6 open (6 high · 0 medium · 0 low)
-Context pack:  1 document — strategic fit evaluable;
-               feasibility, legal, privacy and regulatory
-               still not evaluated`,
-   bar:38,
-   note:`One two-page strategy document: four questions closed, one opened, one sharpened, zero blockers resolved. That ratio points both ways.`,
-   para:`<i>The problem paragraph is unchanged — a strategy document reaches none of it.</i> What changed is ¶1 and ¶6, the two paragraphs the rationale lives in: <span class="chg">"This is the commitment in this year's second pillar taken literally: a customer should be able to answer their auditor's questions using artifacts they generate themselves. Today the artifact we give them for this question records that we tried, not that it worked."</span>`,
-   pnote:`And the critic found a conflict inside the alignment: R3 needs a change to the integration agreement that the same document defers to next year. Nothing in the no-context run could have seen that.`}
-};
-
-const SLOTS=[
- {k:"strategy",t:"Strategy or vision doc",u:"Dimension 4 cites a line instead of asking a question"},
- {k:"metrics",t:"Metric definitions + baselines",u:"Stage 5 targets are grounded; the north star is validated, not invented"},
- {k:"prds",t:"Prior PRDs or post-mortems",u:"“What exists today” gets answered; you stop re-proposing something already rejected"},
- {k:"ownership",t:"Ownership map / team boundaries",u:"Blocker owner roles resolve to actual teams instead of generic titles"},
- {k:"legal",t:"Contracts, DPAs, regulatory constraints",u:"The regional FAQ cites your real obligations, not generic regimes"},
- {k:"telemetry",t:"Telemetry export or support tickets",u:"The problem paragraph carries [OBSERVED] instead of [ASSUMED]"}
-];
-
-/* ═══════════ pipeline ═══════════ */
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-let mode="full", sel=1;
-
+/* ── carousel ── */
+let mode="full", sel=0;
 const stagesEl=$("#stages");
 STAGES.forEach(s=>{
   const b=document.createElement("button");
-  b.className="stage"; b.type="button"; b.role="tab";
-  b.setAttribute("aria-selected", s.n===sel);
+  b.className="stage"; b.type="button"; b.setAttribute("role","tab");
   b.innerHTML=`<span class="n">${s.n}</span><span class="t">${s.t}</span>`;
-  b.onclick=()=>{sel=s.n;render()};
+  b.onclick=()=>{sel=s.n;render(true)};
   stagesEl.appendChild(b);
 });
 
-function render(){
+function attachDraft(d){
+  $("#c-art").innerHTML = d===1 ? DRAFTS[1].doc : DRAFTS[1][2];
+  $("#c-art").insertAdjacentHTML("beforeend",
+   `<p class="filelink">Both drafts kept: <a href="${GH}01-press-release-draft1.md">draft 1</a> · <a href="${GH}01-press-release.md">revised</a></p>`);
+  $$("#drafttog button").forEach(b=>b.onclick=()=>attachDraft(+b.dataset.draft));
+  const q=$("#qbox-slot"); if(q) q.innerHTML=QTEXT[d];
+}
+
+function render(animate){
   const run=MODES[mode];
   $$("#stages .stage").forEach((b,i)=>{
-    const on=run.includes(i);
-    b.classList.toggle("skipped",!on);
-    b.setAttribute("aria-selected", i===sel && on);
+    b.classList.toggle("skipped",!run.includes(i));
+    b.setAttribute("aria-selected", i===sel && run.includes(i));
   });
   const note=$("#skipnote");
-  if(MODE_NOTE[mode]){note.hidden=false;note.textContent=MODE_NOTE[mode]}else{note.hidden=true}
+  if(MODE_NOTE[mode]){note.hidden=false;note.textContent=MODE_NOTE[mode]}else note.hidden=true;
   if(!run.includes(sel)) sel=run[0];
-  $$("#stages .stage").forEach((b,i)=>b.setAttribute("aria-selected", i===sel && run.includes(i)));
+  $$("#stages .stage").forEach((b,i)=>b.setAttribute("aria-selected", i===sel));
 
   const s=STAGES[sel];
-  $("#p-out").innerHTML="<ul>"+s.out.map(o=>`<li>${o.endsWith(".md")||o.endsWith(".csv")?`<code>${o}</code>`:o}</li>`).join("")+"</ul>";
-  $("#p-dim").innerHTML=s.dims.map(([n,name,v])=>{
-    const cls=v==="PASS"?"pass":(v==="REVISE"||v==="BLOCK")?"revise":"q";
-    return `<div class="dim"><span>${n}</span><span>${name}</span><span class="v ${cls}">${v}</span></div>`;
-  }).join("")+`<p class="note" style="margin-top:.9rem">Dimensions 4 and 6 never return a verdict — only a
-    question and an owner role.</p>`;
-  $("#p-art").textContent=s.art;
+  $("#car-stg").textContent=`STAGE ${s.n} OF 8 · ${mode.toUpperCase()} MODE`;
+  $("#car-title").textContent=s.t;
+  $("#car-why").textContent=s.why;
+  $("#c-prompt").textContent=s.prompt;
+
+  if(s.art==="DRAFT_TOGGLE"){ $("#c-art").innerHTML=""; }
+  else $("#c-art").innerHTML=s.art;
+
+  let critic=s.dims.map(([n,name,v,cls])=>
+    `<div class="dim"><span>${n}</span><span>${name}</span><span class="v ${cls}">${v}</span></div>`).join("");
+  critic+=`<div class="verdict-line ${s.vclass}"><b>${s.verdict}</b></div>`;
+  critic+= s.gate==="QBOX" ? `<div class="qbox" id="qbox-slot"></div>` : `<p class="gatenote">${s.gate}</p>`;
+  $("#c-critic").innerHTML=critic;
+
+  if(s.art==="DRAFT_TOGGLE") attachDraft(1);
+  if(sel===6){
+    $("#reqs6").innerHTML=REQS6.map(r=>`<div class="req"><span class="rid">${r.id}</span><span class="rsrc">${r.src}</span><p class="rst">${r.st}</p><pre class="gwt">${r.gwt}</pre></div>`).join("");
+    $$("#reqs6 .req").forEach(el=>{
+      const on=v=>{const p=$("#src3"); if(p)p.classList.toggle("lit",v); el.classList.toggle("on",v)};
+      el.addEventListener("mouseenter",()=>on(true)); el.addEventListener("mouseleave",()=>on(false));
+    });
+  }
+  // nav
+  const idx=run.indexOf(sel), prev=run[idx-1], next=run[idx+1];
+  $("#nav-prev").disabled=prev===undefined;
+  $("#nav-next").disabled=next===undefined;
+  $("#nav-prev-t").textContent=prev!==undefined?`${prev} · ${STAGES[prev].t}`:"start";
+  $("#nav-next-t").textContent=next!==undefined?`${next} · ${STAGES[next].t}`:"done";
+  $("#nav-pos").textContent=`${idx+1} / ${run.length}`;
+
+  if(animate){const p=$("#car-pane");p.classList.remove("enter");void p.offsetWidth;p.classList.add("enter")}
 }
+$("#nav-prev").onclick=()=>{const r=MODES[mode],i=r.indexOf(sel);if(i>0){sel=r[i-1];render(true)}};
+$("#nav-next").onclick=()=>{const r=MODES[mode],i=r.indexOf(sel);if(i<r.length-1){sel=r[i+1];render(true)}};
+document.addEventListener("keydown",e=>{
+  if(e.target.closest("input,textarea"))return;
+  if(e.key==="ArrowRight")$("#nav-next").click();
+  if(e.key==="ArrowLeft")$("#nav-prev").click();
+});
 $$(".modes button").forEach(b=>b.onclick=()=>{
   mode=b.dataset.mode;
-  $$(".modes button").forEach(x=>x.setAttribute("aria-pressed", x===b));
-  render();
+  $$(".modes button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  render(true);
 });
-render();
+render(false);
 
-/* ═══════════ critic ═══════════ */
-function drawDraft(d){
-  const D=DRAFTS[d], Q=QTEXT[d];
-  $("#draft-doc").innerHTML=`
-    <h4>01-press-release${d===1?"-draft1":""}.md</h4>
-    <p class="para"><span class="mark">¶1</span>${D.para1}</p>
-    <p class="para" style="color:var(--ink-3)"><span class="mark">¶2–¶5</span><i>Problem, solution,
-      alternative and customer quote — identical in both drafts. See §3 for ¶2 with its provenance tags.</i></p>
-    <p class="para"><span class="mark">¶6</span>Spokesperson quote:</p>
-    <blockquote>${D.quote}<br>— VP Product</blockquote>
-    <p class="para"><span class="mark">¶7</span><b>Getting started.</b> Nothing to turn on. The next time
-      an administrator removes a user, the audit entry shows a confirmation line for each connected
-      integration.</p>`;
-  $("#dims").innerHTML=D.dims.map(([n,name,v,cls])=>
-    `<div class="dim"><span>${n}</span><span>${name}</span><span class="v ${cls}">${v}</span></div>`).join("")
-    +`<p class="note" style="margin-top:.8rem">Six structural · two substantive. The substantive two
-      cannot fail, by design.</p>`;
-  $("#verdict").innerHTML=D.verdict;
-  $("#qbox").innerHTML=`<span class="qid">Q-04 · STRATEGIC FIT</span><p>${Q.p}</p><p class="ask">${Q.ask}</p>`;
-}
-$$(".toggle button[data-draft]").forEach(b=>b.onclick=()=>{
-  $$(".toggle button[data-draft]").forEach(x=>x.setAttribute("aria-pressed",x===b));
-  drawDraft(+b.dataset.draft);
-});
-drawDraft(1);
+/* ── blockers ── */
+const BLOCKERS=[
+ {id:"BLK-01",cat:"SECURITY",surf:"IFAQ-07",ask:"What is the actual exposure window per integration — is 90 days a ceiling, or the number we happened to find on the two we examined?",owner:"security lead",blocks:"REQ-D5, R4"},
+ {id:"BLK-02",cat:"PRIVACY",surf:"RFAQ-01/02",ask:"Does retained read access after revocation constitute a failure of our processor erasure obligations — and is it reportable, on what clock?",owner:"privacy counsel / DPO",blocks:"REQ-DP5, R4"},
+ {id:"BLK-03",cat:"LEGAL",surf:"IFAQ-04/06",ask:"What do our DPAs commit us to on revocation timeliness — and what is owed for occurrences that already happened?",owner:"legal counsel",blocks:"REQ-DP5, R4"},
+ {id:"BLK-04",cat:"REGULATORY",surf:"RFAQ-06",ask:"Have we been attesting to an access-control criterion that does not operate as described — and what is owed to the auditor?",owner:"compliance lead",blocks:"disclosure posture"},
+ {id:"BLK-05",cat:"DEPENDENCY",surf:"IFAQ-10/12",ask:"Who is accountable for the integration contract — platform or partnerships — and which integrations expose a membership read at all?",owner:"platform + partnerships, jointly",blocks:"REQ-D3, R3"},
+ {id:"BLK-06",cat:"DATA",surf:"IFAQ-14",ask:"Can the affected population be enumerated retroactively — or only from the instrumentation date forward?",owner:"platform engineering lead",blocks:"REQ-D6, REQ-DP5, R4"}];
+$("#blk-cards").innerHTML=BLOCKERS.map(b=>`
+ <div class="card"><div class="cat"><span>${b.id} · ${b.cat}</span><span class="sev">high</span></div>
+ <div class="surf">Surfaced by ${b.surf}</div><p class="ask">${b.ask}</p>
+ <div class="owner">Ask: ${b.owner}<span class="st">OPEN</span><br>
+ <span style="color:var(--ink-3)">Blocks: ${b.blocks}</span></div></div>`).join("");
 
-/* ═══════════ what it doesn't know ═══════════ */
-function drawRun(r){
-  const R=RUNS[r];
-  $("#conf-block").textContent=R.conf;
-  $("#conf-bar").style.width=R.bar+"%";
-  $("#conf-note").textContent=R.note;
-  $("#prov-para").innerHTML=R.para;
-  $("#prov-note").innerHTML=R.pnote;
-}
+/* ── what it doesn't know ── */
+const RUNS={
+ 0:{conf:`SESSION CONFIDENCE · ghost-seats · after Stage 8
+Claims:        4 observed · 1 reported · 2 assumed · 2 unknown
+Questions:     20 open · 2 with no owner assigned
+Blockers:      6 open (6 high)
+Context pack:  absent — strategic fit and feasibility
+               were not evaluated`,
+   note:"PMs read this as a to-do list, which is exactly what it is. A tool that tells you what it doesn't know is more trustworthy than one that doesn't.",
+   para:`Deprovisioning fails to reach at least one integration in roughly 4,200 accounts per quarter
+<span class="tag t-obs">[OBSERVED: event log]</span>, and nothing surfaces when it happens
+<span class="tag t-obs">[OBSERVED: no error path]</span>. The removed person keeps read access — 90
+days on the two integrations examined <span class="tag t-obs">[OBSERVED]</span>, assumed for the rest
+<span class="tag t-asm">[ASSUMED]</span>. Admins find out at access reviews, if at all
+<span class="tag t-rep">[REPORTED: two support leads]</span>.
+<span class="tag t-unk">[NEEDS EVIDENCE: how many removed users actually opened a document]</span>`,
+   pnote:"The [NEEDS EVIDENCE] gap is the number the press release most wants and is least able to get. It stays visible — a plausible invented number gets quoted back at the author in a review."},
+ 1:{conf:`SESSION CONFIDENCE · ghost-seats-ctx · after Stage 2
+Claims:        4 observed · 1 reported · 2 assumed · 2 unknown
+Questions:     13 open · 2 with no owner assigned
+Blockers:      6 open (6 high)
+Context pack:  1 document — strategic fit evaluable;
+               legal, privacy, feasibility still not`,
+   note:"One two-page strategy doc: four questions closed, one opened, one sharpened — zero blockers resolved. That ratio points both ways.",
+   para:`<i>The problem paragraph is unchanged — a strategy document reaches none of it.</i> What
+changed is the rationale: <span class="chg">"This is the commitment in this year's second pillar taken
+literally: a customer should answer their auditor's questions using artifacts they generate
+themselves."</span> And the critic found a conflict inside the alignment — the delivery plan needs an
+integration-agreement change the same document defers to next year.`,
+   pnote:"That conflict was invisible at tier 0. Context doesn't produce verdicts; it upgrades \"does this match strategy?\" into \"the pillar says yes, the budget line says no — which wins?\" The first needs a meeting. The second is the meeting agenda."}};
+function drawRun(r){const R=RUNS[r];$("#conf-block").textContent=R.conf;$("#conf-note").textContent=R.note;
+ $("#prov-para").innerHTML=R.para;$("#prov-note").innerHTML=R.pnote}
 $$(".toggle button[data-run]").forEach(b=>b.onclick=()=>{
-  $$(".toggle button[data-run]").forEach(x=>x.setAttribute("aria-pressed",x===b));
-  drawRun(+b.dataset.run);
-});
+ $$(".toggle button[data-run]").forEach(x=>x.setAttribute("aria-pressed",x===b));drawRun(+b.dataset.run)});
 drawRun(0);
 
-/* ═══════════ blockers ═══════════ */
-$("#blk-cards").innerHTML=BLOCKERS.map(b=>`
-  <div class="card">
-    <div class="cat"><span>${b.id} · ${b.cat}</span><span class="sev">severity ${b.sev}</span></div>
-    <div class="surf">Surfaced by ${b.surf}</div>
-    <p class="ask">${b.ask}</p>
-    <div class="owner">Ask: ${b.owner}<span class="st">OPEN</span><br>
-      <span style="color:var(--ink-3)">Blocks: ${b.blocks}</span></div>
-  </div>`).join("");
-
-/* ═══════════ traceability ═══════════ */
-$("#reqs").innerHTML=REQS.map(r=>`
-  <div class="req">
-    <span class="rid">${r.id}</span>
-    <span class="rsrc">${r.src}</span>
-    <p class="rst">${r.st}</p>
-    <pre class="gwt">${r.gwt}</pre>
-  </div>`).join("");
-$$("#reqs .req").forEach(el=>{
-  const on=v=>{$("#src3").classList.toggle("lit",v);el.classList.toggle("on",v)};
-  el.addEventListener("mouseenter",()=>on(true));
-  el.addEventListener("mouseleave",()=>on(false));
-  el.addEventListener("focusin",()=>on(true));
-  el.addEventListener("focusout",()=>on(false));
-  el.tabIndex=0;
-});
-
-/* ═══════════ context pack builder ═══════════ */
+/* ── context builder ── */
+const SLOTS=[
+ {k:"strategy",t:"Strategy or vision doc",u:"Dimension 4 cites a line instead of asking a question"},
+ {k:"metrics",t:"Metric definitions + baselines",u:"Stage 5 targets grounded; the north star validated, not invented"},
+ {k:"prds",t:"Prior PRDs or post-mortems",u:"“What exists today” answered; you stop re-proposing the rejected"},
+ {k:"ownership",t:"Ownership map / team boundaries",u:"Blocker owners resolve to actual teams; unowned questions get owners"},
+ {k:"legal",t:"Contracts, DPAs, regulatory constraints",u:"The regional FAQ cites your real obligations, not generic regimes"},
+ {k:"telemetry",t:"Telemetry export or support tickets",u:"The problem paragraph carries [OBSERVED] instead of [ASSUMED]"}];
 const picked={};
 $("#slots").innerHTML=SLOTS.map(s=>`
-  <label class="slot" data-k="${s.k}">
-    <input type="checkbox">
-    <span><span class="sl-t">${s.t}</span><span class="sl-u">${s.u}</span>
-    <span class="sl-f" data-f></span></span>
-  </label>`).join("")+
-  `<p class="note" style="margin-top:.8rem">Tick a row, or drag a file onto it — only the filename is read.</p>`;
-
+ <label class="slot" data-k="${s.k}"><input type="checkbox">
+ <span><span class="sl-t">${s.t}</span><span class="sl-u">${s.u}</span><span class="sl-f" data-f></span></span></label>`).join("")
+ +`<p class="note" style="margin-top:.7rem">Tick a row, or drag a file onto it — only the filename is read.</p>`;
 $$("#slots .slot").forEach(el=>{
   const k=el.dataset.k, cb=el.querySelector("input"), fn=el.querySelector("[data-f]");
   cb.addEventListener("change",()=>{
-    if(cb.checked){picked[k]=picked[k]||"(no file named)"}else{delete picked[k];fn.textContent=""}
-    el.classList.toggle("on",cb.checked); updateBuilder();
-  });
-  ["dragenter","dragover"].forEach(e=>el.addEventListener(e,ev=>{
-    ev.preventDefault();el.classList.add("drag")}));
+    if(cb.checked)picked[k]=picked[k]||"(no file named)";else{delete picked[k];fn.textContent=""}
+    el.classList.toggle("on",cb.checked);updateBuilder()});
+  ["dragenter","dragover"].forEach(e=>el.addEventListener(e,ev=>{ev.preventDefault();el.classList.add("drag")}));
   ["dragleave","drop"].forEach(e=>el.addEventListener(e,()=>el.classList.remove("drag")));
-  el.addEventListener("drop",ev=>{
-    ev.preventDefault();
+  el.addEventListener("drop",ev=>{ev.preventDefault();
     const f=ev.dataTransfer&&ev.dataTransfer.files&&ev.dataTransfer.files[0];
-    // Only the name is read. The File object is never opened, never read, never sent.
-    const name=f?f.name:"(dropped item)";
-    picked[k]=name; fn.textContent=name; cb.checked=true; el.classList.add("on"); updateBuilder();
-  });
+    picked[k]=f?f.name:"(dropped item)";fn.textContent=picked[k];cb.checked=true;el.classList.add("on");updateBuilder()});
 });
-
-const DIMSTATE=[
- [1,"Customer specificity","authoritative"],[2,"Evidence presence","telemetry"],
- [3,"Alternative named","prds"],[4,"Strategic fit","strategy"],
- [5,"Traceability","authoritative"],[6,"Falsifiability","ownership"],
- [7,"Clarity","authoritative"],[8,"Template completeness","authoritative"]];
-
+const DIMSTATE=[[1,"Customer specificity","auth"],[2,"Evidence presence","telemetry"],[3,"Alternative named","prds"],
+ [4,"Strategic fit","strategy"],[5,"Traceability","auth"],[6,"Falsifiability","ownership"],[7,"Clarity","auth"],[8,"Completeness","auth"]];
 function updateBuilder(){
-  const keys=Object.keys(picked), n=keys.length;
-  const has=k=>k in picked;
-  const notEval=[];
-  if(!has("strategy")) notEval.push("strategic fit");
-  if(!has("ownership")) notEval.push("feasibility owners");
-  const ctxLine = n===0
-    ? "absent — strategic fit and feasibility were not\n               evaluated"
-    : `${n} document${n>1?"s":""} — ${notEval.length? "still missing: "+notEval.join(", ") : "strategic fit and owners evaluable"}`;
-  const assumed = Math.max(0, 2 - (has("telemetry")?1:0) - (has("prds")?1:0));
-  const unowned = has("ownership") ? 0 : 2;
-  const questions = 20 - (has("strategy")?4:0) - (has("metrics")?2:0) - (has("telemetry")?2:0) - (has("prds")?1:0);
-  $("#bld-conf").textContent =
+  const n=Object.keys(picked).length, has=k=>k in picked;
+  const q=20-(has("strategy")?4:0)-(has("metrics")?2:0)-(has("telemetry")?2:0)-(has("prds")?1:0);
+  $("#bld-conf").textContent=
 `SESSION CONFIDENCE · your-session
-Claims:        ${4+(has("telemetry")?2:0)} observed · 1 reported · ${assumed} assumed
-Questions:     ${questions} open · ${unowned} with no owner
+Claims:        ${4+(has("telemetry")?2:0)} observed · ${Math.max(0,2-(has("telemetry")?1:0)-(has("prds")?1:0))} assumed
+Questions:     ${q} open · ${has("ownership")?0:2} with no owner
 Blockers:      6 open — unchanged by any document
-Context pack:  ${ctxLine}`;
+Context pack:  ${n===0?"absent":n+" document"+(n>1?"s":"")}`;
   $("#bld-dims").innerHTML=DIMSTATE.map(([i,name,need])=>{
-    let v,cls;
-    if(need==="authoritative"){v="LIVE VERDICT";cls="pass"}
-    else if(has(need)){v="CITES YOUR DOC";cls="pass"}
-    else {v="— question only";cls="q"}
-    return `<div class="dim"><span>${i}</span><span>${name}</span><span class="v ${cls}">${v}</span></div>`;
-  }).join("")+`<p class="note" style="margin-top:.8rem">Blockers never change. No document closes a legal,
-    privacy or regulatory question — it only makes the question citable.</p>`;
-  $("#dl-note").textContent = n===0
-    ? "Two files, generated here in the browser. Tick something first."
-    : `CONTEXT.md will list ${n} slot${n>1?"s":""}. Nothing was uploaded.`;
+    const v=need==="auth"?["LIVE VERDICT","pass"]:has(need)?["CITES YOUR DOC","pass"]:["— question only","q"];
+    return `<div class="dim"><span>${i}</span><span>${name}</span><span class="v ${v[1]}">${v[0]}</span></div>`}).join("");
+  $("#dl-note").textContent=n===0?"Two files, generated in the browser. Tick something first."
+    :`CONTEXT.md will list ${n} slot${n>1?"s":""}. Nothing was uploaded.`;
 }
 updateBuilder();
-
-function dl(name,text){
-  const b=new Blob([text],{type:"text/markdown"}), u=URL.createObjectURL(b);
-  const a=document.createElement("a"); a.href=u; a.download=name; a.click();
-  setTimeout(()=>URL.revokeObjectURL(u),1000);
-}
+function dl(name,text){const b=new Blob([text],{type:"text/markdown"}),u=URL.createObjectURL(b);
+ const a=document.createElement("a");a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)}
 $("#dl-context").onclick=()=>{
-  const keys=Object.keys(picked);
-  const rows=SLOTS.filter(s=>keys.includes(s.k))
-    .map(s=>`- **${s.t}** — \`${picked[s.k]}\`\n  Unlocks: ${s.u}`).join("\n");
-  const missing=SLOTS.filter(s=>!keys.includes(s.k)).map(s=>`- ${s.t} — ${s.u}`).join("\n");
-  dl("CONTEXT.md",
-`# Context pack manifest
-
-Generated by the Working Backwards context-pack builder.
-Put the listed documents in \`wb/context/\` before starting a session.
-
-## Supplied
-
-${rows||"_Nothing yet._"}
-
-## Not supplied — and what stays unevaluable
-
-${missing||"_Everything supplied._"}
-
-## Note
-
-Blockers are unaffected by any of this. A context pack makes a legal, privacy or
-regulatory question *citable*; it does not answer it. Six blockers stay six blockers.
-`);
-};
-$("#dl-prompt").onclick=async ()=>{
-  const keys=Object.keys(picked);
-  const list=SLOTS.filter(s=>keys.includes(s.k)).map(s=>`- ${s.t} (\`${picked[s.k]}\`)`).join("\n");
-  const p=`Run the working-backwards skill on this problem.
-
-I've put a context pack in wb/context/${keys.length?":\n"+list:" — actually, no, it's empty. Run at tier 0 and tell me what you therefore can't evaluate."}
-
-The problem: <describe the trigger — what data, incident or request surfaced this>
-The customer: <a specific segment, not "everyone">
-The constraint: <deadline, mandate, budget, or none>
-
-Start at Stage 0. Tell me which mode you're picking and why, state the context tier
-you're operating at, and name the critic dimensions you won't be able to evaluate.
-Don't invent any figures — use [NEEDS EVIDENCE] where I haven't given you one.`;
+  const ks=Object.keys(picked);
+  const rows=SLOTS.filter(s=>ks.includes(s.k)).map(s=>`- **${s.t}** — \`${picked[s.k]}\`\n  Unlocks: ${s.u}`).join("\n");
+  const miss=SLOTS.filter(s=>!ks.includes(s.k)).map(s=>`- ${s.t} — ${s.u}`).join("\n");
+  dl("CONTEXT.md",`# Context pack manifest\n\nPut these in \`wb/context/\` before starting a session.\n\n## Supplied\n\n${rows||"_Nothing yet._"}\n\n## Not supplied — stays unevaluable\n\n${miss||"_Everything supplied._"}\n\nBlockers are unaffected by any of this: a context pack makes a legal or regulatory\nquestion *citable*; it does not answer it.\n`)};
+$("#dl-prompt").onclick=async()=>{
+  const ks=Object.keys(picked);
+  const list=SLOTS.filter(s=>ks.includes(s.k)).map(s=>`- ${s.t} (\`${picked[s.k]}\`)`).join("\n");
+  const p=`Run the working-backwards skill on this problem.\n\nContext pack in wb/context/${ks.length?":\n"+list:" — empty. Run at tier 0 and tell me what you therefore can't evaluate."}\n\nThe problem: <the trigger — what data, incident or request surfaced this>\nThe customer: <a specific segment, not "everyone">\nThe constraint: <deadline, mandate, budget, or none>\n\nStart at Stage 0. Name the mode and the stages it skips, state your context tier,\nand list the critic dimensions you cannot evaluate. Never invent a figure — use\n[NEEDS EVIDENCE] where I haven't given you one.`;
   const btn=$("#dl-prompt");
-  try{ await navigator.clipboard.writeText(p); btn.textContent="Copied"; }
-  catch(e){ dl("kickoff-prompt.md",p); btn.textContent="Downloaded"; }
-  setTimeout(()=>btn.textContent="Copy kickoff prompt",1800);
-};
+  try{await navigator.clipboard.writeText(p);btn.textContent="Copied"}
+  catch(e){dl("kickoff-prompt.md",p);btn.textContent="Downloaded"}
+  setTimeout(()=>btn.textContent="Copy kickoff prompt",1800)};
 </script>
 </body>
 </html>
