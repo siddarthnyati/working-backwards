@@ -108,7 +108,9 @@ therefore can't evaluate; and starts.
 Thirteen-plus artifacts in `wb/<session-id>/`: intake, press release, three FAQ banks, demo spec,
 docs, telemetry plan, requirements, release plan, readiness — plus `BLOCKERS.md`, `DECISIONS.md`,
 `QUESTIONS.md`, `CONFIDENCE.md`, `jira-import.csv` and `session.json`. See
-[`examples/ghost-seats/`](examples/ghost-seats/) for a complete real run.
+[`examples/ghost-seats/`](examples/ghost-seats/) for a complete real run, and
+[`examples/silent-stepdown/RUNBOOK.md`](examples/silent-stepdown/RUNBOOK.md) for a second run
+with the exact prompt used at every stage.
 
 **Do I have to run all nine stages?**
 No, and you shouldn't. Three modes. **Full** (0–8) for a new capability with no clear owner.
@@ -219,9 +221,12 @@ plugins/working-backwards/skills/working-backwards/
                               requirements format · release decomposition ·
                               blocker taxonomy
   assets/templates/           every artifact type
-  scripts/                    init_session.py · export_jira.py  (stdlib only)
+  scripts/                    init_session.py · export_jira.py ·
+                              verify_sources.py  (stdlib only)
 examples/ghost-seats/                complete Full-mode run, no context pack
 examples/ghost-seats-with-context/   Stages 1–2 again, with one strategy doc
+examples/silent-stepdown/            second full run (payments-shaped) — RUNBOOK.md
+                                     records the exact prompt used at every stage
 docs/index.html                      the interactive site
 ```
 

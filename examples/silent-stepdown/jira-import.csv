@@ -1,0 +1,153 @@
+Issue Type,Summary,Description,Acceptance Criteria,Epic Name,Parent,Labels,Priority
+Epic,"R1 · Record everything, show nothing","Ships: every transaction carries an authentication outcome; step-downs classified incident vs pattern-suspicious. Dark — no merchant-facing change.
+
+Requirements: REQ-D1, REQ-D2
+
+Depends on: —
+
+Test harness:
+- Timeout injection: force an auth timeout; assert stepped-down recorded before authorization proceeds
+- Path audit: static check that no branch reaches authorization without an outcome write
+- Classification: seeded incident cluster and seeded merchant-concentrated series label correctly",,"R1 Record everything, show nothing",,working-backwards release-slice,Medium
+Story,REQ-D1 · Record an authentication outcome on every transaction,"Every transaction records exactly one authentication outcome — completed, attempted, stepped-down, or not-attempted — with a reason code and timestamp, written before authorization proceeds.
+
+Source: PR ¶3 / IFAQ-07
+
+Provenance: [OBSERVED] × 2
+
+Out of scope: showing the field to merchants (REQ-DP1)
+
+Depends on: —","GIVEN a transaction whose authentication call exceeds the timeout
+WHEN  the gateway continues processing on any path
+THEN  an outcome of stepped-down with reason auth-timeout is recorded before the authorization is sent
+AND   no code path reaches authorization with no outcome recorded",,"R1 Record everything, show nothing",working-backwards discovery,Medium
+Story,REQ-D2 · Distinguish incident timeouts from suspicious timeout patterns,"Step-down events are classifiable as provider-incident (clustered, provider-wide) or pattern-suspicious (concentrated by merchant, card range, or timing), and the classification is recorded.
+
+Source: 03-demo-spec.md F2 / IFAQ-03
+
+Provenance: [OBSERVED] × 1, [UNKNOWN] × 1
+
+Out of scope: acting on the classification (BLK-03 unresolved)
+
+Depends on: REQ-D1, BLK-03","GIVEN a window containing a provider-wide timeout cluster and an unrelated single-merchant timeout series
+WHEN  classification runs
+THEN  the cluster is labelled provider-incident and the series is labelled pattern-suspicious
+AND   pattern-suspicious events are flagged for review, not auto-blocked",,"R1 Record everything, show nothing",working-backwards discovery,Highest
+Epic,R2 · The merchant sees it,"Ships: outcome field in reporting and API; same-day digest with incident grouping.
+
+Requirements: REQ-DP1, REQ-DP2
+
+Depends on: R1
+
+Test harness:
+- Field parity: recorded event and API/reporting field match on all four outcomes
+- Digest grouping: 400 incident step-downs render one line; 3 unrelated render three rows
+- Visibility lag under 24h on seeded events (M3)",,R2 The merchant sees it,,working-backwards release-slice,Medium
+Story,REQ-DP1 · Expose the authentication outcome to merchants,"The authentication outcome, reason, and timestamp appear on the transaction record in reporting and the API for every transaction from launch.
+
+Source: PR ¶3 / EFAQ-02
+
+Provenance: [OBSERVED] × 2
+
+Out of scope: historical backfill (REQ-D3)
+
+Depends on: REQ-D1","GIVEN a transaction with outcome stepped-down
+WHEN  the merchant retrieves it via reporting or API
+THEN  the outcome, reason and timestamp are present and match the recorded event",,R2 The merchant sees it,working-backwards delivery,Medium
+Story,REQ-DP2 · Same-day step-down digest,"Merchants with at least one step-down in a day receive a digest within 24 hours, with provider incidents grouped into a single line.
+
+Source: PR ¶3 / 03-demo-spec.md F2
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: real-time webhooks; alert thresholds
+
+Depends on: REQ-D1, REQ-D2","GIVEN 400 step-downs caused by one provider incident and 3 unrelated ones
+WHEN  the digest is generated
+THEN  it shows one incident line covering the 400 and three individual rows",,R2 The merchant sees it,working-backwards delivery,Medium
+Epic,R3 · The merchant decides,"Ships: policy control with allow/block live for all merchants; require-exemption if BLK-02 permits; no silent path anywhere.
+
+Requirements: REQ-DP3, REQ-DP5, REQ-DP4
+
+Depends on: R2
+
+Blocked by: BLK-02, BLK-06
+
+Test harness:
+- Policy block: timeout produces authentication-unavailable decline, outcome attempted
+- Policy-service failure: outcome stepped-down / policy-unavailable, never silent, never completed
+- Distinct decline reason survives acquirer response-code mapping (Q-07)",,R3 The merchant decides,,working-backwards release-slice blocked,Highest
+Story,REQ-DP3 · Merchant step-down policy,"Merchants can set on-timeout policy to allow or block; the gateway consults it before any unauthenticated retry on every path; default is allow.
+
+Source: PR ¶5 / EFAQ-04
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: the require-exemption option (REQ-DP4)
+
+Depends on: REQ-D1","GIVEN a merchant with policy block
+WHEN  an authentication call times out
+THEN  the payment fails with decline reason authentication-unavailable and outcome attempted
+AND   with policy allow, the transaction proceeds and records stepped-down",,R3 The merchant decides,working-backwards delivery blocked,Medium
+Story,REQ-DP5 · Never a silent path,"No code path processes a transaction unauthenticated without a recorded outcome and a policy consultation; failure of the policy service itself records policy-unavailable.
+
+Source: PR ¶1 / 03-demo-spec.md F4
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: changing the default policy under failure
+
+Depends on: REQ-D1, REQ-DP3","GIVEN the policy service is unreachable
+WHEN  an authentication call times out
+THEN  the transaction records stepped-down with reason policy-unavailable
+AND   a code-path audit shows no branch reaching authorization without a recorded outcome",,R3 The merchant decides,working-backwards delivery blocked,Medium
+Story,REQ-DP4 · Exemption-flagged step-down for EEA transactions,"Where a compliance determination permits it, stepped-down EEA transactions carry the determined exemption flag.
+
+Source: RFAQ-02 / PR ¶5
+
+Provenance: [OBSERVED] × 1, [UNKNOWN] × 1
+
+Out of scope: jurisdictions where step-down is not offerable (Q-12)
+
+Depends on: BLK-02, REQ-DP3
+
+Conditional on: BLK-02 — which exemption, whether any applies, and whether the option exists at all are compliance determinations not made here","GIVEN the compliance determination names an applicable exemption
+WHEN  a step-down occurs on an in-scope transaction under policy require-exemption
+THEN  the transaction carries that exemption flag and records it in the outcome reason",,R3 The merchant decides,working-backwards delivery shape-pending blocked,Highest
+Epic,R4 · Account for the past,"Ships: historical enumeration joined to chargebacks; the measured fraud differential (M6); the evidentiary input to any restitution decision.
+
+Requirements: REQ-D3, REQ-D4
+
+Depends on: R1
+
+Blocked by: BLK-01, BLK-05
+
+Test harness:
+- Join over seeded history returns chargeback outcomes per stepped-down transaction
+- Ranges predating retention state so explicitly
+- M6 report includes populations and period; refutation path for C5 recorded",,R4 Account for the past,,working-backwards release-slice blocked,Highest
+Story,REQ-D3 · Enumerate historical step-downs and join to chargebacks,"For the retained log window, produce per-merchant step-down counts joined to fraud chargebacks on those transactions.
+
+Source: EFAQ-05 / IFAQ-07
+
+Provenance: [OBSERVED] × 1, [UNKNOWN] × 1
+
+Out of scope: any restitution decision (BLK-01)
+
+Depends on: BLK-05
+
+Conditional on: BLK-05 — if join keys do not survive, this becomes counts-only, and REQ-DP6 (restitution input) loses its evidentiary basis","GIVEN the retained auth event log and chargeback records
+WHEN  the join is computed for a merchant and date range
+THEN  the output lists stepped-down transactions and their chargeback outcomes, or states that the range predates retained data",,R4 Account for the past,working-backwards discovery shape-pending blocked,Highest
+Story,REQ-D4 · Measure the fraud differential on stepped-down transactions,"Report chargeback rate on stepped-down versus authenticated transactions over a comparable period (metric M6).
+
+Source: PR ¶2 / IFAQ-04
+
+Provenance: [ASSUMED] × 1 → RESTS ON ASSUMPTION
+
+Out of scope: causal attribution
+
+Depends on: REQ-D3","GIVEN the chargeback join exists for a full quarter
+WHEN  M6 is computed
+THEN  the report states both rates, the population sizes, and the period
+AND   if the differential is not significant, claim C5 is marked refuted in the session record",,R4 Account for the past,working-backwards discovery rests-on-assumption blocked,Medium

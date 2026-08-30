@@ -1,0 +1,42 @@
+{
+  "session_id": "silent-stepdown",
+  "created": "2026-08-30",
+  "updated": "2026-08-30",
+  "initiative": "Silent Step-Down — 3DS timeout falls back to unauthenticated processing",
+  "fictional": true,
+  "mode": "full",
+  "stages": {
+    "planned": [0, 1, 2, 3, 4, 5, 6, 7, 8],
+    "skipped": [],
+    "current": 8,
+    "completed": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+  },
+  "context": { "tier": 0, "path": "wb/context/", "files": [], "dimensions_not_evaluable": [4, 6] },
+  "critic": {
+    "verdicts": [
+      { "stage": 0, "artifact": "00-intake.md", "verdict": "PASS" },
+      { "stage": 1, "artifact": "01-press-release-draft1.md", "verdict": "REVISE", "dimension": 3, "resolved": true },
+      { "stage": 1, "artifact": "01-press-release.md", "verdict": "PASS", "questions": ["Q-16", "Q-01", "Q-02", "Q-03"] },
+      { "stage": 2, "artifact": "02-faq-*.md", "verdict": "PASS" },
+      { "stage": 3, "artifact": "03-demo-spec.md", "verdict": "PASS" },
+      { "stage": 4, "artifact": "04-docs.md", "verdict": "PASS" },
+      { "stage": 5, "artifact": "05-telemetry.md", "verdict": "PASS", "note": "No override needed — auth-log baselines are OBSERVED, unlike ghost-seats" },
+      { "stage": 6, "artifact": "06-requirements.md", "verdict": "PASS" },
+      { "stage": 7, "artifact": "07-release-plan.md", "verdict": "REVISE", "dimension": 5, "resolved": true, "note": "REQ-DP4 in two slices; moved wholly into R3" },
+      { "stage": 8, "artifact": "08-readiness.md", "verdict": "PASS" }
+    ],
+    "overrides": []
+  },
+  "blockers": [
+    { "id": "BLK-01", "category": "LEGAL", "severity": "high", "owner_role": "legal counsel", "status": "OPEN" },
+    { "id": "BLK-02", "category": "REGULATORY", "severity": "high", "owner_role": "compliance lead", "status": "OPEN" },
+    { "id": "BLK-03", "category": "SECURITY", "severity": "high", "owner_role": "fraud / security lead", "status": "OPEN" },
+    { "id": "BLK-04", "category": "DEPENDENCY", "severity": "high", "owner_role": "partnerships + platform leads", "status": "OPEN" },
+    { "id": "BLK-05", "category": "DATA", "severity": "high", "owner_role": "data platform lead", "status": "OPEN" },
+    { "id": "BLK-06", "category": "COMMERCIAL", "severity": "medium", "owner_role": "commercial lead", "status": "OPEN" }
+  ],
+  "questions": { "total": 16, "open": 16, "no_owner": ["Q-02"] },
+  "claims": { "observed": 4, "reported": 1, "assumed": 2, "unknown": 2, "assumed_ids": ["C5", "C6"] },
+  "requirements": { "total": 9, "discovery": 4, "delivery": 5, "unsourced_flagged": [], "rests_on_assumption": ["REQ-D4"], "shape_pending": ["REQ-D3", "REQ-DP4"] },
+  "release": { "slices": 4, "schedulable": ["R1", "R2"], "not_schedulable": ["R3", "R4"] }
+}
