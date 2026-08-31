@@ -54,6 +54,11 @@ Context arrives in three tiers and you should state which one you are operating 
 Frame context as a dial the user controls, never as a prerequisite. A tool that demands setup
 before it does anything gets abandoned at the setup step.
 
+**If the session is at tier 0, offer the elicitation interview once** — a ten-minute guided
+extraction of the context the user holds in their head, written to `wb/context/elicited.md`
+with self-reported provenance. See `references/context-elicitation.md`. Offer, never
+require; most users have far more context than they have documents.
+
 **Never invent a figure.** Press releases beg for numbers and the pull is strong. If the user
 has none, write `[NEEDS EVIDENCE: quantify frequency and affected population]` inline and keep
 going. A visible gap is honest and fixable. A plausible invented number gets quoted back at
@@ -93,6 +98,12 @@ the user overrides.
 | 6 | Requirements | `06-requirements.md` | `references/requirements-format.md` |
 | 7 | Release plan | `07-release-plan.md`, `jira-import.csv` | `references/release-decomposition.md` |
 | 8 | Readiness | `08-readiness.md` | `references/readiness.md` |
+
+After any stage — and always after Stage 8 — compile the interactive report:
+`python scripts/build_report.py wb/<session-id>` writes `report.html` next to the
+artifacts: blockers, filterable requirements, the DAG, the judge log, and every raw
+artifact in one self-contained page. The markdown is the system of record; the report is
+what you send to a human.
 
 Templates for every artifact are in `assets/templates/`. Blockers accumulate in `BLOCKERS.md`
 from the moment they appear — see `references/blocker-taxonomy.md`. Critic verdicts and

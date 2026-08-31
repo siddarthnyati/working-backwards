@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working Backwards — mechanics: every agent, every prompt, every gate</title>
+<style>
+:root{--paper:#f2eee5;--paper-2:#eae5d9;--paper-3:#e0d9c9;--ink:#1c1815;--ink-2:#4a423a;
+--ink-3:#7d7263;--rule:#cdc4b1;--accent:#9c2f1c;--accent-soft:#f0d9d2;--accent-ink:#7a2415;
+--mono:"SF Mono",ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
+--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--paper:#16130f;--paper-2:#1e1a15;--paper-3:#272119;
+--ink:#ece5d8;--ink-2:#b8ae9d;--ink-3:#8a7f6e;--rule:#3a3227;--accent:#e2705a;
+--accent-soft:#3a1f18;--accent-ink:#f0917d}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+font-size:18px;line-height:1.6;overflow-x:hidden}
+.wrap{max-width:60rem;margin:0 auto;padding:0 1.4rem}
+h1,h2,h3{font-weight:400;letter-spacing:-.015em;line-height:1.15;margin:0}
+h1{font-size:clamp(2rem,5vw,3.2rem)}
+h2{font-size:1.7rem;margin-bottom:.5rem}
+h4{font-family:var(--mono);font-weight:500;font-size:.68rem;letter-spacing:.1em;
+text-transform:uppercase;color:var(--ink-3);margin:0 0 .6rem}
+p{margin:0 0 1rem}
+a{color:var(--ink)} a:hover{color:var(--accent)}
+code{font-family:var(--mono);font-size:.82em}
+section{padding:3.4rem 0;border-top:1px solid var(--rule)}
+.sec-no{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;color:var(--ink-3);
+text-transform:uppercase;margin-bottom:1.1rem;display:block}
+.lede{font-size:1.06rem;color:var(--ink-2);max-width:42rem}
+.note{font-size:.84rem;color:var(--ink-3);line-height:1.55}
+header{padding:3.6rem 0 2.6rem}
+.back{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;display:inline-block;margin-bottom:1.6rem}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{text-align:left;padding:.5rem .65rem;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+color:var(--ink-3);font-weight:500}
+.scroll{overflow-x:auto}
+.agent{border:1px solid var(--rule);margin-bottom:1.4rem}
+.agent-head{padding:1rem 1.3rem;border-bottom:1px solid var(--rule);background:var(--paper-2);
+display:flex;justify-content:space-between;gap:1rem;align-items:baseline;flex-wrap:wrap}
+.agent-head .role{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--ink-3);
+text-transform:uppercase}
+.agent-head h3{font-size:1.15rem}
+.agent-head .out{font-family:var(--mono);font-size:.66rem;color:var(--accent-ink)}
+.agent-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.agent-body>div{padding:1.1rem 1.3rem;min-width:0}
+.agent-body>div:first-child{border-right:1px solid var(--rule)}
+.promptbox{font-family:var(--mono);font-size:.7rem;line-height:1.65;color:var(--ink-2);
+white-space:pre-wrap;border-left:2px solid var(--ink-3);padding-left:.75rem;margin:0}
+.gate{font-size:.86rem;color:var(--ink-2)}
+.gate b{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;color:var(--accent-ink)}
+.dims{font-family:var(--mono);font-size:.7rem;color:var(--ink-2);margin:.5rem 0 .8rem;line-height:1.7}
+.dims .r{color:var(--accent-ink);font-weight:600}
+.callout{border:1px dashed var(--accent);padding:.9rem 1.1rem;margin:1.2rem 0;font-size:.9rem}
+.callout b{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;color:var(--accent-ink);
+display:block;margin-bottom:.35rem}
+pre.mono{font-family:var(--mono);font-size:.72rem;line-height:1.6;white-space:pre-wrap;
+background:var(--paper-2);border:1px solid var(--rule);padding:1rem 1.2rem;overflow-x:auto;margin:0 0 1rem}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);margin:1.4rem 0}
+.step{padding:1rem;border-right:1px solid var(--rule);min-width:0}
+.step:last-child{border-right:0}
+.step .t{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;
+display:block;margin-bottom:.4rem}
+.step p{font-size:.82rem;color:var(--ink-2);margin:0}
+.step.judge{background:var(--paper-2)}.step.judge .t{color:var(--accent-ink)}
+footer{padding:2.6rem 0 4rem;border-top:1px solid var(--rule);font-size:.84rem;color:var(--ink-3)}
+@media(max-width:820px){.agent-body{grid-template-columns:1fr}
+.agent-body>div:first-child{border-right:0;border-bottom:1px solid var(--rule)}
+.steps{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="index.html">← the walkthrough</a>
+  <h1>The mechanics.</h1>
+  <p class="lede" style="margin-top:1rem">Every agent in the pipeline, the exact prompt that drives
+  it, the judge that reviews it, and the gate that follows. One honest note first: this is
+  <b>nine hats on one model</b> — each "agent" is the same model re-invoked with a different prompt,
+  a different reference file, and a different template. The behavior difference is engineered
+  entirely in the prompts, which is why they're all on this page.</p>
+</div></header>
+
+<section><div class="wrap">
+  <span class="sec-no">§1 — The loop</span>
+  <h2>Four beats, nine times.</h2>
+  <div class="steps">
+    <div class="step"><span class="t">1 · You prompt</span><p>One stage at a time. The prompt names
+      the stage, the rules, and ends "do not continue."</p></div>
+    <div class="step"><span class="t">2 · Author writes</span><p>The stage's reference file loads as
+      its behavior spec; the template constrains shape; provenance tags carry.</p></div>
+    <div class="step judge"><span class="t">3 · LLM as judge</span><p>A separate pass against the
+      rubric. Six dimensions verdict; two only ever route questions to named humans.</p></div>
+    <div class="step"><span class="t">4 · You gate</span><p>Accept, send back, or override — logged
+      to DECISIONS.md, never argued. Then the next stage unlocks.</p></div>
+  </div>
+  <h4 style="margin-top:2rem">The control stack — five layers, one narrow LLM judgment</h4>
+  <div class="scroll"><table>
+    <tr><th>Layer</th><th>What it is</th><th>What it controls</th></tr>
+    <tr><td><code>SKILL.md</code></td><td>Standing system prompt, always loaded</td>
+        <td>Cross-stage law: gating, never invent a figure, provenance propagation, blockers are questions</td></tr>
+    <tr><td><code>references/&lt;stage&gt;.md</code></td><td><b>The per-agent prompt</b>, loaded when its stage runs</td>
+        <td>That agent's behavior — structure, rules, good/bad examples, the tests it must apply to itself</td></tr>
+    <tr><td><code>assets/templates/</code></td><td>One template per artifact</td>
+        <td>Output shape — sections, field formats, the REQ block</td></tr>
+    <tr><td><code>references/critic-rubric.md</code></td><td><b>The judge's prompt</b></td>
+        <td>Per dimension: pass example, fail example, the exact rewrite instruction. Plus its own drift guards</td></tr>
+    <tr><td><code>scripts/</code></td><td>Deterministic checks — Python, stdlib</td>
+        <td>What LLM judgment is <i>not trusted with</i>: citation integrity, export validity, session state, the report</td></tr>
+  </table></div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="sec-no">§2 — The agents</span>
+  <h2>Nine authors, their prompts, their gates.</h2>
+  <p class="lede">Author prompts verbatim from <code>references/stage-prompts.md</code>. The judge
+  column lists the rubric dimensions applied at that stage — <span style="color:var(--accent-ink)">
+  red</span> marks the ones that can fail it.</p>
+  <div id="agents" style="margin-top:1.6rem"></div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="sec-no">§3 — The judge</span>
+  <h2>Authoritative on six dimensions. Barred from two.</h2>
+  <p class="lede">The single most important design decision. An LLM can verify a claim is <i>made,
+  specific, and sourced</i>. It cannot verify the claim is <i>true</i>, the market is big enough, or
+  engineering can build it — and a judge that returns confident verdicts on unknowable things
+  simulates a review meeting without the knowledge that made review meetings valuable.</p>
+  <div class="scroll"><table>
+    <tr><th>#</th><th>Dimension</th><th>Class</th><th>Output</th><th>Fails when</th></tr>
+    <tr><td>1</td><td>Customer specificity</td><td>structural</td><td>PASS / REVISE / <b>BLOCK</b></td>
+        <td>"Everyone," or a bare role with no segment — could you build a list of ten?</td></tr>
+    <tr><td>2</td><td>Evidence presence</td><td>structural</td><td>PASS / REVISE / <b>BLOCK</b></td>
+        <td>Significance asserted with nothing [OBSERVED] or [REPORTED] behind it — the most common real failure</td></tr>
+    <tr><td>3</td><td>Alternative named</td><td>structural</td><td>PASS / REVISE</td>
+        <td>"There is no current solution" — there is always a current behaviour</td></tr>
+    <tr><td>4</td><td>Strategic fit</td><td><b>substantive</b></td><td>a question + an owner role — never a verdict</td>
+        <td>— (can observe a rationale is <i>absent</i>; cannot judge if a stated one is <i>right</i>)</td></tr>
+    <tr><td>5</td><td>Traceability</td><td>structural</td><td>PASS / REVISE</td>
+        <td>An artifact that doesn't cite the artifact above it; a requirement with no source</td></tr>
+    <tr><td>6</td><td>Falsifiability</td><td><b>substantive</b></td><td>the must-be-true list, as questions with owners</td>
+        <td>— (feasibility claims route to engineering; asserting them is decoration)</td></tr>
+    <tr><td>7</td><td>Clarity</td><td>structural</td><td>PASS / REVISE</td>
+        <td>Jargon, passive voice hiding an actor, internal terms unexplained</td></tr>
+    <tr><td>8</td><td>Template completeness</td><td>structural</td><td>PASS / REVISE</td>
+        <td>Sections missing or stubbed. [NEEDS EVIDENCE] and [UNKNOWN] are <i>complete</i>; "TBD" is not</td></tr>
+  </table></div>
+  <div class="callout"><b>THE JUDGE'S OWN DRIFT GUARDS — from critic-rubric.md</b>
+  Two failure modes it is told to watch in itself: <b>softening</b> ("could benefit from additional
+  supporting data" is a PASS in a REVISE costume — if it fails, say it fails and give the sentence to
+  change) and <b>drifting substantive</b> ("this seems strategically sound" is the single thing that
+  makes the tool untrustworthy — convert it to a question). On REVISE it must name the sentence and
+  what it must establish; on BLOCK, which earlier stage to return to.</div>
+  <h4>The verdict block, as written to DECISIONS.md</h4>
+  <pre class="mono">CRITIC · Stage 1 · 01-press-release.md · 2026-08-30
+Structural
+  1 Customer specificity ....... PASS
+  2 Evidence presence .......... REVISE — see instruction below
+  ...
+Substantive (questions, not verdicts → QUESTIONS.md)
+  4 Strategic fit .............. Q-09 raised
+VERDICT: REVISE
+Instruction: &lt;the specific sentence to change and what it must establish&gt;</pre>
+  <h4>The override, when you disagree</h4>
+  <pre class="mono">OVERRIDE · Stage 5 · dimension 2 (evidence presence)
+Critic said: &lt;its reasoning, verbatim&gt;
+User justification: "&lt;your words&gt;"
+Proceeded to Stage 6. Not re-litigated.</pre>
+</div></section>
+
+<section><div class="wrap">
+  <span class="sec-no">§4 — The elicitor</span>
+  <h2>No documents? The interview builds you a context pack.</h2>
+  <p class="lede">Most context isn't in a document — it's in the user's head. At tier 0 the skill
+  offers a ten-minute interview: six slots (strategy, metrics, what exists, ownership, constraints,
+  evidence), written to <code>wb/context/elicited.md</code> with honest provenance. Offered once,
+  never required.</p>
+  <div class="agent">
+    <div class="agent-head"><div><span class="role">Agent · The Elicitor</span>
+      <h3>Context elicitation interview</h3></div>
+      <span class="out">→ wb/context/elicited.md</span></div>
+    <div class="agent-body">
+      <div><h4>The prompt</h4>
+      <pre class="promptbox">I have no documents to give you. Run the
+context elicitation interview — one slot at
+a time, read back what you write, tag
+everything as reported-by-me, and put my
+"believed but never checked" answers under
+Declared assumptions. Write
+wb/context/elicited.md and tell me what a
+real document would still add.</pre></div>
+      <div><h4>The rules that keep it honest</h4>
+      <p class="gate">Every answer is <code>[REPORTED: the user]</code>, never
+      <code>[OBSERVED]</code> — testimony isn't a document. Hedged answers ("I think…") are written
+      as <code>[ASSUMED]</code>, out loud. The best question in the interview: <i>"what do you
+      believe about this problem that you have never actually checked?"</i> — those answers become
+      Declared assumptions, and Stage 6 flags any requirement resting on them.<br><br>
+      <b>WHAT IT BUYS</b> — dimension 4 cites your own stated priority (marked self-reported);
+      blocker owners become real names. <b>WHAT IT NEVER BUYS</b> — closed blockers. Testimony
+      addresses legal and regulatory questions better; it answers none of them.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <span class="sec-no">§5 — The deterministic layer</span>
+  <h2>What LLM judgment is not trusted with.</h2>
+  <div class="scroll"><table>
+    <tr><th>Script</th><th>Does</th><th>Hard guarantee</th></tr>
+    <tr><td><code>init_session.py</code></td><td>Creates <code>wb/&lt;id&gt;/</code>, copies only the
+      chosen mode's templates, detects the context tier, writes <code>session.json</code></td>
+      <td>A session that resumes days later — state on disk, not in a chat scrollback</td></tr>
+    <tr><td><code>verify_sources.py</code></td><td>Checks every requirement's <code>Source:</code>
+      resolves to a real PR paragraph, FAQ entry, blocker, or failure state; reconciles requirements
+      against slices</td>
+      <td>Traceability is machine-checked — the judge evaluates <i>quality</i> of sourcing, never its existence</td></tr>
+    <tr><td><code>export_jira.py</code></td><td>Emits <code>jira-import.csv</code> — epics before
+      stories, Source: preserved verbatim, labels for <code>rests-on-assumption</code> /
+      <code>shape-pending</code> / <code>blocked</code>, priority from blocker severity</td>
+      <td>Warns loudly on unsourced or unsliced requirements; traceability survives the export</td></tr>
+    <tr><td><code>build_report.py</code></td><td>Compiles the whole session into one interactive
+      <code>report.html</code> — blockers, filterable requirements, the DAG, the judge log, every raw
+      artifact embedded</td>
+      <td>Every number on the report is parsed from the artifacts, not typed. The markdown is the
+      system of record; the report is what you send to a human</td></tr>
+  </table></div>
+  <p class="note" style="margin-top:1rem">Live reports from the three example runs:
+  <a href="reports/empty-workspace.html">empty-workspace</a> ·
+  <a href="reports/ghost-seats.html">ghost-seats</a> ·
+  <a href="reports/silent-stepdown.html">silent-stepdown</a></p>
+</div></section>
+
+<section><div class="wrap">
+  <span class="sec-no">§6 — Session state</span>
+  <h2>Resume is the difference between a skill and a long prompt.</h2>
+  <pre class="mono">Resume the working-backwards session in wb/&lt;session-id&gt;/. Read session.json,
+tell me the current stage, the open blockers, and what the critic said last.
+Then continue.</pre>
+  <p class="note"><code>session.json</code> holds mode, current stage, every verdict, every override,
+  and the open blocker and question arrays — updated after each stage. Days later, the session picks
+  up exactly where the last gate left it.</p>
+</div></section>
+
+<footer><div class="wrap">
+  <p><a href="index.html">← Back to the walkthrough</a> ·
+  <a href="https://github.com/siddarthnyati/working-backwards">Repository</a> · Every prompt on this
+  page ships in the skill at <code>references/stage-prompts.md</code>. MIT.</p>
+</div></footer>
+
+<script>
+"use strict";
+const AGENTS=[
+{n:0,role:"Intake Analyst",t:"Intake",out:"00-intake.md",
+ ref:"SKILL.md — the “Before starting” section",
+ dims:"1 · 2 · 8 — <span class='r'>can BLOCK</span> on 1 (customer is “everyone”)",
+ prompt:`Run the working-backwards skill, Stage 0 only.
+The problem: <what happened, who noticed, what
+evidence exists>. Tag every claim [OBSERVED]
+with its source, [REPORTED] with the role,
+[ASSUMED], or [UNKNOWN]. Push back once if my
+customer is "everyone." Recommend a mode and
+say which stages it skips. Check wb/context/
+and state the tier you are operating at.
+Do not write the press release.`,
+ gate:"Is the customer a segment you could build a list of ten from? If not, nothing downstream is worth generating. The judge also names the claims doing the most work with the least provenance — those propagate."},
+{n:1,role:"Narrative Author",t:"Press release",out:"01-press-release.md",
+ ref:"references/press-release.md",
+ dims:"all 8 — <span class='r'>2 and 3 fail most</span>; 4 and 6 emit questions only",
+ prompt:`Stage 1. Write the press release from
+00-intake.md: heading, subheading, dated
+summary, problem in the customer's voice,
+what customers use today and why it falls
+short, one labelled illustrative quote, a
+spokesperson quote that carries the why-now,
+getting started. One page. Carry every
+provenance tag inline. Where I gave you no
+number, write [NEEDS EVIDENCE: …] — do not
+invent one. Number the paragraphs ¶1–¶7;
+requirements will cite them.
+Do not write the FAQs.`,
+ gate:"The valuable-destination test: would a team reorganise a quarter around this subheading? A ho-hum press release is discarded here — not improved by a better FAQ."},
+{n:2,role:"The Interrogators — external, internal, regional",t:"FAQs",out:"02-faq-{external,internal,regional}.md + BLOCKERS.md",
+ ref:"references/faq-banks.md + references/blocker-taxonomy.md",
+ dims:"2 · 5 · 7 · 8, plus 6 as questions",
+ prompt:`Stage 2. Write the external, internal and
+regional FAQ banks from the approved press
+release, using references/faq-banks.md. Ask
+the hostile version of every internal
+question, in the voice of the leader who
+would ask it. Tag every answer ANSWERED,
+OPEN or BLOCKER. Every BLOCKER gets a record
+in BLOCKERS.md — category, severity, Ask,
+owner role, Status: OPEN. You never resolve
+one. If the internal bank surfaces nothing
+uncomfortable, rewrite it — it wasn't honest.`,
+ gate:"Read BLOCKERS.md before continuing. If a blocker changes what the product IS, go back to Stage 1 now while it's cheap. An internal FAQ with zero BLOCKER tags fails review by definition."},
+{n:3,role:"Demo Narrator",t:"Demo spec",out:"03-demo-spec.md",
+ ref:"references/demo-spec.md",
+ dims:"5 · 7 · 8 — REVISE if the scope boundary is missing",
+ prompt:`Stage 3. Read references/demo-spec.md first.
+Describe the experience concretely:
+surfaces, the primary flow step by step, and
+the failure states — what fails, and exactly
+what the user sees. Prose can hide a hole; a
+demo script can't. Include a "what this
+deliberately does not show" section so the
+demo doesn't promise what the requirements
+won't fund.`,
+ gate:"The narration test: if you can't narrate it end to end without improvising, you don't understand the product yet. Rules enforced by the reference: silence never renders as success; can't-know ≠ failed; blocked capabilities ship visibly absent."},
+{n:4,role:"Technical Writer",t:"Docs",out:"04-docs.md",
+ ref:"references/docs.md",
+ dims:"3 · 5 · 7 · 8 — explicit gaps are complete, TBDs are not",
+ prompt:`Stage 4. Read references/docs.md first.
+Draft the customer-facing documentation from
+the approved PR and external FAQ: what it
+does, before you start, how to use it,
+failure behaviour, limits, troubleshooting.
+Where a paragraph won't come, do not write
+around it — record it under "could not be
+written yet" with the blocker or question
+behind it. That list is the deliverable.`,
+ gate:"Every 'could not be written yet' entry is a product gap with a name on it. Assign each one before the next stage — in both worked examples this section surfaced a question no earlier stage had been forced to answer."},
+{n:5,role:"Instrumentation Planner",t:"Telemetry",out:"05-telemetry.md",
+ ref:"references/telemetry.md",
+ dims:"2 · 5 · 8 — the stage where honest [UNKNOWN]s meet dimension 2",
+ prompt:`Stage 5. Read references/telemetry.md first.
+Define the north star and input metrics
+before requirements exist. Each metric ties
+to a specific press release claim by
+paragraph number. State instrumentation
+points and whether each exists today.
+Baselines you don't have are [UNKNOWN], not
+estimates. Close with the list of PR claims
+that cannot currently be measured — each is
+a decision: instrument it, or cut the claim.`,
+ gate:"For each unmeasurable claim: instrument, or cut. Deciding neither is deciding to ship an unverifiable promise. Guard the north star's denominator (include what the system can't see) and its gaming vector (count actions, not memberships)."},
+{n:6,role:"Requirements Engineer",t:"Requirements",out:"06-requirements.md",
+ ref:"references/requirements-format.md",
+ dims:"1 · 2 · 5 · 7 · 8 — <span class='r'>5 is the one that bites</span>",
+ prompt:`Stage 6. Read references/requirements-format.md.
+Write the requirements from everything above.
+Every requirement carries Source: citing a PR
+paragraph or FAQ answer, Given/When/Then
+criteria, out-of-scope, and dependencies.
+Grouped Discovery (D) and Delivery (DP). Any
+requirement whose source chain touches an
+[ASSUMED] claim is flagged RESTS ON
+ASSUMPTION. Anything with no source goes in
+the Flagged section — do not delete it and do
+not source-wash it.`,
+ gate:"For each flagged requirement: find its real source, push it upstream into the PR (and re-run the Stage 1 judge), or move it to candidates. Then run verify_sources.py — the machine check, not the model, owns citation integrity."},
+{n:7,role:"Release Planner",t:"Release decomposition",out:"07-release-plan.md + jira-import.csv",
+ ref:"references/release-decomposition.md",
+ dims:"5 · 8 — reconciliation: every requirement in exactly one slice",
+ prompt:`Stage 7. Read references/release-decomposition.md.
+Cut the requirements into vertical slices —
+each independently shippable and testable,
+narrowed by customer scenario, not by layer.
+Per slice: requirements, what ships, the test
+harness, what blocks it. Emit the DAG and the
+edge list. A slice depending on an OPEN
+blocker is NOT SCHEDULABLE, with the owner
+who can unblock it. Then run export_jira.py.`,
+ gate:"Commit only to the schedulable slices — a date on a blocked slice is a commitment to a shape nobody agreed. The reconciliation check exists because 'one requirement, two epics' is how double-counted scope enters a tracker unnoticed."},
+{n:8,role:"Readiness Assessor",t:"Readiness",out:"08-readiness.md + report.html",
+ ref:"references/readiness.md",
+ dims:"2 · 5 · 8 — plus the meta-check: does the verdict follow from the artifact?",
+ prompt:`Stage 8. Read references/readiness.md first.
+Write the go/no-go: the CONFIDENCE block
+first, open blockers by severity, assumptions
+that must hold and what breaks if they don't,
+top three reasons this fails (most likely
+first, not most dramatic), and the smallest
+set of answers that would change the
+recommendation. If the honest recommendation
+is "not yet decidable," write that. Then run
+build_report.py.`,
+ gate:"Yours entirely. The skill has produced the agenda — questions, owners, assumptions, order — and has no opinion on the decision. A GO scoped over slices that open blockers block fails its own review."}];
+document.getElementById("agents").innerHTML=AGENTS.map(a=>`
+<div class="agent">
+ <div class="agent-head"><div><span class="role">Agent ${a.n} · ${a.role}</span><h3>${a.t}</h3></div>
+ <span class="out">→ ${a.out}</span></div>
+ <div class="agent-body">
+  <div><h4>The author prompt</h4><pre class="promptbox">${a.prompt}</pre>
+   <p class="note" style="margin-top:.7rem">Behavior spec: <code>${a.ref}</code></p></div>
+  <div><h4>The judge, then the gate</h4>
+   <div class="dims">Dimensions applied: ${a.dims}</div>
+   <p class="gate">${a.gate}</p></div>
+ </div>
+</div>`).join("");
+</script>
+</body>
+</html>

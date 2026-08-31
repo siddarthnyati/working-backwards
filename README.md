@@ -107,7 +107,10 @@ therefore can't evaluate; and starts.
 **What does this actually produce?**
 Thirteen-plus artifacts in `wb/<session-id>/`: intake, press release, three FAQ banks, demo spec,
 docs, telemetry plan, requirements, release plan, readiness — plus `BLOCKERS.md`, `DECISIONS.md`,
-`QUESTIONS.md`, `CONFIDENCE.md`, `jira-import.csv` and `session.json`. See
+`QUESTIONS.md`, `CONFIDENCE.md`, `jira-import.csv` and `session.json` — plus `report.html`, an
+interactive single-page report compiled from the artifacts by `scripts/build_report.py`: blockers,
+filterable requirements, the DAG, the judge log, every raw artifact embedded. The markdown is the
+system of record; the report is what you send to a human. See
 [`examples/empty-workspace/`](examples/empty-workspace/) for the run the site walks through
 (UI-heavy, so every stage has something to see), [`examples/ghost-seats/`](examples/ghost-seats/)
 for a platform-defect run that includes an honest critic override, and
@@ -130,7 +133,11 @@ It's MIT licensed and free. The real cost is time: Full mode is 4–8 hours acro
 should be — that's a discovery process, not a generator.
 
 **Does it need access to my company's documents?**
-No. It works at tier 0 with nothing, and gets materially sharper with each thing you give it. Drop
+No — and if you have nothing to upload, it interviews you instead. At tier 0 the skill offers a
+ten-minute context elicitation: six slots of questions (strategy, metrics, what exists, ownership,
+constraints, evidence), written to `wb/context/elicited.md` with honest self-reported provenance —
+including a "what do you believe but have never checked" section that becomes declared assumptions.
+Testimony never closes a blocker, and the pack says so. Otherwise: drop
 files in `wb/context/`, attach them to the conversation, or point an MCP server at your wiki. When a
 document is present the critic cites it by name; when it's absent the skill says so explicitly and
 downgrades the relevant dimensions to questions. Nothing silently degrades.
@@ -224,7 +231,7 @@ plugins/working-backwards/skills/working-backwards/
                               blocker taxonomy
   assets/templates/           every artifact type
   scripts/                    init_session.py · export_jira.py ·
-                              verify_sources.py  (stdlib only)
+                              verify_sources.py · build_report.py  (stdlib only)
 examples/empty-workspace/            the site's featured run — SaaS onboarding, UI at
                                      every stage, the [ASSUMED] tag carried end to end
 examples/ghost-seats/                platform-defect run, includes an honest override

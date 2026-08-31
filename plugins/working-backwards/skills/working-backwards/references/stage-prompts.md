@@ -18,6 +18,18 @@ Every author prompt ends the same way on purpose: *do not continue to the next s
 
 ---
 
+## Before Stage 0 — the elicitation interview (tier 0 only)
+
+**Author prompt**
+> I have no documents to give you. Run the context elicitation interview from
+> references/context-elicitation.md — one slot at a time, read back what you write, tag
+> everything as reported-by-me, and put my "believed but never checked" answers under
+> Declared assumptions. Write wb/context/elicited.md and tell me what a real document
+> would still add.
+
+**Gate** — skim `elicited.md` before Stage 0 begins. It is your own testimony about to be
+used as context; correct it now or it propagates.
+
 ## Stage 0 — Intake
 
 **Author prompt**
