@@ -84,35 +84,28 @@ the user overrides.
 
 | # | Stage | Output | Reference |
 |---|---|---|---|
-| 0 | Intake | `00-intake.md` | — |
+| 0 | Intake | `00-intake.md` | the "Before starting" section above |
 | 1 | Press Release | `01-press-release.md` | `references/press-release.md` |
 | 2 | FAQs | `02-faq-{external,internal,regional}.md` | `references/faq-banks.md` |
-| 3 | Demo spec | `03-demo-spec.md` | — |
-| 4 | Docs | `04-docs.md` | — |
-| 5 | Telemetry | `05-telemetry.md` | — |
+| 3 | Demo spec | `03-demo-spec.md` | `references/demo-spec.md` |
+| 4 | Docs | `04-docs.md` | `references/docs.md` |
+| 5 | Telemetry | `05-telemetry.md` | `references/telemetry.md` |
 | 6 | Requirements | `06-requirements.md` | `references/requirements-format.md` |
 | 7 | Release plan | `07-release-plan.md`, `jira-import.csv` | `references/release-decomposition.md` |
-| 8 | Readiness | `08-readiness.md` | — |
+| 8 | Readiness | `08-readiness.md` | `references/readiness.md` |
 
 Templates for every artifact are in `assets/templates/`. Blockers accumulate in `BLOCKERS.md`
 from the moment they appear — see `references/blocker-taxonomy.md`. Critic verdicts and
 overrides go to `DECISIONS.md`. Substantive-dimension questions go to `QUESTIONS.md`.
 Rewrite `CONFIDENCE.md` after every stage.
 
-Stage-specific notes that aren't in a reference file:
-
-- **Stage 3 (demo spec)** is an alignment device, not a design deliverable. Screens or API
-  surface, the primary flow, the failure states. Skipped in Targeted and Lightweight.
-- **Stage 4 (docs)** drafts user-facing documentation from the approved PR and external FAQ.
-  Writing the docs early exposes the parts of the product you cannot yet explain — when a
-  paragraph won't come, that is a product gap, not a writing problem. Say so.
-- **Stage 5 (telemetry)** needs a north-star metric plus input metrics, each tied to a
-  specific press release claim, with instrumentation points, baseline and target. The rule:
-  if the PR claims it, telemetry must be able to measure it, or the claim comes out of the PR.
-  Baselines you don't have are `[UNKNOWN]`, not estimates.
-- **Stage 8 (readiness)** opens with the `CONFIDENCE.md` block, then go/no-go: open blockers
-  by severity, assumptions that must hold, requirements resting on assumptions, the top three
-  reasons this fails, and a recommendation.
+Each stage's reference file is that stage's author prompt, loaded when the stage runs
+(Stage 0's is the "Before starting" section of this file). The one-line essence of four of
+them: the demo spec is an alignment
+device where silence never renders as success (3) · docs record what could not be written
+yet, because a stalled paragraph is a product gap (4) · if the PR claims it, telemetry must
+measure it or the claim comes out (5) · readiness scopes its GO to what is actually
+unblocked, and NOT YET DECIDABLE is a legitimate verdict (8).
 
 ## The critic
 

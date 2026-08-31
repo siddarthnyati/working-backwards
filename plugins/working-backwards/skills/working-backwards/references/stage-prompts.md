@@ -75,7 +75,8 @@ go back to Stage 1 now while it's cheap.
 ## Stage 3 — Demo spec
 
 **Author prompt**
-> Stage 3. Describe the experience concretely: surfaces, the primary flow step by step,
+> Stage 3. Read references/demo-spec.md first. Describe the experience concretely:
+> surfaces, the primary flow step by step,
 > and the failure states — what fails, and exactly what the user sees. Prose can hide a
 > hole; a demo script can't. Include a "what this deliberately does not show" section so
 > the demo doesn't promise what the requirements won't fund.
@@ -89,7 +90,8 @@ go back to Stage 1 now while it's cheap.
 ## Stage 4 — Docs
 
 **Author prompt**
-> Stage 4. Draft the customer-facing documentation from the approved PR and external FAQ:
+> Stage 4. Read references/docs.md first. Draft the customer-facing documentation from
+> the approved PR and external FAQ:
 > what it does, before you start, how to use it, failure behaviour, limits, troubleshooting.
 > Where a paragraph won't come, do not write around it — record it under "could not be
 > written yet" with the blocker or question behind it. That list is the deliverable.
@@ -104,7 +106,8 @@ go back to Stage 1 now while it's cheap.
 ## Stage 5 — Telemetry
 
 **Author prompt**
-> Stage 5. Define the north star and input metrics before requirements exist. Each metric
+> Stage 5. Read references/telemetry.md first. Define the north star and input metrics
+> before requirements exist. Each metric
 > ties to a specific press release claim by paragraph number. State instrumentation points
 > and whether each exists today. Baselines you don't have are [UNKNOWN], not estimates.
 > Close with the list of PR claims that cannot currently be measured — each is a decision:
@@ -155,7 +158,8 @@ blocked slice is committing to a shape nobody has agreed.
 ## Stage 8 — Readiness
 
 **Author prompt**
-> Stage 8. Write the go/no-go: the CONFIDENCE block first, open blockers by severity,
+> Stage 8. Read references/readiness.md first. Write the go/no-go: the CONFIDENCE block
+> first, open blockers by severity,
 > assumptions that must hold and what breaks if they don't, requirements resting on
 > assumptions, top three reasons this fails (most likely first, not most dramatic), and
 > the smallest set of answers that would change the recommendation. If the honest
