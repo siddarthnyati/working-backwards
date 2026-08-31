@@ -1,256 +1,321 @@
 ---
 name: Working Backwards
-description: A judge-gated PR/FAQ pipeline presented as its own code review.
+description: A judge-gated PR/FAQ pipeline, set as a manuscript under editorial review.
 colors:
-  merge-blue: "#4c8eff"
-  merge-blue-hover: "#3a7bef"
-  on-accent: "#ffffff"
-  merge-blue-soft: "#16233d"
-  merge-blue-ink: "#8ab4ff"
-  terminal-black: "#0d1117"
-  panel-charcoal: "#161b22"
-  elevated-charcoal: "#1c2129"
-  diff-white: "#e6edf3"
-  comment-gray: "#9198a1"
-  muted-label-gray: "#7d8590"
-  hairline-border: "#313842"
-  diff-add-green: "#3fb950"
-  diff-add-green-soft: "#12261a"
-  review-amber: "#d29922"
-  review-amber-soft: "#2b2210"
-  diff-remove-red: "#f85149"
-  diff-remove-red-soft: "#2d1214"
+  proof-stock: "#ECEEEA"
+  proof-stock-recessed: "#E2E5E0"
+  proof-stock-deep: "#D8DCD7"
+  ink: "#1B1D1C"
+  ink-secondary: "#484D4A"
+  ink-muted: "#676D69"
+  hairline: "#C4C9C4"
+  correction-red: "#A5271B"
+  correction-red-wash: "#EFDCD9"
+  editors-blue: "#2C5AA0"
+  editors-blue-wash: "#DCE3EF"
+  stet-green: "#3F5F44"
 typography:
   display:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "clamp(2.2rem, 5.6vw, 3.9rem)"
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "clamp(3.6rem, 11vw, 8.5rem)"
     fontWeight: 500
-    lineHeight: 1.08
-    letterSpacing: "-0.022em"
-  base:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "17px"
+    lineHeight: 0.87
+    letterSpacing: "-0.028em"
+  deck:
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "clamp(1.4rem, 2.6vw, 2.05rem)"
     fontWeight: 400
-    lineHeight: 1.6
-  headline-clamp:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "clamp(1.8rem, 4vw, 2.6rem)"
+    lineHeight: 1.24
+  headline:
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "clamp(1.9rem, 3.4vw, 2.65rem)"
     fontWeight: 400
-  emphasis:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "0.98rem"
+    lineHeight: 1.1
+  subpage-display:
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "clamp(3rem, 8vw, 5.5rem)"
     fontWeight: 400
+    lineHeight: 0.95
+  subpage-headline:
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "clamp(1.8rem, 3.2vw, 2.4rem)"
+    fontWeight: 400
+    lineHeight: 1.12
   numeral:
-    fontFamily: "JetBrains Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "2.4rem"
+    fontWeight: 400
+  title:
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "2rem"
+    fontWeight: 400
+  doc-title:
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "1.75rem"
+    fontWeight: 400
+  stage-numeral:
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
     fontSize: "1.5rem"
     fontWeight: 400
-  subpage-display:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "clamp(2rem, 5vw, 3.2rem)"
+  sigla-numeral:
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "1.4rem"
     fontWeight: 400
-  subpage-headline:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "1.7rem"
+  subhead:
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "1.3rem"
     fontWeight: 400
-  subpage-title:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "1.15rem"
-    fontWeight: 400
-  doc-h1:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "1.28rem"
-    fontWeight: 500
-    letterSpacing: "-0.01em"
-  headline:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "1.22rem"
+  subtitle:
+    fontFamily: "Bodoni Moda, Didot, Times New Roman, serif"
+    fontSize: "1.25rem"
     fontWeight: 400
   lede:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "1.1rem"
-    fontWeight: 400
-  lede-featured:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "1.02rem"
+    fontFamily: "Libre Caslon Text, Georgia, serif"
+    fontSize: "1.16rem"
     fontWeight: 400
     lineHeight: 1.6
+  standfirst:
+    fontFamily: "Libre Caslon Text, Georgia, serif"
+    fontSize: "1.06rem"
+    fontWeight: 400
   body:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "0.9rem"
+    fontFamily: "Libre Caslon Text, Georgia, serif"
+    fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.6
+    lineHeight: 1.62
+  body-document:
+    fontFamily: "Libre Caslon Text, Georgia, serif"
+    fontSize: "0.98rem"
+    fontWeight: 400
+    lineHeight: 1.68
+  body-compact:
+    fontFamily: "Libre Caslon Text, Georgia, serif"
+    fontSize: "0.94rem"
+    fontWeight: 400
   caption:
-    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
-    fontSize: "0.85rem"
+    fontFamily: "Libre Caslon Text, Georgia, serif"
+    fontSize: "0.86rem"
     fontWeight: 400
-  label-small:
-    fontFamily: "JetBrains Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
+  mark:
+    fontFamily: "Courier Prime, Courier New, monospace"
     fontSize: "0.78rem"
-    fontWeight: 500
-  label:
-    fontFamily: "JetBrains Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
-    fontSize: "0.72rem"
-    fontWeight: 500
+    fontWeight: 400
+  mark-small:
+    fontFamily: "Courier Prime, Courier New, monospace"
+    fontSize: "0.73rem"
+    fontWeight: 400
     letterSpacing: "0.05em"
-  label-micro:
-    fontFamily: "JetBrains Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
-    fontSize: "0.65rem"
-    fontWeight: 500
-    letterSpacing: "0.06em"
 rounded:
-  panel: "6px"
-  pill: "999px"
-  sharp: "0px"
+  none: "0px"
 spacing:
-  section: "4rem"
-  panel: "1.2rem"
+  section: "5.5rem"
+  entry: "1.5rem"
 components:
-  button-primary:
-    backgroundColor: "{colors.merge-blue}"
-    textColor: "#ffffff"
-    rounded: "{rounded.panel}"
-    padding: "0.6rem 1.1rem"
-  button-primary-hover:
-    backgroundColor: "#3a7bef"
-  button-secondary:
-    backgroundColor: "{colors.panel-charcoal}"
-    textColor: "{colors.diff-white}"
-    rounded: "{rounded.panel}"
-    padding: "0.6rem 1.1rem"
-  status-pill-pass:
-    backgroundColor: "{colors.diff-add-green-soft}"
-    textColor: "{colors.diff-add-green}"
-    rounded: "{rounded.pill}"
-  status-pill-revise:
-    backgroundColor: "{colors.review-amber-soft}"
-    textColor: "{colors.review-amber}"
-    rounded: "{rounded.pill}"
-  status-pill-block:
-    backgroundColor: "{colors.diff-remove-red-soft}"
-    textColor: "{colors.diff-remove-red}"
-    rounded: "{rounded.pill}"
+  action-primary:
+    textColor: "{colors.editors-blue}"
+    backgroundColor: "transparent"
+    rounded: "{rounded.none}"
+    padding: "0.95rem 1.35rem 0.9rem 0"
+  action-secondary:
+    textColor: "{colors.ink}"
+    backgroundColor: "transparent"
+    rounded: "{rounded.none}"
+  verdict-ruled:
+    textColor: "{colors.correction-red}"
+    backgroundColor: "transparent"
+  query-slip:
+    textColor: "{colors.editors-blue}"
+    backgroundColor: "transparent"
 ---
 
 # Design System: Working Backwards
 
 ## Overview
 
-**Creative North Star: "The Review Queue"**
+**Creative North Star: "The Manuscript Under Editorial Review"**
 
-The product's real mechanic — draft, judge, PASS / REVISE / BLOCK, merge — already is a pull request review, so the page borrows that grammar wholesale instead of describing it in prose. The press release renders as a diff against nothing (every line an addition), the judge's scoring sits in a docked review panel, and every verdict throughout the site is a status pill in exactly three colors, never more. This is a near-black editor world: flat, dense, unapologetically a tool rather than a brochure. It replaced two prior visual identities built earlier in the project's life — a warm cream-paper editorial page, and a cooler "case file with ink stamps" redesign — both rejected by the user as the wrong layout and color scheme.
+The product is a document-production and review discipline, so the site is set
+as a document under review — not as a piece of software tooling. Its materials
+come from the world the subject actually lives in: proof stock, galleys, the
+margin as an architectural zone, the editorial query slip, correction ink.
+
+This replaced a "Review Queue" build that rendered the same idea as GitHub's
+dark UI. That build was clean and it was wrong: `#0d1117` is literally GitHub's
+background and `#4c8eff` its blue, so the page was a competent copy of the
+most-copied developer UI in existence rather than an identity. The reasoning,
+the tell-catalogue that diagnosed it, and the sources are in
+[DESIGN-RESEARCH.md](DESIGN-RESEARCH.md); read that before changing this world.
 
 **Key Characteristics:**
-- Near-black editor ground with a single blue accent reserved for links, primary actions, and "you are here" state — never for semantic verdicts.
-- Exactly three semantic colors (green/amber/red) carry every PASS/REVISE/BLOCK, ASSUMED/OBSERVED/UNKNOWN, and blocker-severity signal on the page. They are never reused decoratively.
-- JetBrains Mono for anything that is data, a label, or a citation; Hanken Grotesk for anything meant to be read as prose.
-- Flat elevation — no drop shadows. Depth is three steps of background lightness (ground → panel → elevated panel), matching how real dark code-editor UIs actually work.
+- Cool proof stock, deliberately not cream and not white. Light chosen from the
+  physical scene (a PM reading a lot of text in daylight), never from category.
+- **No cards, anywhere.** Sequences are ruled lists; queries are slips; sections
+  are separated by rules and space. Boxes are the thing this design refuses.
+- **Radius 0.** This is print.
+- Three faces with three jobs: a didone for display, a Caslon for reading, a
+  typewriter for marks and data.
+- Extreme scale contrast — 8.5rem display against 0.73rem marginal marks.
+- A wide left margin column (the *apparatus*) carries section identity, so the
+  reading column stays a reading column.
 
 ## Colors
 
-Three functional families plus one accent: nothing on this page is colored for decoration.
+A proof sheet: paper, ink, and exactly two marking colours that mean something.
 
 ### Primary
-- **Merge Blue** (#4c8eff): the one non-semantic accent. Used only for links, primary CTA fill, the "you are here" state on tabs/toggles, and citation highlights (`Source:` lines, requirement-to-paragraph tracing). Never used for a verdict.
+- **Editor's Blue** (#2C5AA0): the query. Used *only* where the judge could not
+  rule and routed a question to a named human — open blockers, open questions,
+  the two barred rubric dimensions, and citation links back to sources.
+
+### Secondary
+- **Correction Red** (#A5271B): the ruling. Used *only* where the judge ruled
+  against something — REVISE, BLOCK, `[ASSUMED]`, `[NEEDS EVIDENCE]`, blocked
+  release slices.
+
+### Tertiary
+- **Stet Green** (#3F5F44): reserved, used almost nowhere. Available for an
+  affirmative state that must be visible; a passing artifact normally carries
+  no colour at all.
 
 ### Neutral
-- **Terminal Black** (#0d1117): page ground.
-- **Panel Charcoal** (#161b22): first elevation step — side columns, table headers, code blocks, the repo-bar strip.
-- **Elevated Charcoal** (#1c2129): second elevation step — the deepest recessed panel (skip-note, UI mockup chrome).
-- **Diff White** (#e6edf3): primary text.
-- **Comment Gray** (#9198a1): secondary/body prose inside cards and notes.
-- **Muted Label Gray** (#7d8590): tertiary — mono captions, table headers, tab labels. Deliberately lightened once already this project after measuring below 4.5:1 contrast on the ground color; re-check before darkening it again.
-- **Hairline Border** (#313842): every 1px rule and panel border.
+- **Proof Stock** (#ECEEEA): page ground. Cool, faintly green-grey.
+- **Proof Stock Recessed** (#E2E5E0): quoted matter, typed blocks, alternating
+  section bands.
+- **Proof Stock Deep** (#D8DCD7): the deepest recess.
+- **Ink** (#1B1D1C): primary text; a warm-neutral black, never #000.
+- **Ink Secondary** (#484D4A) / **Ink Muted** (#676D69): running text inside
+  components, and marginal marks.
+- **Hairline** (#C4C9C4): every rule on the page.
 
 ### Named Rules
-**The Three-Color Verdict Rule.** PASS/OK/added is always Diff Add Green. REVISE/ASSUMED is always Review Amber. BLOCK/UNKNOWN/blocker-severity is always Diff Remove Red. These three never decorate anything that isn't a verdict, a provenance tag, or a blocking state — reusing them elsewhere would make an actual verdict harder to spot at a glance.
 
-**The One Accent Rule.** Merge Blue is the only non-semantic color on the page. If something needs "brand" treatment rather than a status treatment, it is blue or it is neutral — never a fourth hue.
+**The Colour Law.** No mark means it passed. Silence is approval, exactly as on
+a real proof. Red means the judge ruled against it. Blue means the judge could
+not rule and queried a human. Nothing on this site is coloured for decoration,
+so a mark always means attention — and the palette teaches the product's central
+claim before a word is read.
+
+**The Two-Ink Rule.** There are two marking colours. A third would make the
+first two ambiguous. If something needs emphasis and is neither a ruling nor a
+query, it gets weight, size, or space — not hue.
 
 ## Typography
 
-**Display Font:** Hanken Grotesk (with -apple-system, Segoe UI, sans-serif fallback)
-**Body Font:** Hanken Grotesk (same family, lighter weight)
-**Label/Mono Font:** JetBrains Mono (with ui-monospace, SF Mono, Menlo, Consolas fallback)
+**Display:** Bodoni Moda (with Didot, Times New Roman fallback)
+**Reading text:** Libre Caslon Text (with Georgia fallback)
+**Marks, prompts, data:** Courier Prime (with Courier New fallback)
 
-**Character:** A grotesque/monospace pairing borrowed directly from developer-tool typography — Hanken Grotesk carries every sentence a visitor actually reads; JetBrains Mono is reserved for anything that is literally data (stage IDs, provenance tags, verdict pills, code, commands, file paths). The split is functional, not decorative: if you're reading it, it's Hanken; if you're citing or copying it, it's JetBrains Mono.
+**Character:** A didone, a Caslon, and a typewriter — the three type technologies
+of the printed document, each doing the job it actually did. Bodoni's extreme
+thick/thin contrast carries the title page. Caslon is the historical face of the
+printed memo and book, and does all the reading. Courier Prime sets everything
+that was *typed* rather than *composed*: stage prompts, query slips, provenance
+sigla, citations, code, CSV.
 
 ### Hierarchy
-- **Display** (500 weight, `clamp(2.2rem, 5.6vw, 3.9rem)`, 1.08 line-height): the H1 only.
-- **Headline** (400 weight, `clamp(1.8rem, 4vw, 2.6rem)`): section H2s. `h3` uses a fixed 1.22rem step below the H2 clamp.
-- **Lede** (400 weight, 1.1rem): the one-line section intro directly under an H2, and the hero's `.diffline` prose at 1.02rem.
-- **Body** (400 weight, 0.9rem, 1.6 line-height): running prose inside components — `.para`, `.src-para`, table cells, blockquotes, slot text.
-- **Caption** (400 weight, 0.85rem): compact secondary text inside cards and panels — `.note`, `.gatenote`, `.step p`, `.card .ask`, `.req .rst`, the footer.
-- **Label — small** (500 weight, 0.72rem, mono, 0.05–.1em tracking): UI chrome text that reads as a short phrase rather than a single tag — buttons, nav tabs, the prompt box, verdict lines, code blocks.
-- **Label — micro** (500 weight, 0.65rem, mono, 0.04–.1em tracking, uppercase where used): the smallest tier — provenance tags, table headers, blocker categories, chips, pills.
-
-### Sub-page Hierarchy
-`mechanics.html` (a Read-mode reference page, not the Persuade-mode landing page) runs its own smaller heading scale — Display `clamp(2rem, 5vw, 3.2rem)`, Headline `1.7rem`, Title `1.15rem` — appropriately quieter than the hero-scale landing page since a reference page's job is comprehension, not conversion. Everything below Display (body, caption, label tiers, and the full color system) is shared identically across both pages.
-
-### Type Scale
-The full scale, smallest to largest, consolidated from a fragmented 24-value set during a 2026-08-30 audit: **0.65rem → 0.72rem → 0.78rem → 0.85rem → 0.9rem → 1.02rem → 1.1rem → 1.22rem**, plus the responsive `clamp()` display step and two decorative numerals (`.step .num` 1.5rem, `.stage .n` 1.05rem) that sit outside the reading hierarchy on purpose.
+- **Display** (500, `clamp(3.6rem, 11vw, 8.5rem)`, 0.87 line-height): the h1 only.
+- **Deck** (400 italic, `clamp(1.4rem, 2.6vw, 2.05rem)`): the line under the title.
+- **Headline** (400, `clamp(1.9rem, 3.4vw, 2.65rem)`): section h2.
+- **Numerals** (2.4rem step sequence / 1.5rem stage rail / 1.4rem sigla): Bodoni
+  figures used structurally, not decoratively.
+- **Lede** (1.16rem) → **Standfirst** (1.06rem) → **Body** (1rem) → **Caption**
+  (0.86rem): the reading ramp.
+- **Mark** (0.78rem) / **Mark small** (0.73rem, 0.05em tracking): Courier.
 
 ### Named Rules
-**The Legibility-Over-Decoration Rule.** Monospace is used because content is genuinely data (diffs, IDs, code, citations) — never as a "technical-looking" costume on ordinary prose.
 
-**The One-Step Rule.** No two components within 0.03rem of each other on the type scale — if a new size is needed, round to the nearest existing step rather than adding a new one. This scale was consolidated from 24 near-duplicate values down to 8 real steps; don't let it drift back.
+**The Contrast Rule.** Adjacent steps in the reading ramp may sit close, but the
+*display* step must stand far above everything else — the ratio from display to
+body is roughly 8:1. A flat ramp was the single biggest craft failure of the
+previous build; do not re-flatten it in the name of tidiness.
+
+**The Typed/Composed Rule.** Courier is for what was typed (prompts, queries,
+IDs, data). Caslon is for what was written to be read. Never use the typewriter
+as a costume for "technical."
 
 ## Layout
 
-Single reading column at `max-width: 76rem`, `1.5rem` side padding. Sections stack with `4rem` vertical padding and a hairline top border between them (`3.2rem` on mobile, `≤960px` breakpoint). The stage carousel is the one dense grid moment: a 3-column `prompt / artifact / judge` layout at desktop, collapsing to a single stacked column on mobile. Card-grid components (blockers, install methods) use a collapsed-border grid (shared 1px borders between cells, no gap) rather than gapped cards with individual shadows.
+A single reading measure, offset by an apparatus. `.wrap` caps at 74rem;
+`.app` splits it into a **9.5rem margin column** and the main column, with a
+2.75rem gutter. The margin holds the section sigla (`§1`, and its label) on a
+2px rule, sticky while its section is in view. Below 1000px the apparatus
+collapses to a horizontal label above the content.
+
+Sections run 5.5rem vertical padding and alternate ground tone (`stock` /
+`stock-recessed`) to give the long page rhythm. Reading text is capped at
+38–46rem depending on role. The hero is deliberately the loosest composition on
+the page; §2 (the stage walkthrough) is deliberately the densest.
+
+### Named Rules
+
+**The No-Card Rule.** Nothing on this site is a card. Parallel content becomes a
+ruled list with hanging marginalia; the blocker set is a query sheet, the install
+methods are a definition list, the pipeline steps are a numbered sequence. If a
+new component wants a box, it is wrong — give it a rule and space instead.
 
 ## Elevation & Depth
 
-Flat by design — no drop shadows anywhere except the diff-gutter markers' bordered left edge. Depth reads through three background-lightness steps (Terminal Black → Panel Charcoal → Elevated Charcoal), matching real dark-mode editor UIs, which don't shadow panels either. The one shadow this system used to have (a hard `4px 4px 0` offset on UI-mockup cards, inherited from an earlier visual identity) was removed during this build — it read as a physical-paper costume this world doesn't wear.
+There is no elevation. No shadows exist anywhere in this system. Depth is
+expressed as ink density and ground tone, the way it is on paper. A recessed
+block (typed matter, quoted matter) sits on `proof-stock-recessed` with a 2px
+neutral rule down its left edge — the compositor's convention for set-off
+matter, not a decorative accent bar.
 
 ### Named Rules
-**The No-Shadow Rule.** Elevation is a background-lightness step, never a box-shadow. If something needs to look "lifted," it gets a lighter background, not a shadow.
+
+**The Flat-Paper Rule.** No `box-shadow`, ever. A surface that needs to recede
+changes tone; a surface that needs emphasis gets a rule.
 
 ## Shapes
 
-Two radius values, used by role, never mixed within one component family:
-- **6px** on every standalone panel: buttons, requirement cards, the docpage mock, callouts, verdict lines, the carousel container, mode/draft toggles, code blocks, the repo-bar.
-- **999px (full pill)** on every status badge: PASS/REVISE/BLOCK stampwords, provenance pills, the repo-bar's merge-status pill.
-- **0px (sharp)** on collapsed-border grid components — blocker cards, the 9-stage tab grid, the 4-step "how it runs" grid, the install-methods grid — where cells share hairline borders; rounding individual cells in a collapsed-border grid would show gaps of the page background at shared corners, so these stay sharp on purpose.
-
-### Named Rules
-**The Grid-Stays-Sharp Rule.** A component whose cells share a border with their neighbors (collapsed-border grid) never gets individual corner radius. Radius is reserved for genuinely standalone boxes.
+**Radius 0 everywhere.** There is not a single rounded corner in the system, and
+this is the single highest-leverage decision in the whole design. Separation is
+carried by 1px hairlines, 2px section rules, and space. The only "container"
+edges are the demo-screen mocks (§ Demo spec), which are 1px boxed because they
+depict actual product UI and are meant to read as screens.
 
 ## Components
 
-### Buttons
-- **Shape:** 6px radius.
-- **Primary (`.btn.solid`):** Merge Blue fill, white text, Merge Blue border. Hover darkens slightly (#3a7bef).
-- **Secondary (`.btn`):** Panel Charcoal fill, Diff White text, Hairline Border. Hover brightens the border to Muted Label Gray.
+### Actions
+Not buttons. A rule above and below a row of typographic links; the primary
+action is Editor's Blue with a `▸` prefix, the rest are ink. No fills, no
+borders, no radius.
 
-### Status Pills
-- **Style:** full-pill radius, 1px border in the semantic color, background tinted to the same color's `-soft` variant, text in the semantic color. Used for verdict stampwords (`PASS`/`REVISE`/`BLOCK`), the repo-bar's merge status, and the `.pill.ok`/`.pill.bad` component.
-- **Motion:** a one-shot scale-in (`.7 → 1.06 → 1`, ~0.4s) plays once when a verdict pill enters the viewport or a stage is switched; never loops.
+### Section sigla (signature component)
+The margin column's `§n` in Bodoni over a Courier label, hung on a 2px ink rule
+and sticky through the section. This is the page's wayfinding and its most
+recognizable device.
 
-### Cards / Containers
-- **Corner Style:** 6px for standalone cards (requirement cards, docpage); sharp (0px) for collapsed-border grid cells (blocker cards, stage tabs).
-- **Background:** Panel Charcoal for recessed/code content; Terminal Black for the base page; Elevated Charcoal for UI-mockup chrome.
-- **Shadow Strategy:** none — see Elevation & Depth.
-- **Border:** 1px Hairline Border throughout.
+### Query slip
+A blocker or open question: the slip ID and category in blue Courier hanging
+left, the question set as running Caslon in the centre column, owner and blocked
+items in Courier at right, separated by a hairline. The judge's own query boxes
+(`.qbox`) use a 2px blue left rule.
 
-### Diff Blocks (signature component)
-The hero's press-release paragraphs render as diff lines: Diff Add Green-tinted background, a 3px Diff Add Green left border (the diff tool's literal added-line marker), a mono `+` gutter, prose in Comment Gray.
+### Ruled sequence
+The pipeline's four beats and the install methods: hanging Bodoni numeral or
+Courier label, hairline between entries, no boxes, no equal heights.
 
-### Navigation (stage tabs)
-9-tab sharp-cornered grid, Panel Charcoal at rest, Merge Blue fill + white text when selected, a Merge Blue underline rail (`transform: scaleX()`-driven, never `width`) that glides between the selected tab and the previous one.
-
-### Rendered Document (`.mddoc`)
-"The complete artifact, as written to disk" no longer dumps raw markdown into a `<pre>` — a small dependency-free renderer (`mdToHtml()`) converts headings, bold/italic/inline-code, blockquotes, lists, tables, and fenced blocks into real typography, reusing the page's existing type scale and token system rather than inventing document-specific styles. Two deliberate exceptions to the "no colored side-borders" default now exist on this page — the hero's `.diffline` marker and `.mddoc blockquote`'s left border — both earned by the same reasoning: they're the literal, universal convention for their respective content (a diff addition; a quoted block), not a decorative card accent, and neither is used anywhere else. Fenced code blocks (`.mddoc pre`) reuse the Elevated Charcoal background already established for `.mock`/`.logbox`, so a Q&A block embedded in a rendered document reads as the same "console output" material as everywhere else on the page. `.csv` files bypass the renderer entirely and stay in a plain `.raw` monospace block — CSV isn't markdown, and parsing it as prose would corrupt quoted fields.
+### Rendered document (`.mddoc`)
+"The complete artifact, as written to disk" renders markdown as real typography
+through a small dependency-free renderer, set as a document: Bodoni headings,
+Caslon body, Courier fenced blocks on recessed stock. `.csv` bypasses the
+renderer and stays raw — CSV is not markdown, and parsing it as prose would
+corrupt quoted fields.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep PASS/REVISE/BLOCK exactly three colors (green/amber/red), everywhere they appear on the site.
-- **Do** use JetBrains Mono only for genuine data — IDs, tags, code, commands — never as generic "technical" decoration.
-- **Do** use the 3px colored left-border only on diff lines; it is earned by the diff-tool world, not a general card-accent device.
-- **Do** keep elevation as background-lightness steps; never add a box-shadow to a panel.
+- **Do** keep blue for queries and red for rulings, and let a passing thing
+  carry no colour at all.
+- **Do** reach for a rule and space before reaching for a container.
+- **Do** keep the display step dramatically above the rest of the ramp.
+- **Do** set typed artifacts in Courier and written prose in Caslon.
 
 ### Don't:
-- **Don't** reuse Merge Blue for a verdict — it is the one non-semantic color and must stay recognizably different from PASS/REVISE/BLOCK.
-- **Don't** round the corners of collapsed-border grid cells (blocker cards, stage tabs, the 4-step grid) — it breaks the shared-edge illusion.
-- **Don't** reintroduce a kicker/eyebrow label above a heading — removed deliberately in an earlier pass and re-confirmed absent in this rebuild.
-- **Don't** add a second accent hue. If something needs emphasis and isn't a verdict, it's blue or it's neutral.
+- **Don't** add a border-radius. Anywhere.
+- **Don't** add a box-shadow. Anywhere.
+- **Don't** build a card grid, even for content that is genuinely parallel.
+- **Don't** introduce a third marking colour, or spend blue or red on decoration.
+- **Don't** revert to a category-default world (dark IDE chrome, cream editorial)
+  — see [DESIGN-RESEARCH.md](DESIGN-RESEARCH.md) for why the last one failed.
