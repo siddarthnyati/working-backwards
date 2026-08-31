@@ -4,17 +4,21 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Working Backwards — mechanics: every agent, every prompt, every gate</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap">
 <style>
-:root{--paper:#f2eee5;--paper-2:#eae5d9;--paper-3:#e0d9c9;--ink:#1c1815;--ink-2:#4a423a;
---ink-3:#7d7263;--rule:#cdc4b1;--accent:#9c2f1c;--accent-soft:#f0d9d2;--accent-ink:#7a2415;
---mono:"SF Mono",ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
---serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
-@media (prefers-color-scheme:dark){:root{--paper:#16130f;--paper-2:#1e1a15;--paper-3:#272119;
---ink:#ece5d8;--ink-2:#b8ae9d;--ink-3:#8a7f6e;--rule:#3a3227;--accent:#e2705a;
---accent-soft:#3a1f18;--accent-ink:#f0917d}}
+:root{--paper:#0d1117;--paper-2:#161b22;--paper-3:#1c2129;--ink:#e6edf3;--ink-2:#9198a1;
+--ink-3:#7d8590;--rule:#313842;--accent:#4c8eff;--accent-soft:#16233d;--accent-ink:#8ab4ff;
+--ok:#3fb950;--ok-soft:#12261a;--warn:#d29922;--warn-soft:#2b2210;
+--bad:#f85149;--bad-soft:#2d1214;
+--mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+--serif:"Hanken Grotesk",-apple-system,"Segoe UI",sans-serif}
 *{box-sizing:border-box}
+::selection{background:var(--accent-soft);color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+html{scrollbar-color:var(--ink-3) var(--paper-2);scrollbar-width:thin}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
-font-size:18px;line-height:1.6;overflow-x:hidden}
+font-size:17px;line-height:1.6;overflow-x:hidden}
 .wrap{max-width:60rem;margin:0 auto;padding:0 1.4rem}
 h1,h2,h3{font-weight:400;letter-spacing:-.015em;line-height:1.15;margin:0}
 h1{font-size:clamp(2rem,5vw,3.2rem)}
@@ -25,8 +29,6 @@ p{margin:0 0 1rem}
 a{color:var(--ink)} a:hover{color:var(--accent)}
 code{font-family:var(--mono);font-size:.82em}
 section{padding:3.4rem 0;border-top:1px solid var(--rule)}
-.sec-no{font-family:var(--mono);font-size:.66rem;letter-spacing:.16em;color:var(--ink-3);
-text-transform:uppercase;margin-bottom:1.1rem;display:block}
 .lede{font-size:1.06rem;color:var(--ink-2);max-width:42rem}
 .note{font-size:.84rem;color:var(--ink-3);line-height:1.55}
 header{padding:3.6rem 0 2.6rem}
@@ -51,7 +53,7 @@ white-space:pre-wrap;border-left:2px solid var(--ink-3);padding-left:.75rem;marg
 .gate{font-size:.86rem;color:var(--ink-2)}
 .gate b{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;color:var(--accent-ink)}
 .dims{font-family:var(--mono);font-size:.7rem;color:var(--ink-2);margin:.5rem 0 .8rem;line-height:1.7}
-.dims .r{color:var(--accent-ink);font-weight:600}
+.dims .r{color:var(--bad);font-weight:600}
 .callout{border:1px dashed var(--accent);padding:.9rem 1.1rem;margin:1.2rem 0;font-size:.9rem}
 .callout b{font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;color:var(--accent-ink);
 display:block;margin-bottom:.35rem}
@@ -64,6 +66,13 @@ background:var(--paper-2);border:1px solid var(--rule);padding:1rem 1.2rem;overf
 display:block;margin-bottom:.4rem}
 .step p{font-size:.82rem;color:var(--ink-2);margin:0}
 .step.judge{background:var(--paper-2)}.step.judge .t{color:var(--accent-ink)}
+.stampword{display:inline-flex;align-items:center;font-family:var(--mono);font-weight:600;font-size:.8em;
+letter-spacing:.02em;padding:.1em .55em;border:1px solid;border-radius:999px}
+.stampword.pass{color:var(--ok);border-color:var(--ok);background:var(--ok-soft)}
+.stampword.revise{color:var(--warn);border-color:var(--warn);background:var(--warn-soft)}
+.stampword.block{color:var(--bad);border-color:var(--bad);background:var(--bad-soft)}
+.agent,.callout,pre.mono{border-radius:6px}
+.agent{overflow:hidden}
 footer{padding:2.6rem 0 4rem;border-top:1px solid var(--rule);font-size:.84rem;color:var(--ink-3)}
 @media(max-width:820px){.agent-body{grid-template-columns:1fr}
 .agent-body>div:first-child{border-right:0;border-bottom:1px solid var(--rule)}
@@ -82,7 +91,6 @@ footer{padding:2.6rem 0 4rem;border-top:1px solid var(--rule);font-size:.84rem;c
 </div></header>
 
 <section><div class="wrap">
-  <span class="sec-no">§1 — The loop</span>
   <h2>Four beats, nine times.</h2>
   <div class="steps">
     <div class="step"><span class="t">1 · You prompt</span><p>One stage at a time. The prompt names
@@ -111,16 +119,14 @@ footer{padding:2.6rem 0 4rem;border-top:1px solid var(--rule);font-size:.84rem;c
 </div></section>
 
 <section><div class="wrap">
-  <span class="sec-no">§2 — The agents</span>
   <h2>Nine authors, their prompts, their gates.</h2>
   <p class="lede">Author prompts verbatim from <code>references/stage-prompts.md</code>. The judge
-  column lists the rubric dimensions applied at that stage — <span style="color:var(--accent-ink)">
+  column lists the rubric dimensions applied at that stage — <span style="color:var(--bad)">
   red</span> marks the ones that can fail it.</p>
   <div id="agents" style="margin-top:1.6rem"></div>
 </div></section>
 
 <section><div class="wrap">
-  <span class="sec-no">§3 — The judge</span>
   <h2>Authoritative on six dimensions. Barred from two.</h2>
   <p class="lede">The single most important design decision. An LLM can verify a claim is <i>made,
   specific, and sourced</i>. It cannot verify the claim is <i>true</i>, the market is big enough, or
@@ -128,21 +134,21 @@ footer{padding:2.6rem 0 4rem;border-top:1px solid var(--rule);font-size:.84rem;c
   simulates a review meeting without the knowledge that made review meetings valuable.</p>
   <div class="scroll"><table>
     <tr><th>#</th><th>Dimension</th><th>Class</th><th>Output</th><th>Fails when</th></tr>
-    <tr><td>1</td><td>Customer specificity</td><td>structural</td><td>PASS / REVISE / <b>BLOCK</b></td>
+    <tr><td>1</td><td>Customer specificity</td><td>structural</td><td><span class="stampword pass">PASS</span> / <span class="stampword revise">REVISE</span> / <span class="stampword block">BLOCK</span></td>
         <td>"Everyone," or a bare role with no segment — could you build a list of ten?</td></tr>
-    <tr><td>2</td><td>Evidence presence</td><td>structural</td><td>PASS / REVISE / <b>BLOCK</b></td>
+    <tr><td>2</td><td>Evidence presence</td><td>structural</td><td><span class="stampword pass">PASS</span> / <span class="stampword revise">REVISE</span> / <span class="stampword block">BLOCK</span></td>
         <td>Significance asserted with nothing [OBSERVED] or [REPORTED] behind it — the most common real failure</td></tr>
-    <tr><td>3</td><td>Alternative named</td><td>structural</td><td>PASS / REVISE</td>
+    <tr><td>3</td><td>Alternative named</td><td>structural</td><td><span class="stampword pass">PASS</span> / <span class="stampword revise">REVISE</span></td>
         <td>"There is no current solution" — there is always a current behaviour</td></tr>
     <tr><td>4</td><td>Strategic fit</td><td><b>substantive</b></td><td>a question + an owner role — never a verdict</td>
         <td>— (can observe a rationale is <i>absent</i>; cannot judge if a stated one is <i>right</i>)</td></tr>
-    <tr><td>5</td><td>Traceability</td><td>structural</td><td>PASS / REVISE</td>
+    <tr><td>5</td><td>Traceability</td><td>structural</td><td><span class="stampword pass">PASS</span> / <span class="stampword revise">REVISE</span></td>
         <td>An artifact that doesn't cite the artifact above it; a requirement with no source</td></tr>
     <tr><td>6</td><td>Falsifiability</td><td><b>substantive</b></td><td>the must-be-true list, as questions with owners</td>
         <td>— (feasibility claims route to engineering; asserting them is decoration)</td></tr>
-    <tr><td>7</td><td>Clarity</td><td>structural</td><td>PASS / REVISE</td>
+    <tr><td>7</td><td>Clarity</td><td>structural</td><td><span class="stampword pass">PASS</span> / <span class="stampword revise">REVISE</span></td>
         <td>Jargon, passive voice hiding an actor, internal terms unexplained</td></tr>
-    <tr><td>8</td><td>Template completeness</td><td>structural</td><td>PASS / REVISE</td>
+    <tr><td>8</td><td>Template completeness</td><td>structural</td><td><span class="stampword pass">PASS</span> / <span class="stampword revise">REVISE</span></td>
         <td>Sections missing or stubbed. [NEEDS EVIDENCE] and [UNKNOWN] are <i>complete</i>; "TBD" is not</td></tr>
   </table></div>
   <div class="callout"><b>THE JUDGE'S OWN DRIFT GUARDS — from critic-rubric.md</b>
@@ -169,7 +175,6 @@ Proceeded to Stage 6. Not re-litigated.</pre>
 </div></section>
 
 <section><div class="wrap">
-  <span class="sec-no">§4 — The elicitor</span>
   <h2>No documents? The interview builds you a context pack.</h2>
   <p class="lede">Most context isn't in a document — it's in the user's head. At tier 0 the skill
   offers a ten-minute interview: six slots (strategy, metrics, what exists, ownership, constraints,
@@ -203,7 +208,6 @@ real document would still add.</pre></div>
 </div></section>
 
 <section><div class="wrap">
-  <span class="sec-no">§5 — The deterministic layer</span>
   <h2>What LLM judgment is not trusted with.</h2>
   <div class="scroll"><table>
     <tr><th>Script</th><th>Does</th><th>Hard guarantee</th></tr>
@@ -231,7 +235,6 @@ real document would still add.</pre></div>
 </div></section>
 
 <section><div class="wrap">
-  <span class="sec-no">§6 — Session state</span>
   <h2>Resume is the difference between a skill and a long prompt.</h2>
   <pre class="mono">Resume the working-backwards session in wb/&lt;session-id&gt;/. Read session.json,
 tell me the current stage, the open blockers, and what the critic said last.

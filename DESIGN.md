@@ -44,6 +44,18 @@ typography:
     fontFamily: "JetBrains Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
     fontSize: "1.5rem"
     fontWeight: 400
+  subpage-display:
+    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
+    fontSize: "clamp(2rem, 5vw, 3.2rem)"
+    fontWeight: 400
+  subpage-headline:
+    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
+    fontSize: "1.7rem"
+    fontWeight: 400
+  subpage-title:
+    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
+    fontSize: "1.15rem"
+    fontWeight: 400
   headline:
     fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
     fontSize: "1.22rem"
@@ -165,6 +177,9 @@ Three functional families plus one accent: nothing on this page is colored for d
 - **Caption** (400 weight, 0.85rem): compact secondary text inside cards and panels — `.note`, `.gatenote`, `.step p`, `.card .ask`, `.req .rst`, the footer.
 - **Label — small** (500 weight, 0.72rem, mono, 0.05–.1em tracking): UI chrome text that reads as a short phrase rather than a single tag — buttons, nav tabs, the prompt box, verdict lines, code blocks.
 - **Label — micro** (500 weight, 0.65rem, mono, 0.04–.1em tracking, uppercase where used): the smallest tier — provenance tags, table headers, blocker categories, chips, pills.
+
+### Sub-page Hierarchy
+`mechanics.html` (a Read-mode reference page, not the Persuade-mode landing page) runs its own smaller heading scale — Display `clamp(2rem, 5vw, 3.2rem)`, Headline `1.7rem`, Title `1.15rem` — appropriately quieter than the hero-scale landing page since a reference page's job is comprehension, not conversion. Everything below Display (body, caption, label tiers, and the full color system) is shared identically across both pages.
 
 ### Type Scale
 The full scale, smallest to largest, consolidated from a fragmented 24-value set during a 2026-08-30 audit: **0.65rem → 0.72rem → 0.78rem → 0.85rem → 0.9rem → 1.02rem → 1.1rem → 1.22rem**, plus the responsive `clamp()` display step and two decorative numerals (`.step .num` 1.5rem, `.stage .n` 1.05rem) that sit outside the reading hierarchy on purpose.
