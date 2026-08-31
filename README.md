@@ -108,9 +108,11 @@ therefore can't evaluate; and starts.
 Thirteen-plus artifacts in `wb/<session-id>/`: intake, press release, three FAQ banks, demo spec,
 docs, telemetry plan, requirements, release plan, readiness — plus `BLOCKERS.md`, `DECISIONS.md`,
 `QUESTIONS.md`, `CONFIDENCE.md`, `jira-import.csv` and `session.json`. See
-[`examples/ghost-seats/`](examples/ghost-seats/) for a complete real run, and
-[`examples/silent-stepdown/RUNBOOK.md`](examples/silent-stepdown/RUNBOOK.md) for a second run
-with the exact prompt used at every stage.
+[`examples/empty-workspace/`](examples/empty-workspace/) for the run the site walks through
+(UI-heavy, so every stage has something to see), [`examples/ghost-seats/`](examples/ghost-seats/)
+for a platform-defect run that includes an honest critic override, and
+[`examples/silent-stepdown/RUNBOOK.md`](examples/silent-stepdown/RUNBOOK.md) for a payments run
+with its stage-by-stage runbook.
 
 **Do I have to run all nine stages?**
 No, and you shouldn't. Three modes. **Full** (0–8) for a new capability with no clear owner.
@@ -223,10 +225,11 @@ plugins/working-backwards/skills/working-backwards/
   assets/templates/           every artifact type
   scripts/                    init_session.py · export_jira.py ·
                               verify_sources.py  (stdlib only)
-examples/ghost-seats/                complete Full-mode run, no context pack
+examples/empty-workspace/            the site's featured run — SaaS onboarding, UI at
+                                     every stage, the [ASSUMED] tag carried end to end
+examples/ghost-seats/                platform-defect run, includes an honest override
 examples/ghost-seats-with-context/   Stages 1–2 again, with one strategy doc
-examples/silent-stepdown/            second full run (payments-shaped) — RUNBOOK.md
-                                     records the exact prompt used at every stage
+examples/silent-stepdown/            payments run — RUNBOOK.md per stage
 docs/index.html                      the interactive site
 ```
 

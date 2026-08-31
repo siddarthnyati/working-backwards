@@ -6,10 +6,6 @@
 <title>Working Backwards — a skill that doesn't stop at the press release</title>
 <meta name="description" content="Amazon's Working Backwards process run as a critic-gated pipeline that ends in engineer-ready requirements. Every requirement cites the customer narrative it came from.">
 <style>
-/* ─────────────────────────────────────────────────────────────
-   Working Backwards — a document-craft tool, set like a page.
-   One accent, reserved for critic verdicts and blocker severity.
-   ───────────────────────────────────────────────────────────── */
 :root{
   --paper:#f2eee5; --paper-2:#eae5d9; --paper-3:#e0d9c9;
   --ink:#1c1815; --ink-2:#4a423a; --ink-3:#7d7263; --rule:#cdc4b1;
@@ -40,15 +36,14 @@ p{margin:0 0 1rem}
 a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:.18em}
 a:hover{color:var(--accent)}
 code{font-family:var(--mono);font-size:.82em}
-section{padding:4.2rem 0;border-top:1px solid var(--rule)}
+section{padding:4rem 0;border-top:1px solid var(--rule)}
 .sec-no{font-family:var(--mono);font-size:.68rem;letter-spacing:.16em;color:var(--ink-3);
   text-transform:uppercase;margin-bottom:1.2rem;display:block}
 .lede{font-size:1.1rem;color:var(--ink-2);max-width:44rem}
 .note{font-size:.85rem;color:var(--ink-3);line-height:1.55}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
-/* hero */
-.hero{padding:5rem 0 3.6rem}
+.hero{padding:5rem 0 3.4rem}
 .hero .kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;
   text-transform:uppercase;color:var(--ink-3);margin-bottom:1.8rem}
 .hero h1{font-size:clamp(2.4rem,6.6vw,4.6rem);line-height:1.03;max-width:19ch;
@@ -63,12 +58,20 @@ section{padding:4.2rem 0;border-top:1px solid var(--rule)}
 .btn.solid{background:var(--ink);color:var(--paper)}
 .btn.solid:hover{background:var(--accent);border-color:var(--accent);color:#fff}
 
-/* system design */
-.sysd{border:1px solid var(--rule);background:var(--paper-2);padding:1.2rem}
-.sysd svg{display:block;min-width:880px;width:100%;height:auto}
-.sysd text{font-family:var(--mono)}
+/* how it runs: 4 plain steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);margin-top:1.6rem}
+.step{padding:1.2rem 1.15rem;border-right:1px solid var(--rule);position:relative;min-width:0}
+.step:last-child{border-right:0}
+.step .num{font-family:var(--mono);font-size:1.5rem;color:var(--ink-3);display:block}
+.step .t{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  margin:.35rem 0 .55rem;display:block}
+.step p{font-size:.87rem;color:var(--ink-2);margin:0;line-height:1.5}
+.step.judge{background:var(--paper-2)}
+.step.judge .t{color:var(--accent-ink)}
+.step:not(:last-child)::after{content:"→";position:absolute;right:-.62rem;top:1.1rem;z-index:2;
+  font-family:var(--mono);color:var(--ink-3);background:var(--paper);padding:0 .18rem}
 
-/* walkthrough rail */
+/* rail + carousel */
 .modes{display:flex;border:1px solid var(--rule);width:max-content;max-width:100%;margin:1.6rem 0 1.4rem}
 .modes button{font-family:var(--mono);font-size:.71rem;letter-spacing:.05em;padding:.5rem .9rem;
   background:none;border:0;border-right:1px solid var(--rule);cursor:pointer;color:var(--ink-3)}
@@ -87,22 +90,19 @@ section{padding:4.2rem 0;border-top:1px solid var(--rule)}
   background:repeating-linear-gradient(-45deg,transparent,transparent 4px,var(--rule) 4px,var(--rule) 5px)}
 .skipnote{padding:.7rem 1.2rem;background:var(--paper-3);border:1px solid var(--rule);border-top:0;
   font-family:var(--mono);font-size:.72rem;color:var(--ink-2)}
-
-/* the carousel pane */
 .car{border:1px solid var(--rule);margin-top:1rem}
 .car-head{padding:1.1rem 1.4rem;border-bottom:1px solid var(--rule);display:flex;
   justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
 .car-head .why{font-style:italic;color:var(--ink-2);font-size:.98rem}
 .car-head .stg{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);letter-spacing:.08em}
-.car-pane{display:grid;grid-template-columns:15.5rem minmax(0,1fr) 16.5rem;min-height:24rem}
+.car-pane{display:grid;grid-template-columns:15.5rem minmax(0,1fr) 16.5rem}
 .car-pane.enter{animation:slidein .32s ease}
 @keyframes slidein{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
 .col-prompt{padding:1.2rem;border-right:1px solid var(--rule);background:var(--paper-2)}
-.col-art{padding:1.3rem 1.4rem;min-width:0}
+.col-art{padding:1.3rem 1.4rem;min-width:0;overflow-x:auto}
 .col-critic{padding:1.2rem;border-left:1px solid var(--rule);background:var(--paper-2)}
 .promptbox{font-family:var(--mono);font-size:.73rem;line-height:1.65;color:var(--ink-2);
   white-space:pre-wrap;border-left:2px solid var(--ink-3);padding-left:.75rem;margin-top:.8rem}
-.col-prompt .h,.col-art .h,.col-critic .h{margin-bottom:.4rem}
 .dim{display:flex;gap:.5rem;align-items:baseline;font-size:.8rem;margin-bottom:.28rem;
   font-family:var(--mono);color:var(--ink-2)}
 .dim .v{margin-left:auto;font-size:.66rem;letter-spacing:.05em;text-align:right}
@@ -120,14 +120,22 @@ section{padding:4.2rem 0;border-top:1px solid var(--rule)}
 .car-nav button:disabled{opacity:.3;cursor:default}
 .car-nav .pos{font-family:var(--mono);font-size:.68rem;color:var(--ink-3);letter-spacing:.1em}
 
-/* artifact rendering */
-.filelink{font-family:var(--mono);font-size:.68rem;margin-top:1rem}
-.filelink a{color:var(--ink-3)}
+/* full-artifact viewer */
+.fulldoc{border-top:1px solid var(--rule);background:var(--paper-2)}
+.fulldoc-bar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.7rem 1.4rem .0rem}
+.fulldoc-bar h4{margin-right:.4rem}
+.ftab{font-family:var(--mono);font-size:.67rem;padding:.32rem .6rem;border:1px solid var(--rule);
+  background:var(--paper);cursor:pointer;color:var(--ink-2)}
+.ftab[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.fulldoc pre{font-family:var(--mono);font-size:.72rem;line-height:1.6;white-space:pre-wrap;
+  margin:0;padding:1rem 1.4rem 1.2rem;max-height:24rem;overflow-y:auto;color:var(--ink-2)}
+
+/* artifact widgets */
 table{border-collapse:collapse;width:100%;font-size:.84rem}
 th,td{text-align:left;padding:.42rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top}
 th{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
    color:var(--ink-3);font-weight:500}
-.tag{font-family:var(--mono);font-size:.63rem;letter-spacing:.04em;white-space:nowrap;padding:0 .18em}
+.tag{font-family:var(--mono);font-size:.63rem;letter-spacing:.04em;padding:0 .18em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .t-obs{border-bottom:2px solid var(--ink-3)}
 .t-rep{border-bottom:2px dashed var(--ink-3)}
 .t-asm{background:var(--accent-soft);color:var(--accent-ink);border-bottom:2px solid var(--accent)}
@@ -153,32 +161,36 @@ blockquote{margin:0 0 .9rem;padding-left:.9rem;border-left:2px solid var(--rule)
 .callout{border:1px dashed var(--accent);padding:.85rem 1rem;margin-top:1rem;font-size:.88rem}
 .callout b{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;color:var(--accent-ink);display:block;margin-bottom:.35rem}
 
-/* fake-UI mockup (demo spec) */
-.mock{border:1px solid var(--ink-3);background:var(--paper);max-width:34rem;
-  box-shadow:4px 4px 0 var(--paper-3);font-size:.86rem}
-.mock-bar{font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-3);padding:.45rem .8rem;border-bottom:1px solid var(--rule);background:var(--paper-2)}
-.mock-head{padding:.7rem .8rem;border-bottom:1px solid var(--rule);display:flex;
-  justify-content:space-between;gap:.6rem;align-items:center;flex-wrap:wrap}
-.mock-row{padding:.5rem .8rem;border-bottom:1px solid var(--rule);display:flex;
-  justify-content:space-between;gap:.6rem;align-items:center}
-.mock-row:last-of-type{border-bottom:0}
-.mock-foot{padding:.55rem .8rem;font-size:.72rem;color:var(--ink-3);border-top:1px solid var(--rule);
-  font-family:var(--mono);line-height:1.5}
+/* UI mockups */
+.mock-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.mock{border:1px solid var(--ink-3);background:var(--paper);box-shadow:4px 4px 0 var(--paper-3);
+  font-size:.85rem;min-width:0}
+.mock-bar{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);padding:.42rem .8rem;border-bottom:1px solid var(--rule);background:var(--paper-2)}
+.mock-body{padding:.8rem}
+.mock h5{font-family:var(--serif);font-weight:400;font-size:1rem;margin:0 0 .55rem}
+.chips{border:1px solid var(--rule);padding:.4rem;display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.6rem;background:var(--paper-2)}
+.chip{font-family:var(--mono);font-size:.65rem;border:1px solid var(--ink-3);padding:.1rem .45rem;background:var(--paper)}
+.chip.ghost{border-style:dashed;color:var(--ink-3)}
+.mbtns{display:flex;gap:.5rem;flex-wrap:wrap;align-items:center}
+.mbtn{font-family:var(--mono);font-size:.66rem;padding:.35rem .7rem;border:1px solid var(--ink);cursor:default}
+.mbtn.primary{background:var(--ink);color:var(--paper)}
+.mbtn.quiet{border-color:var(--rule);color:var(--ink-2)}
+.mbtn.disabled{border-style:dashed;border-color:var(--ink-3);color:var(--ink-3);position:relative}
+.mock .why-dis{font-family:var(--mono);font-size:.62rem;color:var(--accent-ink);margin-top:.45rem;display:block}
+.tmpls{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.tmpl{border:1px solid var(--rule);padding:.55rem .6rem;background:var(--paper-2)}
+.tmpl b{font-size:.8rem;display:block;font-weight:600}
+.tmpl span{font-family:var(--mono);font-size:.62rem;color:var(--ink-3)}
+.tmpl.empty{border-style:dashed;background:var(--paper)}
 .pill{font-family:var(--mono);font-size:.62rem;letter-spacing:.05em;padding:.14rem .5rem;border:1px solid}
 .pill.ok{color:var(--ok);border-color:var(--ok);background:var(--ok-soft)}
 .pill.bad{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-soft)}
-.pill.warn{color:var(--ink-2);border-color:var(--ink-3);background:var(--paper-3)}
 .fchips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem}
 .fchip{font-family:var(--mono);font-size:.66rem;border:1px solid var(--rule);padding:.3rem .55rem;color:var(--ink-2)}
 .fchip b{color:var(--accent-ink);font-weight:600}
-
-/* doc page (stage 4) */
-.docpage{border:1px solid var(--rule);background:var(--paper);padding:1.2rem 1.4rem;max-width:36rem}
+.docpage{border:1px solid var(--rule);background:var(--paper);padding:1.1rem 1.3rem;max-width:36rem}
 .docpage h5{font-family:var(--serif);font-weight:400;font-size:1.05rem;margin:0 0 .5rem}
-.docpage p{font-size:.88rem}
-
-/* requirement cards + trace */
 .req{border:1px solid var(--rule);padding:.8rem .9rem;margin-bottom:.6rem;background:var(--paper);
   transition:border-color .18s,background .18s}
 .req:hover,.req.on{border-color:var(--accent);background:var(--accent-soft)}
@@ -189,13 +201,10 @@ blockquote{margin:0 0 .9rem;padding-left:.9rem;border-left:2px solid var(--rule)
 .src-para{font-size:.9rem;line-height:1.65;transition:background .18s;padding:.2rem}
 .src-para.lit{background:var(--accent-soft);box-shadow:0 0 0 3px var(--accent-soft)}
 .trace2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
-
-/* dag */
+.trace2>div{min-width:0}
 .dag{font-family:var(--mono);font-size:.78rem;line-height:1.75;white-space:pre;overflow-x:auto;
   background:var(--paper-2);border:1px solid var(--rule);padding:1rem 1.2rem;margin:0 0 1rem}
 .dag .blk{color:var(--accent)}
-
-/* blockers */
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(18.5rem,1fr));gap:0;
   border:1px solid var(--rule);border-right:0;border-bottom:0}
 .card{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:1.15rem;min-width:0}
@@ -206,8 +215,6 @@ blockquote{margin:0 0 .9rem;padding-left:.9rem;border-left:2px solid var(--rule)
 .card .ask{font-size:.87rem;color:var(--ink-2);margin-bottom:.7rem}
 .card .owner{font-family:var(--mono);font-size:.67rem;color:var(--ink-2);padding-top:.5rem;border-top:1px solid var(--rule)}
 .card .owner .st{color:var(--accent);float:right}
-
-/* context builder */
 .builder{display:grid;grid-template-columns:1.25fr 1fr;gap:0;border:1px solid var(--rule)}
 .slots{padding:1.3rem;border-right:1px solid var(--rule);min-width:0}
 .meter{padding:1.3rem;background:var(--paper-2);min-width:0}
@@ -229,13 +236,14 @@ pre.cmd{font-family:var(--mono);font-size:.76rem;background:var(--paper-2);borde
   padding:.75rem .9rem;overflow-x:auto;margin:.5rem 0 0}
 footer{padding:3rem 0 4rem;border-top:1px solid var(--rule);font-size:.84rem;color:var(--ink-3)}
 footer a{color:var(--ink-2)}
-
 @media (max-width:960px){
   body{font-size:17.5px}
+  .steps{grid-template-columns:1fr 1fr}
+  .step:not(:last-child)::after{content:""}
   .car-pane{grid-template-columns:1fr}
   .col-prompt{border-right:0;border-bottom:1px solid var(--rule)}
   .col-critic{border-left:0;border-top:1px solid var(--rule)}
-  .trace2,.builder{grid-template-columns:1fr}
+  .trace2,.builder,.mock-grid{grid-template-columns:1fr}
   .slots{border-right:0;border-bottom:1px solid var(--rule)}
   section{padding:3.2rem 0}
   .hero{padding:3.4rem 0 2.6rem}
@@ -245,7 +253,6 @@ footer a{color:var(--ink-2)}
 </head>
 <body>
 
-<!-- ══════ HERO ══════ -->
 <header class="hero wrap">
   <div class="kicker">An open Claude Skill · MIT</div>
   <h1>Working Backwards that <em>doesn't stop</em> at the press release.</h1>
@@ -253,100 +260,48 @@ footer a{color:var(--ink-2)}
   handoff is where the method dies: the narrative gets admired, then someone opens a blank ticket and
   starts from zero.</p>
   <p class="sub">This runs all nine stages — press release, FAQs, demo, docs, telemetry, requirements,
-  release plan, readiness — with a critic gating each one. Every requirement cites the paragraph it
-  came from, because a requirement that can't cite anything is a fairly precise definition of scope creep.</p>
+  release plan, readiness — with an LLM judge gating each one. Every requirement cites the paragraph
+  it came from, because a requirement that can't cite anything is a fairly precise definition of scope
+  creep.</p>
   <div class="btns">
-    <a class="btn solid" href="#walk">Walk the pipeline</a>
+    <a class="btn solid" href="#walk">Walk a real run</a>
     <a class="btn" href="#install">Install it</a>
     <a class="btn" href="https://github.com/siddarthnyati/working-backwards">Repository</a>
   </div>
 </header>
 
-<!-- ══════ 1 · SYSTEM DESIGN ══════ -->
+<!-- §1 how it runs -->
 <section id="sys"><div class="wrap">
   <span class="sec-no">§1 — How it runs</span>
-  <h2>Three roles, one loop, per stage.</h2>
-  <p class="lede">An author produces the artifact. A critic reviews it against a fixed rubric — and is
-  architecturally barred from ruling on what it can't know. A human gates every transition. Session
-  state lives on disk, so a run resumes days later.</p>
-  <div class="sysd scroll">
-  <svg viewBox="0 0 960 330" role="img" aria-label="System design: author, critic, human gate loop with session state and outputs">
-    <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="var(--ink-3)"/></marker>
-    <marker id="arA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
-    <!-- input -->
-    <rect x="14" y="96" width="152" height="104" fill="var(--paper)" stroke="var(--ink-3)"/>
-    <text x="90" y="120" text-anchor="middle" font-size="11" fill="var(--ink)">YOUR PROBLEM</text>
-    <text x="90" y="140" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">+ wb/context/ (optional)</text>
-    <text x="90" y="158" text-anchor="middle" font-size="9" fill="var(--ink-3)">tier 0 · none</text>
-    <text x="90" y="172" text-anchor="middle" font-size="9" fill="var(--ink-3)">tier 1 · attached docs</text>
-    <text x="90" y="186" text-anchor="middle" font-size="9" fill="var(--ink-3)">tier 2 · MCP into your systems</text>
-    <!-- author -->
-    <rect x="216" y="104" width="150" height="88" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.5"/>
-    <text x="291" y="132" text-anchor="middle" font-size="11" fill="var(--ink)">AUTHOR</text>
-    <text x="291" y="150" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">the skill · stage N</text>
-    <text x="291" y="166" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">provenance tags carried</text>
-    <text x="291" y="182" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">never invents a figure</text>
-    <!-- artifact -->
-    <rect x="416" y="112" width="140" height="72" fill="var(--paper-3)" stroke="var(--ink-3)"/>
-    <text x="486" y="140" text-anchor="middle" font-size="10.5" fill="var(--ink)">ARTIFACT</text>
-    <text x="486" y="158" text-anchor="middle" font-size="9" fill="var(--ink-2)">wb/&lt;session&gt;/0N-*.md</text>
-    <text x="486" y="172" text-anchor="middle" font-size="9" fill="var(--ink-2)">written to disk</text>
-    <!-- critic -->
-    <rect x="606" y="96" width="168" height="104" fill="var(--paper)" stroke="var(--accent)" stroke-width="1.5"/>
-    <text x="690" y="120" text-anchor="middle" font-size="11" fill="var(--accent-ink)">CRITIC</text>
-    <text x="690" y="138" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">rubric · 8 dimensions</text>
-    <text x="690" y="156" text-anchor="middle" font-size="9" fill="var(--ink-2)">6 structural → PASS/REVISE/BLOCK</text>
-    <text x="690" y="172" text-anchor="middle" font-size="9" fill="var(--ink-2)">2 substantive → questions only,</text>
-    <text x="690" y="186" text-anchor="middle" font-size="9" fill="var(--ink-2)">routed to a named human role</text>
-    <!-- gate -->
-    <rect x="620" y="14" width="140" height="52" fill="var(--paper)" stroke="var(--ink)" stroke-dasharray="4 3"/>
-    <text x="690" y="36" text-anchor="middle" font-size="10.5" fill="var(--ink)">HUMAN GATE</text>
-    <text x="690" y="52" text-anchor="middle" font-size="8.5" fill="var(--ink-2)">accept · send back · override</text>
-    <!-- outputs -->
-    <rect x="816" y="80" width="130" height="136" fill="var(--paper)" stroke="var(--ink-3)"/>
-    <text x="881" y="102" text-anchor="middle" font-size="10" fill="var(--ink)">RECORDS</text>
-    <text x="881" y="122" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">BLOCKERS.md · owners</text>
-    <text x="881" y="137" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">QUESTIONS.md · asks</text>
-    <text x="881" y="152" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">DECISIONS.md · verdicts</text>
-    <text x="881" y="167" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">CONFIDENCE.md · gaps</text>
-    <text x="881" y="186" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">→ jira-import.csv</text>
-    <text x="881" y="201" text-anchor="middle" font-size="8.6" fill="var(--ink-2)">→ 08-readiness.md</text>
-    <!-- arrows -->
-    <line x1="166" y1="148" x2="212" y2="148" stroke="var(--ink-3)" marker-end="url(#ar)"/>
-    <line x1="366" y1="148" x2="412" y2="148" stroke="var(--ink-3)" marker-end="url(#ar)"/>
-    <line x1="556" y1="148" x2="602" y2="148" stroke="var(--ink-3)" marker-end="url(#ar)"/>
-    <line x1="774" y1="148" x2="812" y2="148" stroke="var(--ink-3)" marker-end="url(#ar)"/>
-    <line x1="690" y1="96" x2="690" y2="70" stroke="var(--ink-3)" marker-end="url(#ar)"/>
-    <!-- pass loop (top) -->
-    <path d="M 620 40 L 291 40 L 291 100" fill="none" stroke="var(--ink-3)" marker-end="url(#ar)"/>
-    <text x="440" y="32" text-anchor="middle" font-size="9" fill="var(--ink-3)">PASS → stage N+1 unlocks</text>
-    <!-- revise loop (bottom) -->
-    <path d="M 660 200 L 660 258 L 291 258 L 291 196" fill="none" stroke="var(--accent)" marker-end="url(#arA)"/>
-    <text x="475" y="250" text-anchor="middle" font-size="9" fill="var(--accent-ink)">REVISE → the sentence to change, not "strengthen this"</text>
-    <!-- override -->
-    <path d="M 760 40 L 881 40 L 881 76" fill="none" stroke="var(--ink-3)" stroke-dasharray="3 3" marker-end="url(#ar)"/>
-    <text x="856" y="32" text-anchor="middle" font-size="8.6" fill="var(--ink-3)">override → logged, not argued</text>
-    <!-- session state -->
-    <rect x="216" y="288" width="558" height="30" fill="var(--paper-2)" stroke="var(--rule)"/>
-    <text x="495" y="307" text-anchor="middle" font-size="9.5" fill="var(--ink-2)">session.json — mode · current stage · verdicts · open blockers → a run resumes days later; a session that can't resume is just a long prompt</text>
-  </svg>
+  <h2>Prompt → artifact → judge → you. Repeat nine times.</h2>
+  <div class="steps">
+    <div class="step"><span class="num">1</span><span class="t">You prompt the stage</span>
+      <p>One stage at a time — never "do everything." The prompt names the stage, the rules, and ends
+      with <i>do not continue</i>. Ready-made prompts for all nine ship in the skill.</p></div>
+    <div class="step"><span class="num">2</span><span class="t">The agent writes the artifact</span>
+      <p>The skill produces that stage's document and writes it to disk. Every claim carries a
+      provenance tag, and it never invents a figure — gaps stay visible as
+      <code>[NEEDS&nbsp;EVIDENCE]</code>.</p></div>
+    <div class="step judge"><span class="num">3</span><span class="t">LLM as judge</span>
+      <p>A separate review pass scores the artifact against 8 fixed dimensions. Six get real verdicts —
+      PASS / REVISE / BLOCK. Two (strategic fit, feasibility) only ever produce <i>questions routed to
+      a named human</i>: the judge is barred from ruling on what it can't know.</p></div>
+    <div class="step"><span class="num">4</span><span class="t">You gate</span>
+      <p>Accept, send back, or override. Overrides are logged with your written reasoning in
+      <code>DECISIONS.md</code> — recorded, never argued. Only then does the next stage unlock.</p></div>
   </div>
-  <p class="note" style="margin-top:.9rem">The critic judges <b>presence and provenance, never truth</b>.
-  It can tell whether a claim is made, specific, and sourced — not whether it's correct. Confident
-  verdicts on unknowable things simulate a review meeting without the knowledge that made review
-  meetings valuable; that failure mode is designed out, not prompted away.</p>
+  <p class="note" style="margin-top:1rem">That's the whole system. Below: a real run — the actual
+  prompt, the artifact it produced, the judge's verdict, and the complete document, at every stage.</p>
 </div></section>
 
-<!-- ══════ 2 · THE WALKTHROUGH ══════ -->
+<!-- §2 walkthrough -->
 <section id="walk"><div class="wrap">
-  <span class="sec-no">§2 — The walkthrough</span>
-  <h2>Nine stages. Prompt in, artifact out, critic between.</h2>
-  <p class="lede">A real run on <b>Ghost Seats</b> — a fictional B2B SaaS defect: user removal fires
-  locally, silently fails to propagate to connected integrations, and the audit log says the user is
-  gone while they keep read access. Step through: each stage shows the prompt that drove it, the
-  artifact it produced, and what the critic did about it.</p>
+  <span class="sec-no">§2 — A real run, stage by stage</span>
+  <h2>Empty Workspace: 61% of new workspaces never gain a second member.</h2>
+  <p class="lede">A fictional team-collaboration SaaS. Signups create a workspace, find it empty,
+  never invite anyone, and churn — the invite screen is three clicks deep in settings and almost
+  nobody finds it. A problem everyone recognises, with UI at every stage. Step through with the
+  arrows; the complete artifact for each stage loads underneath automatically.</p>
 
   <div class="modes" role="group" aria-label="Run mode">
     <button data-mode="full" aria-pressed="true">Full · 4–8 hrs</button>
@@ -363,10 +318,14 @@ footer a{color:var(--ink-2)}
     </div>
     <div class="car-pane" id="car-pane">
       <div class="col-prompt"><h4 class="h">The prompt</h4><div class="promptbox" id="c-prompt"></div>
-        <p class="note" style="margin-top:1rem">Reusable versions of every stage prompt ship in the skill:
-        <a href="https://github.com/siddarthnyati/working-backwards/blob/main/plugins/working-backwards/skills/working-backwards/references/stage-prompts.md"><code>references/stage-prompts.md</code></a></p></div>
+        <p class="note" style="margin-top:1rem">All nine stage prompts ship in the skill:
+        <a href="https://github.com/siddarthnyati/working-backwards/blob/main/plugins/working-backwards/skills/working-backwards/references/stage-prompts.md"><code>stage-prompts.md</code></a></p></div>
       <div class="col-art"><h4 class="h">What it produced</h4><div id="c-art" style="margin-top:.8rem"></div></div>
-      <div class="col-critic"><h4 class="h">The critic gate</h4><div id="c-critic" style="margin-top:.8rem"></div></div>
+      <div class="col-critic"><h4 class="h">LLM as judge</h4><div id="c-critic" style="margin-top:.8rem"></div></div>
+    </div>
+    <div class="fulldoc">
+      <div class="fulldoc-bar"><h4>The complete artifact, as written to disk</h4><div id="ftabs" style="display:flex;gap:.4rem;flex-wrap:wrap"></div></div>
+      <pre id="fdoc"></pre>
     </div>
     <div class="car-nav">
       <button id="nav-prev">← <span id="nav-prev-t"></span></button>
@@ -376,52 +335,64 @@ footer a{color:var(--ink-2)}
   </div>
 </div></section>
 
-<!-- ══════ 3 · BLOCKERS ══════ -->
+<!-- §3 blockers -->
 <section id="blockers"><div class="wrap">
   <span class="sec-no">§3 — What the FAQ stage found</span>
   <h2>Six blockers, before a single requirement existed.</h2>
-  <p class="lede">This is the pipeline's payback moment. At Stage 2 — before requirements, before
-  design — the hostile-question banks surfaced six things that reshape the plan. Each is a
-  <i>question with an owner</i>, never a finding: the skill cannot assess legal exposure, so it names
-  the person who can, and it has no way to mark its own question resolved.</p>
+  <p class="lede">The pipeline's payback moment. At Stage 2 — before requirements, before design —
+  the hostile-question banks surfaced six things that reshape the plan. Each is a <i>question with an
+  owner</i>, never a finding: the skill can't assess legal exposure, so it names the person who can,
+  and it has no way to mark its own question resolved.</p>
   <div class="cards" id="blk-cards"></div>
-  <p class="note" style="margin-top:1.2rem"><code>BLK-05</code> and <code>BLK-06</code> came from the
-  two internal-FAQ questions that reliably pay: <i>who owns the system this depends on</i>, and
-  <i>can we enumerate the affected population retroactively</i>. Both made half the release plan
-  unschedulable — which is the honest output, not a failure. Full records:
-  <a href="https://github.com/siddarthnyati/working-backwards/blob/main/examples/ghost-seats/BLOCKERS.md"><code>BLOCKERS.md</code></a></p>
+  <p class="note" style="margin-top:1.2rem">The quiet one is <code>BLK-03</code>: an ownership dispute
+  blocking the two slices that need no lawyer. The skill can't resolve it — but it put a name and a
+  date on the meeting, which is more than the last two onboarding projects had.</p>
 </div></section>
 
-<!-- ══════ 4 · WHAT IT DOESN'T KNOW ══════ -->
+<!-- §4 honesty -->
 <section id="unknown"><div class="wrap">
   <span class="sec-no">§4 — What it doesn't know</span>
-  <h2>A question-generation engine, honest about it.</h2>
-  <p class="lede">Amazon's PR/FAQ works because it's a <i>meeting</i> — the people in the room are the
-  context. A solo user plus a model replaces the document, not the room. So every claim carries
-  provenance, and the session ends with a completeness meter, not a confidence trick. Toggle the runs:</p>
-  <div class="toggle" role="group" aria-label="Context run" style="margin-bottom:1rem">
-    <button data-run="0" aria-pressed="true">No context pack</button>
-    <button data-run="1" aria-pressed="false">One strategy doc</button>
-  </div>
+  <h2>One honest word, carried all the way down.</h2>
+  <p class="lede">The 5.4× retention gap between team and solo workspaces is a <i>correlation</i>. The
+  whole initiative rests on it being causal — so that claim is tagged <code>[ASSUMED]</code> at
+  intake, and the tag survives into the press release, becomes an experiment requirement, and ends up
+  in the readiness doc's failure modes. Nothing along the way is allowed to round it up to a fact.</p>
   <div class="trace2">
     <div>
-      <h4>CONFIDENCE.md — rendered after every stage</h4>
-      <pre class="logbox" id="conf-block" style="margin-top:.6rem"></pre>
-      <p class="note" id="conf-note" style="margin-top:.7rem"></p>
+      <h4>CONFIDENCE.md — the session's last word</h4>
+      <pre class="logbox" style="margin-top:.6rem">SESSION CONFIDENCE · empty-workspace · after Stage 8
+Claims:        5 observed · 1 reported · 2 assumed · 2 unknown
+Requirements:  8 total · 1 resting on assumption · 0 unsourced
+Release:       4 slices · 1 schedulable today · 3 blocked
+Questions:     11 open · 0 with no owner assigned
+Blockers:      6 open (4 high · 2 medium)
+Context pack:  absent — strategic fit and feasibility
+               were not evaluated</pre>
+      <p class="note" style="margin-top:.7rem">PMs read this as a to-do list, which is exactly what it
+      is. A tool that tells you what it doesn't know is more trustworthy than one that doesn't.</p>
     </div>
     <div>
       <h4>The problem paragraph, tags inline</h4>
-      <p class="para" id="prov-para" style="margin-top:.6rem"></p>
-      <p class="note" id="prov-note"></p>
+      <p class="para" style="margin-top:.6rem">61% of new workspaces never gain a second member
+      <span class="tag t-obs">[OBSERVED: product analytics]</span>, and single-member workspaces churn
+      at 5.4× by day 30 <span class="tag t-obs">[OBSERVED: retention cohorts]</span>. We believe the
+      teammates are the cause <span class="tag t-asm">[ASSUMED — C5; the experiment that would settle
+      it is REQ-D3]</span>. New users tell support the workspace "felt empty"
+      <span class="tag t-rep">[REPORTED: CS verbatims]</span>.
+      <span class="tag t-unk">[NEEDS EVIDENCE: invite attempts are not instrumented]</span></p>
+      <p class="note">Want to see what supplying context changes? A companion run with a strategy doc
+      in <code>wb/context/</code> closed four questions and sharpened two — and closed
+      <b>zero blockers</b>:
+      <a href="https://github.com/siddarthnyati/working-backwards/tree/main/examples/ghost-seats-with-context">the before/after study</a>.</p>
     </div>
   </div>
 </div></section>
 
-<!-- ══════ 5 · CONTEXT BUILDER ══════ -->
+<!-- §5 context builder -->
 <section id="context"><div class="wrap">
   <span class="sec-no">§5 — Bring your own context</span>
   <h2>What each document you supply actually buys.</h2>
-  <p class="lede">Tick what you have — the confidence meter and critic dimensions update live. Note
+  <p class="lede">Tick what you have — the confidence meter and judge dimensions update live. Note
   what never changes: <b>blockers</b>. No document converts a legal or regulatory determination into a
   lookup; context makes the question citable, not answered.</p>
   <div class="privacy"><b>Nothing leaves your browser.</b> Dropping a file reads its <i>name</i> and
@@ -431,7 +402,7 @@ footer a{color:var(--ink-2)}
     <div class="meter">
       <h4>CONFIDENCE.md</h4>
       <pre class="logbox" id="bld-conf" style="font-size:.7rem;margin-top:.5rem"></pre>
-      <h4 style="margin-top:1.2rem">Critic dimensions</h4>
+      <h4 style="margin-top:1.2rem">Judge dimensions</h4>
       <div id="bld-dims" style="margin-top:.5rem"></div>
       <div class="btns" style="margin-top:1.2rem">
         <button class="btn" id="dl-context">Download CONTEXT.md</button>
@@ -442,10 +413,10 @@ footer a{color:var(--ink-2)}
   </div>
   <p class="note" style="margin-top:1rem">The real upload path is Claude's file attach, a Project
   knowledge base, or an MCP connection into your wiki and trackers — this widget just tells you what
-  to put there. In the worked example, one strategy doc closed four questions and zero blockers.</p>
+  to put there.</p>
 </div></section>
 
-<!-- ══════ 6 · INSTALL ══════ -->
+<!-- §6 install -->
 <section id="install"><div class="wrap">
   <span class="sec-no">§6 — Install</span>
   <h2>Three ways in.</h2>
@@ -471,269 +442,273 @@ skills/working-backwards \
 <footer><div class="wrap">
   <p>Working Backwards is Amazon's method, described publicly by Colin Bryar and Bill Carr in
   <i>Working Backwards</i> (2021). This is an independent open implementation of the public method,
-  adding the critic gate, provenance tagging, and the requirements and release stages. Not affiliated
+  adding the judge gate, provenance tagging, and the requirements and release stages. Not affiliated
   with or endorsed by Amazon.</p>
-  <p>Ghost Seats is fictional. Every artifact on this page is the skill's real output, read from
-  <a href="https://github.com/siddarthnyati/working-backwards/tree/main/examples/ghost-seats"><code>examples/ghost-seats/</code></a>.
-  A second full run with its own runbook:
-  <a href="https://github.com/siddarthnyati/working-backwards/blob/main/examples/silent-stepdown/RUNBOOK.md"><code>examples/silent-stepdown/</code></a>.
+  <p>Empty Workspace is fictional; every artifact on this page is the skill's real output from
+  <a href="https://github.com/siddarthnyati/working-backwards/tree/main/examples/empty-workspace"><code>examples/empty-workspace/</code></a>.
+  Two more complete runs:
+  <a href="https://github.com/siddarthnyati/working-backwards/tree/main/examples/ghost-seats"><code>ghost-seats</code></a> (platform defect, includes an honest override) and
+  <a href="https://github.com/siddarthnyati/working-backwards/tree/main/examples/silent-stepdown"><code>silent-stepdown</code></a> (payments).
   MIT. Built by <a href="https://github.com/siddarthnyati">Siddarth Nyati</a>.</p>
   <p class="note">Fully static — no API keys, no model calls, no network requests, works offline.</p>
 </div></footer>
 
+<script type="application/json" id="fulldocs">{"00-intake.md": "# Intake — Empty Workspace\n\nSession: `empty-workspace` · Mode: `full` · Date: 2026-08-30\n\n> **Fictional worked example.** An invented team-collaboration SaaS; no real company or\n> dataset. This is the run that drives the site's walkthrough — chosen because the problem\n> and its artifacts are UI-shaped, so every stage has something you can see.\n\n## Trigger\n\nProduct analytics on new-workspace cohorts: **61% of new workspaces never gain a second\nmember within 14 days** `[OBSERVED: product analytics, six-month signup cohort]`.\nSingle-member workspaces churn at **5.4× the rate** of workspaces with three or more members\nby day 30 `[OBSERVED: retention cohort analysis]`.\n\nThe invite screen sits three clicks deep in workspace settings `[OBSERVED: current IA]`.\nNothing measures how many people *try* to invite and give up — invite attempts are not\ninstrumented `[UNKNOWN]`.\n\n## Customer\n\n**Segment:** team leads at 5–50-person companies who create a workspace self-serve,\nintending to bring their team — not solo users, not enterprise rollouts with an admin\ndoing provisioning.\n\n**List-of-ten test:** query signups where company-size field is 5–50 AND the workspace name\ncontains a company or team name AND the creator's role field is lead/manager. All three\nfields exist at signup. `[OBSERVED]`\n\n**Not this product's customer:** deliberate solo users (a solo workspace is a valid\noutcome, not a failure), and enterprise-provisioned seats (they never see first-run).\n\n## Evidence\n\n| # | Claim | Tag | Source |\n|---|---|---|---|\n| C1 | 61% of new workspaces never gain a second member in 14 days | `[OBSERVED]` | product analytics, 6-month cohort |\n| C2 | Single-member workspaces churn 5.4× by day 30 | `[OBSERVED]` | retention cohorts |\n| C3 | The invite screen is three clicks deep in settings | `[OBSERVED]` | current IA |\n| C4 | New users say the workspace \"felt empty / didn't know where to start\" | `[REPORTED]` | CS lead, onboarding NPS verbatims |\n| C5 | Getting a teammate in *causes* retention (not just correlates) | `[ASSUMED]` | — the 5.4× is correlation; teams that were going to stick may simply invite more |\n| C6 | Invite emails will actually reach inboxes at current deliverability | `[ASSUMED]` | — no bounce/complaint data reviewed |\n| C7 | How many users attempt an invite and fail or abandon | `[UNKNOWN]` | not instrumented → Q-03 |\n| C8 | Whether signup volume gives an invite-experiment enough statistical power | `[UNKNOWN]` | → Q-05 |\n\nC5 is the load-bearing assumption of the whole initiative: if teammates don't cause\nretention, this is a vanity funnel. It is tagged at the door and tracked to Stage 6.\n\n## Constraint\n\nNone external. Growth wants it this quarter `[REPORTED: growth lead]` — a preference, not\na mandate.\n\n## Who must agree\n\nVP Product · growth lead (both claim the onboarding surface — see BLK-03) · privacy counsel\n(contact import) · compliance (invite email rules) · security (OAuth scopes) · data lead\n(experiment design).\n\n## Context tier\n\n**Tier:** `0 · none` — `wb/context/` absent.\n**Therefore not evaluable:** dimension 4 (strategic fit) and dimension 6 (falsifiability)\ndegrade to questions; the growth-vs-product ownership question routes to the VP without an\nownership map to cite.\n\n## Mode selection\n\n**Mode:** Full (0–8). New first-run surface, two teams claiming it, one load-bearing causal\nassumption, live privacy/regulatory edges on contact import. **Stages skipped:** none.\n", "01-press-release.md": "# Empty Workspace\n\n> Revision of draft 1 after a REVISE on dimension 2. Changed: ¶2 only — the causal claim\n> now carries its tag, and the unmeasured gap is visible. See `DECISIONS.md`.\n> ¶ markers are load-bearing — requirements cite them.\n\n---\n\n# A workspace that starts as a team\n\n## New workspaces now begin with teammates in the room and something real to work on — and inviting never blocks anyone.\n\n**¶1** — **SAN FRANCISCO, 12 MARCH 2027** — Today we are rebuilding the first five minutes.\nCreating a workspace now starts with your team: an invite step in first-run setup, an\ninvite composer available from anywhere, and empty states that offer real starting points\ninstead of a blank page. Every step is skippable — a solo workspace is a choice we respect,\nnot a failure we nag about.\n\n**¶2** — Most workspaces die alone. 61% never gain a second member in their first two weeks\n`[OBSERVED: product analytics, six-month cohort]`, and single-member workspaces churn at\n5.4× the rate of three-plus-member workspaces by day 30 `[OBSERVED: retention cohorts]`.\nWe believe the teammates are the cause and not just the company retained teams keep\n`[ASSUMED — C5; the experiment that would settle it is REQ-D3]`. What is not in doubt: the\ninvite screen is three clicks deep in settings `[OBSERVED]`, fewer than 4% of new\nworkspaces ever open it in week one `[OBSERVED]`, and new users tell support the workspace\n\"felt empty\" `[REPORTED: CS onboarding verbatims]`. `[NEEDS EVIDENCE: how many users\nattempt an invite and abandon — attempts are not instrumented]`\n\n**¶3** — From today, setup asks who you work with — right after your workspace gets a name.\nType addresses or skip in one click. The composer is available from every screen, and the\nfull invite funnel is measured: attempted, sent, accepted, first-action.\n\n**¶4** — Today a team lead who wants company either digs the invite screen out of settings —\nwhich analytics says almost nobody finds in week one `[OBSERVED: <4% of new workspaces open\nit]` — or shares raw document links over email, which creates guests with no workspace and\nno way back. The first is invisible. The second is unmeasured. Both look, from our side,\nlike a user who chose to be alone.\n\n**¶5** — The blank page is gone too. A new workspace opens on a template gallery — a\nproject tracker, a team wiki, a meeting-notes space — each one pre-populated and each one\nusable in one click. An empty state that only says \"create your first document\" is an\ninstruction; one that offers a working starting point is a head start.\n\n**¶6** — Customer quote:\n\n> \"I set it up on a Tuesday, meant to invite the team, couldn't find where, and by Friday\n> we were back in the old tool. It wasn't a decision. It just never started.\"\n> — team lead, 12-person agency\n> `[illustrative construction — not a real customer statement]`\n\n**¶7** — Spokesperson quote:\n\n> \"We kept optimizing what a user sees on day one and ignored who they see — nobody. The\n> single strongest pattern in our retention data is teams versus solos, so the first thing\n> setup should do is help you not be solo. And because that pattern is a correlation until\n> we test it, this ships with its own experiment, not just its own dashboard.\"\n> — VP Product\n\n**¶8** — **Getting started.** New workspaces get the new flow automatically. Existing\nworkspaces get the composer and template gallery from the sidebar.\n\n---\n\n*Provenance summary: 5 observed · 1 reported · 1 assumed · 1 needs-evidence*\n", "01-press-release-draft1.md": "# Empty Workspace — Draft 1\n\n> **First draft, kept.** The critic returned REVISE on dimension 2 (evidence presence) —\n> the causal claim in ¶2 carried no tag. See `DECISIONS.md`. Revised: `01-press-release.md`.\n\n---\n\n# A workspace that starts as a team\n\n## New workspaces now begin with teammates in the room and something real to work on — and inviting never blocks anyone.\n\n**¶1** — **SAN FRANCISCO, 12 MARCH 2027** — Today we are rebuilding the first five minutes.\nCreating a workspace now starts with your team: an invite step in first-run setup, an\ninvite composer available from anywhere, and empty states that offer real starting points\ninstead of a blank page. Every step is skippable — a solo workspace is a choice we respect,\nnot a failure we nag about.\n\n**¶2** — Most workspaces die alone. 61% never gain a second member in their first two weeks\n`[OBSERVED: product analytics]`. Teams that don't invite churn because they never experience\ncollaboration — the product's entire value. The invite screen is buried three clicks deep in\nsettings `[OBSERVED]`, and new users tell support the workspace \"felt empty\" `[REPORTED:\nCS onboarding verbatims]`.\n\n**¶3** — From today, setup asks who you work with — right after your workspace gets a name.\nType addresses or skip in one click. The composer is available from every screen, and the\nfull invite funnel is measured: attempted, sent, accepted, first-action.\n\n**¶4** — Today a team lead who wants company either digs the invite screen out of settings —\nwhich analytics says almost nobody finds in week one `[OBSERVED: <4% of new workspaces open\nit]` — or shares raw document links over email, which creates guests with no workspace and\nno way back. The first is invisible. The second is unmeasured. Both look, from our side,\nlike a user who chose to be alone.\n\n**¶5** — The blank page is gone too. A new workspace opens on a template gallery — a\nproject tracker, a team wiki, a meeting-notes space — each one pre-populated and each one\nusable in one click. An empty state that only says \"create your first document\" is an\ninstruction; one that offers a working starting point is a head start.\n\n**¶6** — Customer quote:\n\n> \"I set it up on a Tuesday, meant to invite the team, couldn't find where, and by Friday\n> we were back in the old tool. It wasn't a decision. It just never started.\"\n> — team lead, 12-person agency\n> `[illustrative construction — not a real customer statement]`\n\n**¶7** — Spokesperson quote:\n\n> \"We kept optimizing what a user sees on day one and ignored who they see — nobody. The\n> single strongest pattern in our retention data is teams versus solos, so the first thing\n> setup should do is help you not be solo.\"\n> — VP Product\n\n**¶8** — **Getting started.** New workspaces get the new flow automatically. Existing\nworkspaces get the composer and template gallery from the sidebar.\n\n---\n\n*Provenance summary: 4 observed · 1 reported · 0 assumed (see critic) · 0 needs-evidence (see critic)*\n", "02-faq-internal.md": "# Internal FAQ — Empty Workspace\n\nHostile versions, in the voice of the leader who would ask. Four blockers surfaced here.\n\n## Product / Growth\n\n```\nIFAQ-01 · Ownership · BLOCKER\nQ: Growth runs first-run experiments; product owns onboarding surfaces. Both roadmaps\n   claim this quarter's activation work. Who owns the invite step — and who owns the\n   number it moves?\nA: No clear answer, which is itself the answer — the last two onboarding changes shipped\n   twice, once per team, and conflicted. This initiative needs a single owner before R2.\n   → BLK-03 · DEPENDENCY · severity high · Owner role: VP Product · Status: OPEN\n```\n\n```\nIFAQ-02 · The causal claim · BLOCKER\nQ: The 5.4× retention gap is a correlation. Teams that were always going to stick around\n   invite more. If we ship all of this and activation moves but retention doesn't, what\n   did we spend the quarter on?\nA: Exactly the right question and the reason REQ-D3 exists: a holdback experiment ships\n   WITH the feature, not after it. Whether current signup volume gives the experiment\n   enough power is unknown.\n   → BLK-04 · DATA · severity high · Owner role: data & analytics lead · Status: OPEN\n```\n\n## Privacy\n\n```\nIFAQ-03 · Contact import · BLOCKER\nQ: Importing a user's address book means holding personal data of people who never signed\n   up for anything. What is our lawful basis, how long do we keep non-user contacts, and\n   can we honour a deletion request from someone who was never our user?\nA: Not evaluable here. This gates REQ-DP3 entirely — the import button ships disabled\n   until counsel answers.\n   → BLK-01 · PRIVACY · severity high · Owner role: privacy counsel · Status: OPEN\n```\n\n## Security\n\n```\nIFAQ-04 · OAuth scope · OPEN → BLOCKER\nQ: Contact import means requesting address-book scopes and storing the tokens. What does\n   an attacker get if that store is compromised — and are we widening scope for a feature\n   whose value is unproven (see IFAQ-02)?\nA: Not evaluable here; the scope request is real attack-surface expansion resting on an\n   [ASSUMED] value claim. Security review before any token is stored.\n   → BLK-06 · SECURITY · severity medium · Owner role: security lead · Status: OPEN\n```\n\n## Commercial\n\n```\nIFAQ-05 · Incentives · BLOCKER\nQ: If we pay for invites — seats, discounts — what stops incentive-farming, and does a\n   discount for behaviour that correlated with retention anyway just give margin away?\nA: Not evaluable here, and it depends on IFAQ-02's answer: paying for a behaviour you\n   haven't shown to be causal is paying for a metric.\n   → BLK-05 · COMMERCIAL · severity medium · Owner role: commercial lead · Status: OPEN\n```\n\n## Engineering / Ops\n\n```\nIFAQ-06 · Deliverability · OPEN\nQ: Invite emails only work if they arrive. What is our current bounce and spam-complaint\n   rate, and does a spike in invite volume put our sending domain at risk?\nA: Unknown — C6 is assumed. The email vendor relationship and domain reputation need a\n   look before R3 scales send volume.\n   → Q-06 · Ask: platform engineering lead\n```\n\n```\nIFAQ-07 · Measurement · OPEN\nQ: Do we even know today how many people try to invite and fail?\nA: No. Invite attempts are not instrumented (C7). This is why R1 ships first and dark —\n   the funnel gets measured before the funnel gets moved.\n   → Q-03 · Ask: data & analytics lead\n```\n\n---\n\n*Tag counts: 3 OPEN · 4 BLOCKER · 0 ANSWERED — tier-0 run.*\n*Blockers raised here: BLK-01, BLK-03, BLK-04, BLK-05, BLK-06*\n", "02-faq-external.md": "# External FAQ — Empty Workspace\n\n```\nEFAQ-01 · Scope · ANSWERED\nQ: What changed, in one sentence?\nA: Setup now starts with your team and a working first page — inviting is one step, always\n   skippable, and the blank workspace is replaced by usable templates. Source: PR ¶1.\n```\n\n```\nEFAQ-02 · Dark patterns · ANSWERED\nQ: Is this going to nag me like a social app — gate my workspace until I hand over my\n   address book?\nA: No, and the rule is written into the requirements: the invite step is skippable in one\n   click, never blocks access to anything, and never re-prompts on a schedule (REQ-DP5).\n   A solo workspace is a valid outcome. Source: PR ¶1.\n```\n\n```\nEFAQ-03 · Contact import · OPEN\nQ: Can I import teammates from Google or Outlook contacts?\nA: Designed but not shipping yet — importing an address book raises consent and data-\n   retention questions we route to privacy counsel before building, not after.\n   → BLK-01 · Status: OPEN. The invite composer takes typed addresses today.\n```\n\n```\nEFAQ-04 · Templates · ANSWERED\nQ: Do templates overwrite anything, and can I get the blank workspace back?\nA: Templates create content, never replace it, and \"start empty\" is always the last card in\n   the gallery. Source: PR ¶5 / 03-demo-spec.md F3.\n```\n\n```\nEFAQ-05 · Incentives · OPEN\nQ: Do I get anything for inviting my team?\nA: Undecided. Whether invite incentives (free seats, discounts) help or just get gamed is a\n   commercial question with real cannibalization risk.\n   → BLK-05 · Ask: commercial lead\n```\n\n```\nEFAQ-06 · Existing workspaces · ANSWERED\nQ: I already have a workspace. Does any of this hit me?\nA: You get the composer in the sidebar and the template gallery for new pages. Your\n   first-run is long gone; we won't replay it at you. Source: PR ¶8.\n```\n\n---\n\n*Tag counts: 4 ANSWERED · 2 OPEN*\n", "02-faq-regional.md": "# Regional FAQ — Empty Workspace\n\nRegulations appear as public categories; every entry is a question with an owner, never a\ncompliance conclusion.\n\n```\nRFAQ-01 · Invite email rules · BLOCKER\nQ: An invite email sent to someone who never opted in — under CAN-SPAM, CASL, and\n   ePrivacy-style regimes, is that a transactional message from the inviting user, or\n   marketing from us? The answer changes sender identity, required footers, and whether\n   the feature is offerable per market.\nA: Not evaluable here. What is stateable: the email exists, a non-user receives it, and\n   the categories differ by jurisdiction.\n   → BLK-02 · REGULATORY · severity high · Owner role: compliance lead · Status: OPEN\n```\n\n```\nRFAQ-02 · Non-user data · OPEN\nQ: Under GDPR-style regimes, an imported contact who never signed up is a data subject\n   whose data we hold. Notification, basis, retention?\nA: Same surface as BLK-01, jurisdictional flavour. Folded into that blocker's ask.\n   → BLK-01 (carried)\n```\n\n```\nRFAQ-03 · Localisation · OPEN\nQ: Templates ship in how many languages? A template gallery in English is a blank page\n   with extra steps for a non-English team.\nA: Undecided and it changes R2's definition of done per market.\n   → Q-08 · Ask: localisation lead\n```\n\n---\n\n*Tag counts: 2 OPEN · 1 BLOCKER*\n*Blocker raised here: BLK-02*\n", "03-demo-spec.md": "# Demo spec — Empty Workspace\n\nAn alignment device. This one is genuinely visual — three screens carry the whole feature.\n\n## Screen 1 · First-run, step 2 of 3: \"Who do you work with?\"\n\n- Email chip input, autofocused. Typing shows a chip per address; role defaults to member.\n- Primary action: **Send invites & continue**. Secondary, equally visible: **Skip for now**\n  — one click, no confirmation dialog, no guilt copy.\n- An **Import from contacts** button is present but disabled, with a tooltip:\n  \"Coming soon — pending privacy review.\" The button ships disabled deliberately: it makes\n  the roadmap visible without shipping the risk (BLK-01).\n- Nothing on this screen gates anything. Source: PR ¶1 / PR ¶3 / EFAQ-02.\n\n## Screen 2 · The empty state, replaced\n\nBefore: blank canvas + \"Create your first document.\"\nAfter: a template gallery —\n\n| Card | Contents on open |\n|---|---|\n| Project tracker | Pre-populated board: 3 example tasks, owner column, due column |\n| Team wiki | Home page with headings and a \"how we work\" stub |\n| Meeting notes | Dated page + recurring template |\n| Start empty | The old blank canvas — always last, never removed |\n\nOne click opens a working page. Source: PR ¶5 / EFAQ-04.\n\n## Screen 3 · Invite composer, from anywhere\n\nSidebar button → same composer as first-run. Shows invite status per person:\nsent · opened · joined · bounced. Source: PR ¶3.\n\n## Failure states\n\n| # | What fails | What the user sees | Source |\n|---|---|---|---|\n| F1 | Invite email bounces | Status chip \"bounced — check address,\" visible in composer, not buried in email logs | PR ¶3 |\n| F2 | Invitee already has an account elsewhere | They join this workspace with their existing login; inviter sees \"joined\" | PR ¶3 |\n| F3 | Template fails to load | Fall back to blank canvas with a retry — never a dead first screen | EFAQ-04 |\n| F4 | User skips invite step | No re-prompt on a schedule; composer stays one click away in the sidebar | EFAQ-02 |\n| F5 | Send fails server-side | Composer says so and keeps the chips; a silent drop here recreates the original invisibility | PR ¶4 |\n\n## What this deliberately does not show\n\nNo contact import (BLK-01, BLK-02, BLK-06 — the disabled button is the honest version).\nNo invite incentives (BLK-05). No re-engagement emails to the inviter — that is a\nretention campaign, not onboarding, and nothing upstream asks for it.\n\n## Open questions surfaced\n\n- → Q-07 · Does \"Skip for now\" copy affect skip rate? Wording is testable but only after\n  R1 instruments the funnel. · Ask: growth lead (pending BLK-03 ownership)\n- → Q-08 · Template languages (carried from RFAQ-03).\n", "04-docs.md": "# Inviting your team — documentation draft\n\nDrafted from the approved PR and external FAQ. One section could not be written.\n\n## Setting up a workspace\n\nStep 2 of setup asks who you work with. Type email addresses, or select **Skip for now** —\nyou can invite from the sidebar at any time. Nothing in your workspace is locked behind\ninviting anyone. Source: PR ¶1 / PR ¶3.\n\n## Starting from a template\n\nA new workspace opens on the template gallery. Each card creates a working page — a project\ntracker with example tasks, a team wiki, meeting notes. **Start empty** is always available\nas the last card. Templates create content; they never overwrite anything. Source: PR ¶5.\n\n## Invite states\n\n| State | Means |\n|---|---|\n| Sent | The email went out |\n| Opened | The invite link was opened |\n| Joined | They're in — their name appears in members |\n| Bounced | The address didn't accept mail — check it and resend |\n\n## Troubleshooting\n\n| Symptom | What to do |\n|---|---|\n| Invite shows \"bounced\" | Check the address; resend from the composer |\n| Invitee says \"no email\" | Ask them to check spam; resend generates a fresh link |\n| Wrong person invited | Revoke from Members before they join; the link dies immediately |\n\n## Could not be written yet\n\n**\"Import your contacts\"** — the button is visible-but-disabled in setup, and this page\ncannot explain it because what it will be allowed to do is a privacy determination that\nhas not been made. Written the moment BLK-01 resolves; not a word sooner.\n→ BLK-01 · Ask: privacy counsel\n", "05-telemetry.md": "# Telemetry — Empty Workspace\n\nIf the PR claims it, telemetry must measure it — or the claim comes out. Several baselines\nhere are already observed; the two that matter most are not, and one of them is the point\nof the whole initiative.\n\n## North star\n\n**Metric:** Day-14 Multiplayer Rate (D14MR)\n\n**Definition:** Of workspaces created in the period, the percentage with ≥2 members who\nhave each taken ≥1 action by day 14. Membership without action is seat inflation, not a\nteam — the second clause is what keeps this metric honest.\n\n**Measures the claim:** PR ¶1 — \"begins with teammates in the room.\"\n\n**Baseline:** 39% have a second *member*; members-with-action baseline `[UNKNOWN]` until R1\ninstruments actions-by-member. **Target:** set after one full cohort post-R1 — a target\nbefore the honest baseline would be a number someone gets held to for no reason. → Q-04\n\n## Input metrics\n\n| # | Metric | Measures | Baseline | Exists? |\n|---|---|---|---|---|\n| M1 | Invite funnel: attempted → sent → accepted → first-action | PR ¶3 \"the full invite funnel is measured\" | `[UNKNOWN]` — attempts not instrumented (C7) | No — R1 builds it |\n| M2 | Invite-screen discovery (% of new workspaces opening composer, week 1) | PR ¶4 \"<4% find it\" | 4% `[OBSERVED]` | Yes |\n| M3 | Skip rate on the first-run invite step | EFAQ-02 (the never-nag rule needs a health check: a 95% skip rate means the step is noise) | n/a — new | No |\n| M4 | Template adoption (% of new workspaces opening ≥1 template) | PR ¶5 | n/a — new | No |\n| M5 | Bounce + spam-complaint rate on invite sends | C6, IFAQ-06 | `[UNKNOWN]` | Partially — vendor dashboard, unreviewed |\n| M6 | **The experiment:** day-30 retention, invite-first cohort vs holdback | PR ¶2's `[ASSUMED]` causal claim, PR ¶7 \"ships with its own experiment\" | 5.4× correlational gap `[OBSERVED]` | No — REQ-D3, gated by BLK-04 power question |\n\n## Claims we cannot currently measure\n\n| PR claim | Why | Decision |\n|---|---|---|\n| ¶2 — teammates *cause* retention | Correlation observed; causation needs M6's holdback | The claim stays tagged [ASSUMED] in the PR until M6 reads out. Launch copy may cite the 5.4× as correlation only. |\n| ¶6 quote — \"we were back in the old tool by Friday\" | Illustrative construction; churn *reasons* are not instrumented | Labelled, stays labelled |\n\n## Questions raised\n\n- → Q-04 · What is the D14MR target, and who signs it off? · Ask: VP Product (after BLK-03)\n- → Q-05 · Does signup volume power a holdback experiment in one quarter? · Ask: data lead (BLK-04)\n", "06-requirements.md": "# Requirements — Empty Workspace\n\nEvery requirement cites the artifact above it. One rests on the session's load-bearing\nassumption; one is shape pending behind three blockers.\n\n## Discovery requirements (D)\n\n```\nREQ-D1 · Instrument the invite funnel end to end\nSource: PR ¶3 / IFAQ-07\nProvenance: [OBSERVED] × 1, [UNKNOWN] × 1\nStatement: Every invite records attempted, sent, accepted, and first-action events with workspace, actor, and timestamps — including attempts abandoned before send.\nAcceptance criteria:\n  GIVEN a user opens the invite composer and closes it without sending\n  WHEN  the session ends\n  THEN  an attempted event exists with no sent event, attributable to that workspace\n  AND   a full send-accept-act sequence produces all four events in order\nOut of scope: showing funnel data to customers\nDepends on: —\n```\n\n```\nREQ-D2 · Baseline members-with-action, not members\nSource: 05-telemetry.md / PR ¶1\nProvenance: [OBSERVED] × 1\nStatement: The Day-14 Multiplayer Rate is computable per cohort, counting only members with at least one action.\nAcceptance criteria:\n  GIVEN a cohort with invited members who never acted\n  WHEN  D14MR is computed\n  THEN  those members do not count toward multiplayer status\n  AND   the report states cohort size and period\nOut of scope: setting the target (Q-04)\nDepends on: REQ-D1\n```\n\n```\nREQ-D3 · Holdback experiment on the causal claim\nSource: PR ¶2 / IFAQ-02\nProvenance: [OBSERVED] × 1, [ASSUMED] × 1 → RESTS ON ASSUMPTION\nStatement: A randomized holdback cohort retains the old first-run, and day-30 retention is compared against the invite-first cohort.\nAcceptance criteria:\n  GIVEN assignment at workspace creation\n  WHEN  cohorts are compared at day 30\n  THEN  the readout states effect size, confidence interval, and cohort sizes\n  AND   if the experiment is underpowered at current volume, the readout says so rather than extending silently\nConditional on: BLK-04 — if volume cannot power it in a quarter, the design changes (longer window, or a proxy endpoint) and the PR's causal framing stays [ASSUMED]\nOut of scope: acting on the result\nDepends on: REQ-D1, BLK-04\nStatus: SHAPE PENDING\n```\n\n## Delivery requirements (DP)\n\n```\nREQ-DP1 · Invite step in first-run setup\nSource: PR ¶1 / PR ¶3\nProvenance: [OBSERVED] × 1\nStatement: Workspace setup includes an invite step — email chips, send, or skip — between naming and first content.\nAcceptance criteria:\n  GIVEN a user on the invite step\n  WHEN  they select Skip for now\n  THEN  setup continues immediately with no confirmation dialog\n  AND   sending invites and skipping reach the same next screen\nOut of scope: contact import (REQ-DP3)\nDepends on: REQ-D1\n```\n\n```\nREQ-DP2 · Template gallery replaces the blank empty state\nSource: PR ¶5 / EFAQ-04\nProvenance: [OBSERVED] × 1\nStatement: A new workspace opens on a template gallery; each card creates a working pre-populated page; Start empty is always present.\nAcceptance criteria:\n  GIVEN a brand-new workspace\n  WHEN  the owner opens it first\n  THEN  the gallery renders with Start empty as the final card\n  AND   opening a template creates content without replacing anything\n  AND   a template load failure falls back to the blank canvas with a retry (F3)\nOut of scope: template authoring by customers; localisation (Q-08)\nDepends on: —\n```\n\n```\nREQ-DP3 · Contact import\nSource: PR ¶3 / EFAQ-03 / RFAQ-02\nProvenance: [OBSERVED] × 1, [UNKNOWN] × 1\nStatement: Where privacy, regulatory and security review permit, users can import contacts to populate the invite composer.\nConditional on: BLK-01 (lawful basis, non-user retention), BLK-02 (invite email classification), BLK-06 (OAuth scope and token storage). The button ships disabled with a \"pending review\" tooltip until all three resolve.\nAcceptance criteria:\n  GIVEN all three blockers resolve permissive\n  WHEN  a user imports contacts\n  THEN  only selected addresses are retained, and non-selected contact data is discarded at session end\nOut of scope: everything until the blockers resolve\nDepends on: BLK-01, BLK-02, BLK-06\nStatus: SHAPE PENDING\n```\n\n```\nREQ-DP4 · Invite composer available from anywhere\nSource: PR ¶3 / PR ¶4\nProvenance: [OBSERVED] × 2\nStatement: The composer opens from the sidebar on every screen and shows per-invite status: sent, opened, joined, bounced.\nAcceptance criteria:\n  GIVEN an invite whose email bounced\n  WHEN  the inviter opens the composer\n  THEN  that invite shows bounced with a resend action (F1)\n  AND   a server-side send failure is shown and preserves the entered addresses (F5)\nOut of scope: bulk CSV invite\nDepends on: REQ-D1\n```\n\n```\nREQ-DP5 · The never-nag rule\nSource: EFAQ-02 / 03-demo-spec.md F4\nProvenance: [OBSERVED] × 1\nStatement: Skipping the invite step is one click, gates nothing, and triggers no scheduled re-prompt anywhere in the product.\nAcceptance criteria:\n  GIVEN a user who skipped the invite step\n  WHEN  they use the product for 30 days\n  THEN  no surface re-prompts them to invite on any schedule\n  AND   the composer remains one click away in the sidebar throughout\nOut of scope: lifecycle marketing email (owned elsewhere — and constrained by BLK-02)\nDepends on: REQ-DP1\n```\n\n---\n\n## Flagged\n\n**Rests on assumption**\n\n| REQ | Assumed claim | Question | Owner role |\n|---|---|---|---|\n| REQ-D3 | C5 — teammates cause retention | Q-05 (power) → then the readout itself | data & analytics lead |\n\n**Shape pending**\n\n| REQ | Blocked by | The fork |\n|---|---|---|\n| REQ-D3 | BLK-04 | Powered → clean causal readout. Underpowered → longer window or proxy, and ¶2 stays [ASSUMED] |\n| REQ-DP3 | BLK-01, BLK-02, BLK-06 | Permissive → import ships. Restrictive → the disabled button is removed, not left as vaporware |\n\n## Out of scope — candidates\n\n- **Invite incentives** — wanted by EFAQ-05; blocked conceptually by BLK-05 and logically\n  by REQ-D3: paying for a behaviour not yet shown causal is paying for a metric.\n- **Re-engagement email to solo workspace owners** — a retention campaign, not onboarding;\n  nothing upstream asks for it, and BLK-02 constrains it anyway.\n\n---\n\n*8 requirements · 3 discovery · 5 delivery · 0 unsourced · 1 resting on assumption · 2 shape pending*\n", "07-release-plan.md": "# Release plan — Empty Workspace\n\nFour vertical slices. Instrumentation ships first and dark; the blocked slice is the one\ncarrying the privacy surface — and the plan says so instead of estimating around it.\n\n## Slices\n\n```\nR1 · Measure before you move\nRequirements: REQ-D1, REQ-D2\nDepends on: —\nBlocked by: —\nShips: the invite funnel instrumented end to end, including abandoned attempts; D14MR computable per cohort. Dark — no user-facing change.\nIndependently testable: yes\nTest harness:\n  - Composer open-and-close produces attempted with no sent\n  - Full sequence produces four ordered events\n  - D14MR excludes members with zero actions on a seeded cohort\nWhy first: C7 says nobody knows how many people already try to invite and fail. Moving a funnel you haven't measured is how the last two onboarding changes shipped twice and taught nothing (IFAQ-01).\n```\n\n```\nR2 · The workspace does work on arrival\nRequirements: REQ-DP2\nDepends on: —\nBlocked by: BLK-03\nShips: template gallery replaces the blank empty state; Start empty preserved; load-failure fallback.\nIndependently testable: yes\nTest harness:\n  - Gallery renders on first open; Start empty is the last card\n  - Template creates content without replacing existing content\n  - Simulated load failure falls back to blank canvas with retry\nNot schedulable: BLK-03 — growth and product both claim this surface; the last collision shipped conflicting experiments. One named owner unblocks both R2 and R3.\n```\n\n```\nR3 · The invite step, typed addresses only\nRequirements: REQ-DP1, REQ-DP4, REQ-DP5\nDepends on: R1\nBlocked by: BLK-03\nShips: invite step in first-run (skippable, never-nag), composer everywhere, per-invite status including bounced.\nIndependently testable: yes\nTest harness:\n  - Skip is one click, no dialog, same destination as send\n  - Bounce renders in composer with resend; server failure preserves chips\n  - 30-day never-nag assertion: no scheduled re-prompt event exists\n```\n\n```\nR4 · Import and the experiment\nRequirements: REQ-DP3, REQ-D3\nDepends on: R1, R3\nBlocked by: BLK-01, BLK-02, BLK-04, BLK-06\nShips: contact import (if review permits) and the holdback readout on the causal claim.\nIndependently testable: yes\nTest harness:\n  - Import retains only selected addresses; non-selected discarded at session end\n  - Holdback assignment at creation; readout states effect size, CI, cohort sizes, or declares underpower\nRests on assumption: REQ-D3 rests on C5 — the slice exists to test the assumption the initiative rests on.\nNot schedulable: four blockers, three of them determining whether import ships at all.\n```\n\n## Dependency DAG\n\n```\nR1 ──▶ R3 ──▶ R4  [BLOCKED BY BLK-01 · 02 · 04 · 06]\n \nR2 (parallel)      [BLOCKED BY BLK-03, with R3]\n```\n\nEdge list:\n```\nR1 -> R3\nR3 -> R4\nR1 -> R4\n```\n\nChecks: acyclic · all 8 requirements in exactly one slice · no orphans · no duplicates.\n\n## Not schedulable\n\n| Slice | Blocked by | Owner role | What unblocks |\n|---|---|---|---|\n| R2, R3 | BLK-03 | VP Product | One named owner for the onboarding surface |\n| R4 | BLK-01 | privacy counsel | Lawful basis + non-user retention for imported contacts |\n| R4 | BLK-02 | compliance lead | Invite email classification per market |\n| R4 | BLK-04 | data & analytics lead | Experiment power at current volume |\n| R4 | BLK-06 | security lead | OAuth scope + token storage review |\n\nR1 is schedulable today and is the only slice that requires no meeting. That is the honest\nplan: measure now, and unblock the rest with three conversations.\n\n## Export\n\n`jira-import.csv` — 4 epics, 8 stories, generated by `scripts/export_jira.py`.\n", "08-readiness.md": "# Readiness — Empty Workspace\n\n```\nSESSION CONFIDENCE · empty-workspace · after Stage 8 · 2026-08-30\nClaims:        5 observed · 1 reported · 2 assumed · 2 unknown   (intake C1–C8)\nRequirements:  8 total · 1 resting on assumption · 2 shape pending · 0 unsourced\nRelease:       4 slices · 1 schedulable today · 3 blocked\nQuestions:     11 open · 0 with no owner assigned\nBlockers:      6 open (4 high · 2 medium)\nContext pack:  absent — strategic fit and feasibility were not evaluated\n```\n\n## Recommendation\n\n**GO — on R1 today. Everything else has a named conversation in front of it.**\n\nR1 (instrument the funnel) needs no meeting, no lawyer, and no owner ruling — and it\nproduces the number every other decision needs: how many people already try to invite and\nabandon. It also arms the experiment that tests the assumption the initiative rests on.\n\nR2 and R3 are one decision away — BLK-03 is an ownership dispute, not a hard problem.\nR4 carries the entire privacy/regulatory/security surface and should not be estimated\nuntil counsel answers.\n\n## Open blockers by severity\n\n### High\n| ID | Ask | Owner role | Blocks |\n|---|---|---|---|\n| BLK-01 | Lawful basis + non-user contact retention | privacy counsel | R4 |\n| BLK-02 | Invite email classification per market | compliance lead | R4 |\n| BLK-03 | Who owns the onboarding surface | VP Product | R2, R3 |\n| BLK-04 | Experiment power at current volume | data & analytics lead | R4 |\n\n### Medium\n| BLK-05 | Invite incentives — value vs gaming | commercial lead | candidates only |\n| BLK-06 | Address-book OAuth scope exposure | security lead | R4 |\n\n## Assumptions that must hold\n\n| # | Assumption | What breaks if false | Check |\n|---|---|---|---|\n| C5 | Teammates cause retention | The initiative improves a dashboard, not the business; incentives (BLK-05) become pure margin loss | REQ-D3 holdback — the readout is the check |\n| C6 | Invite emails reach inboxes | R3's funnel leaks at \"sent,\" and the never-nag rule means no second chance | Q-06 — vendor bounce data, one afternoon |\n| Q-02 | First-run is the right invite moment | Skip rate (M3) pegs high and the step becomes noise | M3 after R3; wording test Q-07 |\n\n## Top three reasons this fails\n\n1. **BLK-03 stays disputed.** The two easiest slices sit behind an ownership question.\n   The last collision shipped conflicting experiments; this one would stall instead. A\n   failure by meeting, not by engineering — the most likely and the least dramatic.\n2. **The experiment reads out null.** C5 falls, and the honest response is to stop at R3\n   and cancel incentives — which requires having promised in advance to believe the\n   readout. ¶7's \"ships with its own experiment\" line is that promise; hold it.\n3. **Import ships anyway, under pressure, before counsel answers.** The disabled button\n   becomes an enabled button in a hurry. Three blockers exist precisely to make that\n   require three named people saying yes in writing.\n\n## What would change this recommendation\n\n1. **BLK-03, from the VP** — one name. Unblocks R2 and R3 the same day.\n2. **Q-06, from platform engineering** — one afternoon with the vendor dashboard.\n3. **BLK-04, from the data lead** — power math before anyone promises a readout date.\n\nOne decision, one afternoon, one calculation. R1 needs none of them.\n", "BLOCKERS.md": "# Blockers — Empty Workspace\n\nQuestions with owners, never findings. All six OPEN; only the user changes Status.\n\n| ID | Category | Sev | Ask (short) | Owner role | Blocks | Status |\n|---|---|---|---|---|---|---|\n| BLK-01 | PRIVACY | high | Lawful basis + retention for imported non-user contacts | privacy counsel | REQ-DP3, R4 | OPEN |\n| BLK-02 | REGULATORY | high | Invite email: transactional or marketing, per market | compliance lead | REQ-DP3, R4 | OPEN |\n| BLK-03 | DEPENDENCY | high | Who owns the onboarding surface — growth or product | VP Product | R2, R3 | OPEN |\n| BLK-04 | DATA | high | Can current volume power the holdback experiment | data & analytics lead | REQ-D3, R4 | OPEN |\n| BLK-05 | COMMERCIAL | medium | Invite incentives: value vs gaming vs margin giveaway | commercial lead | candidates only | OPEN |\n| BLK-06 | SECURITY | medium | Address-book OAuth scope + token storage exposure | security lead | REQ-DP3, R4 | OPEN |\n\n---\n\n```\nBLK-01 · PRIVACY · severity: high\nSurfaced by: IFAQ-03, RFAQ-02\nAsk: Importing an address book means holding personal data of people who never signed up.\n     What is the lawful basis, how long may non-user contacts be retained, and can we\n     honour a deletion request from someone who was never our user?\nOwner role: privacy counsel\nBlocks: REQ-DP3, R4\nStatus: OPEN\n```\n\n```\nBLK-02 · REGULATORY · severity: high\nSurfaced by: RFAQ-01\nAsk: Is an invite email to a non-user a transactional message from the inviting user or\n     marketing from us — under CAN-SPAM, CASL, and ePrivacy-style regimes — and what does\n     each answer require of sender identity and footers, per market?\nOwner role: compliance lead\nBlocks: REQ-DP3, R4\nStatus: OPEN\n```\n\n```\nBLK-03 · DEPENDENCY · severity: high\nSurfaced by: IFAQ-01\nAsk: Growth and product both claim the first-run surface, and the last collision shipped\n     conflicting experiments. Who is the single owner of the onboarding surface and the\n     activation number?\nOwner role: VP Product\nBlocks: R2, R3\nStatus: OPEN\n```\n\n```\nBLK-04 · DATA · severity: high\nSurfaced by: IFAQ-02\nAsk: Does current signup volume give a day-30 holdback experiment acceptable power inside\n     one quarter — and if not, what is the honest alternative design?\nOwner role: data & analytics lead\nBlocks: REQ-D3, R4\nStatus: OPEN\n```\n\n```\nBLK-05 · COMMERCIAL · severity: medium\nSurfaced by: IFAQ-05, EFAQ-05\nAsk: Do invite incentives create teams or farm seats — and is discounting a behaviour that\n     already correlates with retention just margin given away?\nOwner role: commercial lead\nBlocks: nothing shipping — candidates only\nStatus: OPEN\n```\n\n```\nBLK-06 · SECURITY · severity: medium\nSurfaced by: IFAQ-04\nAsk: What does an attacker get from the address-book token store, and are we widening\n     OAuth scope for a feature whose value rests on an [ASSUMED] claim?\nOwner role: security lead\nBlocks: REQ-DP3, R4\nStatus: OPEN\n```\n\n*Four high, two medium. BLK-03 is the quiet one that decides the schedule: it blocks the\ntwo slices that need no lawyer — an ownership dispute, not a hard problem.*\n", "QUESTIONS.md": "# Questions — Empty Workspace\n\n**11 open · 0 with no owner assigned** — the ownership gap in this session lives in BLK-03\nrather than in an unowned question, and the readiness doc says so.\n\n| ID | Stage | Question | Ask | Status |\n|---|---|---|---|---|\n| Q-01 | 1 | Must-be-true: will invited teammates actually act, or just accept and idle? (D14MR's second clause exists for this) | data & analytics lead | OPEN |\n| Q-02 | 1 | Must-be-true: is the first-run step the right moment, or do leads invite after they've built something worth showing? | growth lead (pending BLK-03) | OPEN |\n| Q-03 | 0, 2 | How many users attempt an invite today and abandon (C7)? | data & analytics lead — resolved by R1 | OPEN |\n| Q-04 | 5 | What is the D14MR target, and who signs it off? | VP Product | OPEN |\n| Q-05 | 2, 5 | Does signup volume power the holdback (BLK-04's technical half)? | data & analytics lead | OPEN |\n| Q-06 | 2 | Bounce/spam-complaint baseline and domain-reputation risk at scale? | platform engineering lead | OPEN |\n| Q-07 | 3 | Does \"Skip for now\" wording move skip rate? | growth lead (pending BLK-03) | OPEN |\n| Q-08 | 2, 3 | Template languages — what does R2 \"done\" mean per market? | localisation lead | OPEN |\n| Q-09 | 1 | Strategic fit: is activation the company's priority this cycle, or is this a growth-team preference wearing a strategy costume? | VP Product | OPEN |\n| Q-10 | 2 | If import never ships, does the invite step still clear the bar alone? | VP Product, after R3 data | OPEN |\n| Q-11 | 6 | Falsifiability carried: the C5 readout itself (REQ-D3) | data & analytics lead | OPEN |\n\n## From the critic — dimension 4\n\n```\nQ-09 · The rationale in ¶7 cites the retention pattern. Whether activation is the\n       company's priority this cycle — versus, say, enterprise expansion — is not\n       evaluable from the document, and the growth lead's \"this quarter\" preference\n       (intake) is not a strategy.\nRaised by: dimension 4 at Stage 1\nAsk: VP Product\nStatus: OPEN\n```\n\n## From the critic — dimension 6\n\nQ-01 and Q-02 are the must-be-true claims under the subheading. Both are testable only\nafter R1 instruments the funnel — which is the argument for R1 shipping first, made by the\ncritic rather than by the roadmap.\n", "DECISIONS.md": "# Decisions — Empty Workspace\n\nVerdicts in order. One REVISE, resolved by revision; no overrides in this run.\n\n---\n\n```\nCRITIC · Stage 0 · 00-intake.md · 2026-08-30\nStructural\n  1 Customer specificity ....... PASS\n  2 Evidence presence .......... PASS\n  8 Template completeness ...... PASS\nVERDICT: PASS\nNote: \"team leads at 5–50-person companies who create a workspace self-serve, intending to\nbring their team\" — with three queryable signup fields — is a segment. \"Users who don't\ninvite\" would have been a behaviour, not a customer, and would have blocked. C5 (causation)\nand C6 (deliverability) flagged as the assumptions that will propagate.\n```\n\n---\n\n```\nCRITIC · Stage 1 · 01-press-release-draft1.md · 2026-08-30\nStructural\n  1 Customer specificity ....... PASS\n  2 Evidence presence .......... REVISE\n  3 Alternative named .......... PASS\n  5 Traceability ............... PASS\n  7 Clarity .................... PASS\n  8 Template completeness ...... PASS\nSubstantive\n  4 Strategic fit .............. Q-09 raised\n  6 Falsifiability ............. Q-01, Q-02 raised\n\nVERDICT: REVISE\nInstruction: ¶2 writes \"Teams that don't invite churn because they never experience\ncollaboration\" — a causal claim wearing no tag, sitting beside two correlational\nobservations that don't establish it. This is the most common real structural failure and\nit is load-bearing here: the entire initiative rests on that \"because.\" Tag the correlation\n[OBSERVED], the causation [ASSUMED] with a pointer to the experiment that would settle it,\nand add the [NEEDS EVIDENCE] marker for un-instrumented invite attempts. Do not soften the\nparagraph — sharpen its honesty.\n```\n\n```\nCRITIC · Stage 1 · 01-press-release.md (revised) · 2026-08-30\n  2 Evidence presence .......... PASS — the causal claim now carries [ASSUMED — C5] and\n    cites REQ-D3 as the experiment that would settle it; the attempts gap is visible.\nAll other dimensions unchanged.\nVERDICT: PASS\nNote: ¶7's spokesperson quote gained \"this ships with its own experiment, not just its own\ndashboard\" in revision — the author folding the critic's finding into the narrative rather\nthan just the tags. That sentence is now the initiative's best defence in review.\n```\n\n---\n\n```\nCRITIC · Stage 2 · 02-faq-{external,internal,regional}.md · 2026-08-30\nStructural: 2 PASS · 5 PASS · 7 PASS · 8 PASS\nSubstantive: 6 → Q-03…Q-08 raised\nVERDICT: PASS\nNote: IFAQ-02 is the honest one — it asks what the quarter was spent on if activation moves\nand retention doesn't. EFAQ-02 (the dark-pattern question) produced a requirement (REQ-DP5)\nrather than a reassurance, which is the correct disposition for a promise.\n```\n\n---\n\n```\nCRITIC · Stage 3 · 03-demo-spec.md · 2026-08-30\nStructural: 5 PASS · 7 PASS · 8 PASS\nVERDICT: PASS\nNote: the disabled \"Import from contacts\" button is the spec's best decision — the roadmap\nmade visible without shipping the risk, and honest about why (\"pending privacy review\").\nF5 guards the meta-failure: a silent send-failure would recreate the original invisibility\ninside the fix.\n```\n\n---\n\n```\nCRITIC · Stage 4 · 04-docs.md · 2026-08-30\nStructural: 3 PASS · 5 PASS · 7 PASS · 8 PASS\nVERDICT: PASS\nNote: contact import documented as not-writable, citing BLK-01. One section, one blocker,\nzero hedged paragraphs pretending otherwise.\n```\n\n---\n\n```\nCRITIC · Stage 5 · 05-telemetry.md · 2026-08-30\nStructural: 2 PASS · 5 PASS · 8 PASS\nVERDICT: PASS\nNote: the north star counts members-with-action, not members — the metric refuses its own\ngaming vector. M3 (skip rate) instruments the never-nag promise's health. M6 is the\nexperiment the press release now cites; no override needed anywhere because nothing\nunmeasured was stated as measured.\n```\n\n---\n\n```\nCRITIC · Stage 6 · 06-requirements.md · 2026-08-30\nStructural: 1 PASS · 2 PASS · 5 PASS · 7 PASS · 8 PASS\nSubstantive: 6 → Q-11 carried onto REQ-D3\nVERDICT: PASS\nNote: invite incentives arrived wanting to be a requirement and left as a candidate citing\nEFAQ-05/BLK-05 — with the stated logic that paying for an unproven-causal behaviour is\npaying for a metric. All 16 citations resolve.\n```\n\n---\n\n```\nCRITIC · Stage 7 · 07-release-plan.md · 2026-08-30\nStructural: 5 PASS · 8 PASS\nVERDICT: PASS\nNote: reconciliation clean — 8/8 requirements in exactly one slice, DAG acyclic. R1 as the\nonly meeting-free slice is the plan's honest headline. BLK-03 blocking the two easiest\nslices is correctly surfaced as an ownership problem, not an engineering one.\n```\n\n---\n\n```\nCRITIC · Stage 8 · 08-readiness.md · 2026-08-30\nStructural: 2 PASS · 5 PASS · 8 PASS\nVERDICT: PASS\nNote: GO on R1 alone, conditions on the rest, is supported. A recommendation that included\nR4 would have failed — it sits on four open blockers, three of them legal-shaped.\n```\n", "CONFIDENCE.md": "# Confidence — Empty Workspace\n\nFinal state, after Stage 8.\n\n```\nSESSION CONFIDENCE · empty-workspace · after Stage 8 · 2026-08-30\nClaims:        5 observed · 1 reported · 2 assumed · 2 unknown\nRequirements:  8 total · 1 resting on assumption · 2 shape pending · 0 unsourced\nRelease:       4 slices · 1 schedulable today · 3 blocked\nQuestions:     11 open · 0 with no owner assigned\nBlockers:      6 open (4 high · 2 medium)\nContext pack:  absent — strategic fit and feasibility were not evaluated\n```\n\n## Not evaluated, and why\n\n| Dimension | Why | What would fix it |\n|---|---|---|\n| 4 · Strategic fit | No strategy doc. Q-09 asks whether activation is the company's cycle priority or a growth-team preference — not answerable from the artifact | Strategy/vision doc in `wb/context/` |\n| 6 · Falsifiability | Q-01/Q-02 need R1's instrumentation to become testable; C5 needs the holdback | R1, then REQ-D3 |\n| Ownership | BLK-03 routes to the VP with no ownership map to cite — the dispute is asserted from IFAQ testimony, not from a document | Ownership map / team charter |\n| Email risk | C6 assumed; no deliverability data reviewed | Vendor dashboard export (Q-06) |\n\n## What each document would have bought here\n\n| Drop in… | Effect on this session |\n|---|---|\n| Strategy doc | Q-09 closes or sharpens; the growth lead's \"this quarter\" becomes checkable against a cited line |\n| Ownership map / team charter | BLK-03 becomes a citation instead of testimony; possibly closes before the VP meeting |\n| Metric definitions | Q-04's target discussion starts from a definition instead of inventing D14MR from scratch |\n| Prior onboarding experiment write-ups | The \"shipped twice, conflicted\" history becomes evidence; Q-02's timing question may already be answered |\n| Email vendor export | C6 stops being assumed; Q-06 closes without a meeting |\n\n## The honest read\n\nThree sessions, one skill, three different shapes of honesty: ghost-seats needed an\noverride because nothing was measured; silent-stepdown didn't because half the telemetry\nexisted; this run's whole recommendation pivots on refusing to treat a 5.4× correlation as\na causal fact — the tag applied at intake (C5) survives into the press release, the\nexperiment requirement, the release plan, and the top-three failure modes. The pipeline's\njob was to keep that one honest word attached to the number everyone wants to round up.\n", "jira-import.csv": "Issue Type,Summary,Description,Acceptance Criteria,Epic Name,Parent,Labels,Priority\nEpic,R1 · Measure before you move,\"Ships: the invite funnel instrumented end to end, including abandoned attempts; D14MR computable per cohort. Dark — no user-facing change.\n\nRequirements: REQ-D1, REQ-D2\n\nDepends on: —\n\nTest harness:\n- Composer open-and-close produces attempted with no sent\n- Full sequence produces four ordered events\n- D14MR excludes members with zero actions on a seeded cohort\",,R1 Measure before you move,,working-backwards release-slice,Medium\nStory,REQ-D1 · Instrument the invite funnel end to end,\"Every invite records attempted, sent, accepted, and first-action events with workspace, actor, and timestamps — including attempts abandoned before send.\n\nSource: PR ¶3 / IFAQ-07\n\nProvenance: [OBSERVED] × 1, [UNKNOWN] × 1\n\nOut of scope: showing funnel data to customers\n\nDepends on: —\",\"GIVEN a user opens the invite composer and closes it without sending\nWHEN  the session ends\nTHEN  an attempted event exists with no sent event, attributable to that workspace\nAND   a full send-accept-act sequence produces all four events in order\",,R1 Measure before you move,working-backwards discovery,Medium\nStory,\"REQ-D2 · Baseline members-with-action, not members\",\"The Day-14 Multiplayer Rate is computable per cohort, counting only members with at least one action.\n\nSource: 05-telemetry.md / PR ¶1\n\nProvenance: [OBSERVED] × 1\n\nOut of scope: setting the target (Q-04)\n\nDepends on: REQ-D1\",\"GIVEN a cohort with invited members who never acted\nWHEN  D14MR is computed\nTHEN  those members do not count toward multiplayer status\nAND   the report states cohort size and period\",,R1 Measure before you move,working-backwards discovery,Medium\nEpic,R2 · The workspace does work on arrival,\"Ships: template gallery replaces the blank empty state; Start empty preserved; load-failure fallback.\n\nRequirements: REQ-DP2\n\nDepends on: —\n\nBlocked by: BLK-03\n\nTest harness:\n- Gallery renders on first open; Start empty is the last card\n- Template creates content without replacing existing content\n- Simulated load failure falls back to blank canvas with retry\",,R2 The workspace does work on arrival,,working-backwards release-slice blocked,Highest\nStory,REQ-DP2 · Template gallery replaces the blank empty state,\"A new workspace opens on a template gallery; each card creates a working pre-populated page; Start empty is always present.\n\nSource: PR ¶5 / EFAQ-04\n\nProvenance: [OBSERVED] × 1\n\nOut of scope: template authoring by customers; localisation (Q-08)\n\nDepends on: —\",\"GIVEN a brand-new workspace\nWHEN  the owner opens it first\nTHEN  the gallery renders with Start empty as the final card\nAND   opening a template creates content without replacing anything\nAND   a template load failure falls back to the blank canvas with a retry (F3)\",,R2 The workspace does work on arrival,working-backwards delivery blocked,Medium\nEpic,\"R3 · The invite step, typed addresses only\",\"Ships: invite step in first-run (skippable, never-nag), composer everywhere, per-invite status including bounced.\n\nRequirements: REQ-DP1, REQ-DP4, REQ-DP5\n\nDepends on: R1\n\nBlocked by: BLK-03\n\nTest harness:\n- Skip is one click, no dialog, same destination as send\n- Bounce renders in composer with resend; server failure preserves chips\n- 30-day never-nag assertion: no scheduled re-prompt event exists\",,\"R3 The invite step, typed addresses only\",,working-backwards release-slice blocked,Highest\nStory,REQ-DP1 · Invite step in first-run setup,\"Workspace setup includes an invite step — email chips, send, or skip — between naming and first content.\n\nSource: PR ¶1 / PR ¶3\n\nProvenance: [OBSERVED] × 1\n\nOut of scope: contact import (REQ-DP3)\n\nDepends on: REQ-D1\",\"GIVEN a user on the invite step\nWHEN  they select Skip for now\nTHEN  setup continues immediately with no confirmation dialog\nAND   sending invites and skipping reach the same next screen\",,\"R3 The invite step, typed addresses only\",working-backwards delivery blocked,Medium\nStory,REQ-DP4 · Invite composer available from anywhere,\"The composer opens from the sidebar on every screen and shows per-invite status: sent, opened, joined, bounced.\n\nSource: PR ¶3 / PR ¶4\n\nProvenance: [OBSERVED] × 2\n\nOut of scope: bulk CSV invite\n\nDepends on: REQ-D1\",\"GIVEN an invite whose email bounced\nWHEN  the inviter opens the composer\nTHEN  that invite shows bounced with a resend action (F1)\nAND   a server-side send failure is shown and preserves the entered addresses (F5)\",,\"R3 The invite step, typed addresses only\",working-backwards delivery blocked,Medium\nStory,REQ-DP5 · The never-nag rule,\"Skipping the invite step is one click, gates nothing, and triggers no scheduled re-prompt anywhere in the product.\n\nSource: EFAQ-02 / 03-demo-spec.md F4\n\nProvenance: [OBSERVED] × 1\n\nOut of scope: lifecycle marketing email (owned elsewhere — and constrained by BLK-02)\n\nDepends on: REQ-DP1\",\"GIVEN a user who skipped the invite step\nWHEN  they use the product for 30 days\nTHEN  no surface re-prompts them to invite on any schedule\nAND   the composer remains one click away in the sidebar throughout\",,\"R3 The invite step, typed addresses only\",working-backwards delivery blocked,Medium\nEpic,R4 · Import and the experiment,\"Ships: contact import (if review permits) and the holdback readout on the causal claim.\n\nRequirements: REQ-DP3, REQ-D3\n\nDepends on: R1, R3\n\nBlocked by: BLK-01, BLK-02, BLK-04, BLK-06\n\nTest harness:\n- Import retains only selected addresses; non-selected discarded at session end\n- Holdback assignment at creation; readout states effect size, CI, cohort sizes, or declares underpower\",,R4 Import and the experiment,,working-backwards release-slice blocked,Highest\nStory,REQ-DP3 · Contact import,\"Where privacy, regulatory and security review permit, users can import contacts to populate the invite composer.\n\nSource: PR ¶3 / EFAQ-03 / RFAQ-02\n\nProvenance: [OBSERVED] × 1, [UNKNOWN] × 1\n\nOut of scope: everything until the blockers resolve\n\nDepends on: BLK-01, BLK-02, BLK-06\n\nConditional on: BLK-01 (lawful basis, non-user retention), BLK-02 (invite email classification), BLK-06 (OAuth scope and token storage). The button ships disabled with a \"\"pending review\"\" tooltip until all three resolve.\",\"GIVEN all three blockers resolve permissive\nWHEN  a user imports contacts\nTHEN  only selected addresses are retained, and non-selected contact data is discarded at session end\",,R4 Import and the experiment,working-backwards delivery shape-pending blocked,Highest\nStory,REQ-D3 · Holdback experiment on the causal claim,\"A randomized holdback cohort retains the old first-run, and day-30 retention is compared against the invite-first cohort.\n\nSource: PR ¶2 / IFAQ-02\n\nProvenance: [OBSERVED] × 1, [ASSUMED] × 1 → RESTS ON ASSUMPTION\n\nOut of scope: acting on the result\n\nDepends on: REQ-D1, BLK-04\n\nConditional on: BLK-04 — if volume cannot power it in a quarter, the design changes (longer window, or a proxy endpoint) and the PR's causal framing stays [ASSUMED]\",\"GIVEN assignment at workspace creation\nWHEN  cohorts are compared at day 30\nTHEN  the readout states effect size, confidence interval, and cohort sizes\nAND   if the experiment is underpowered at current volume, the readout says so rather than extending silently\",,R4 Import and the experiment,working-backwards discovery rests-on-assumption shape-pending blocked,Highest\n"}</script>
 <script>
 "use strict";
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-const GH="https://github.com/siddarthnyati/working-backwards/blob/main/examples/ghost-seats/";
-const link=f=>`<p class="filelink">Full artifact: <a href="${GH}${f}">${f}</a></p>`;
+const DOCS=JSON.parse(document.getElementById("fulldocs").textContent);
 
-/* ── stage data: prompt · artifact · critic ── */
+/* per-stage file tabs for the full-artifact viewer */
+const FILES=[
+ ["00-intake.md"],
+ ["01-press-release.md","01-press-release-draft1.md"],
+ ["02-faq-internal.md","02-faq-external.md","02-faq-regional.md","BLOCKERS.md"],
+ ["03-demo-spec.md"],
+ ["04-docs.md"],
+ ["05-telemetry.md"],
+ ["06-requirements.md","QUESTIONS.md"],
+ ["07-release-plan.md","jira-import.csv"],
+ ["08-readiness.md","CONFIDENCE.md","DECISIONS.md"]
+];
+
 const STAGES=[
 {n:0,t:"Intake",why:"Catch a solution wearing a problem costume — before anything gets written.",
- prompt:`Run the working-backwards skill, Stage 0 only.
-The problem: deprovisioning events fire locally
-but silently fail to propagate to connected
-integrations — removed users keep read access
-up to 90 days while the audit log says they're
-gone. ~4,200 accounts a quarter.
+ prompt:`Run the working-backwards skill, Stage 0
+only. The problem: 61% of new workspaces
+never gain a second member in 14 days, and
+single-member workspaces churn at 5.4x by
+day 30. The invite screen is three clicks
+deep in settings.
 
 Tag every claim [OBSERVED] / [REPORTED] /
-[ASSUMED] / [UNKNOWN]. Push back if my customer
-is "everyone". Recommend a mode.
+[ASSUMED] / [UNKNOWN]. Push back if my
+customer is "everyone". Recommend a mode.
 Do not write the press release.`,
  art:`<table><tr><th></th><th>Claim</th><th>Provenance</th></tr>
-<tr><td>C1</td><td>~4,200 accounts/quarter show failed propagation</td><td><span class="tag t-obs">[OBSERVED]</span> event log</td></tr>
-<tr><td>C2</td><td>No error is surfaced to the admin</td><td><span class="tag t-obs">[OBSERVED]</span> no error path</td></tr>
-<tr><td>C5</td><td>Admins discover only at access reviews</td><td><span class="tag t-rep">[REPORTED]</span> 2 support leads</td></tr>
-<tr><td>C6</td><td>90-day window applies to <i>all</i> integrations</td><td><span class="tag t-asm">[ASSUMED]</span> — 2 of N examined</td></tr>
-<tr><td>C7</td><td>Most affected customers never discovered it</td><td><span class="tag t-asm">[ASSUMED]</span></td></tr>
-<tr><td>C8</td><td>Can history be reconstructed?</td><td><span class="tag t-unk">[UNKNOWN]</span> → Q-09</td></tr></table>
+<tr><td>C1</td><td>61% never gain a second member in 14 days</td><td><span class="tag t-obs">[OBSERVED]</span> analytics</td></tr>
+<tr><td>C2</td><td>Single-member workspaces churn 5.4× by day 30</td><td><span class="tag t-obs">[OBSERVED]</span> cohorts</td></tr>
+<tr><td>C3</td><td>Invite screen is 3 clicks deep; &lt;4% find it</td><td><span class="tag t-obs">[OBSERVED]</span> IA + analytics</td></tr>
+<tr><td>C4</td><td>New users say the workspace "felt empty"</td><td><span class="tag t-rep">[REPORTED]</span> CS verbatims</td></tr>
+<tr><td>C5</td><td>Teammates <i>cause</i> retention</td><td><span class="tag t-asm">[ASSUMED]</span> — correlation ≠ cause</td></tr>
+<tr><td>C7</td><td>How many try to invite and abandon</td><td><span class="tag t-unk">[UNKNOWN]</span> — not instrumented</td></tr></table>
 <div class="callout"><b>THE CUSTOMER, AFTER ONE PUSHBACK</b>
-"Admins" was rejected as a bare role. Accepted: IT administrators at 200–5,000-seat B2B SaaS
-customers with 3+ connected integrations, subject to periodic access review — a segment you could
-build a list of ten from, using two queryable fields.</div>`+link("00-intake.md"),
+"Users who don't invite" was rejected — that's a behaviour, not a customer. Accepted: team leads at
+5–50-person companies creating a workspace self-serve, intending to bring their team. Three queryable
+signup fields make the segment real. Deliberate solo users are explicitly <i>not</i> the customer.</div>`,
  dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[8,"Completeness","PASS","pass"]],
  verdict:"VERDICT: PASS",vclass:"",
- gate:`C6 and C7 are flagged as the assumptions that will propagate. They resurface — tagged — in the requirements at Stage 6 and the readiness doc at Stage 8. Nothing along the way is allowed to launder them.`},
+ gate:`C5 (causation) and C6 (email deliverability) flagged as the assumptions that will propagate. Watch C5 — it resurfaces at Stages 1, 6 and 8, tagged every time.`},
 
 {n:1,t:"Press release",why:"Write the ending first. If the win can't survive one page, there is no win.",
  prompt:`Stage 1. Write the press release from the
 intake: heading, subheading, dated summary,
-problem in the customer's voice, what customers
-use today and why it falls short, a labelled
-illustrative quote, a spokesperson quote that
-carries the why-now, getting started.
+problem in the customer's voice, what people
+do today and why it falls short, a labelled
+illustrative quote, a spokesperson quote
+carrying the why-now, getting started.
 
-Number the paragraphs ¶1–¶7 — requirements
-will cite them. Never invent a figure: write
+Number the paragraphs — requirements will
+cite them. Never invent a figure: write
 [NEEDS EVIDENCE] instead.
 Do not write the FAQs.`,
  art:"DRAFT_TOGGLE",
- dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[3,"Alternative named","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"],[4,"Strategic fit","Q-04","q"],[6,"Falsifiability","Q-18/19/20","q"]],
- verdict:"VERDICT: PASS — and it was still wrong",vclass:"",
- gate:"QBOX"},
+ dims:null, verdict:null, vclass:null, gate:"QBOX"},
 
 {n:2,t:"FAQs",why:"The risk-discovery engine. Hostile questions do what a review meeting would.",
  prompt:`Stage 2. Three banks — external, internal,
 regional. Ask the HOSTILE version of every
-internal question, in the voice of the leader
-who would ask it. Tag every answer ANSWERED /
-OPEN / BLOCKER.
+internal question, in the voice of the
+leader who would ask it. Tag every answer
+ANSWERED / OPEN / BLOCKER.
 
 Every blocker gets an owner role and stays
 OPEN — you resolve nothing.`,
- art:`<pre class="logbox">IFAQ-10 · Engineering · <b>BLOCKER</b>
-Q: Who owns the integration contract — platform or
-   partnerships? Not who works on it. Who is
-   accountable when it changes.
-A: The FAQ surfaced no clear answer, which is itself
-   the answer. The contract sits between two teams,
-   and this initiative needs somebody to change it.
-   → BLK-05 · DEPENDENCY · high · Status: OPEN
+ art:`<pre class="logbox">IFAQ-01 · Ownership · <b>BLOCKER</b>
+Q: Growth runs first-run experiments; product owns
+   onboarding surfaces. Both roadmaps claim this
+   quarter's activation work. Who owns the invite
+   step — and who owns the number it moves?
+A: No clear answer, which is itself the answer — the
+   last two onboarding changes shipped twice, once
+   per team, and conflicted.
+   → BLK-03 · DEPENDENCY · high · Status: OPEN
 
-IFAQ-14 · Data · <b>BLOCKER</b>
-Q: Can we enumerate the affected population
-   retroactively, or only going forward?
-A: Unknown — and it is the single question that most
-   changes the plan. If "forward only," the promised
-   affected-account report cannot be built as
-   described.
-   → BLK-06 · DATA · high · Status: OPEN</pre>
-<div class="callout"><b>THE TALLY</b> 21 questions across three banks → <b>6 BLOCKER · 10 OPEN · 0
-ANSWERED</b>. Zero ANSWERED is real, not a failure: a tier-0 run has no contracts or strategy docs to
-answer from. All six blockers are rendered below this walkthrough (§3).</div>`+link("02-faq-internal.md"),
- dims:[[2,"Evidence presence","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"],[6,"Falsifiability","Q-01…Q-17","q"]],
+IFAQ-02 · The causal claim · <b>BLOCKER</b>
+Q: The 5.4× gap is a correlation. If we ship all of
+   this and activation moves but retention doesn't,
+   what did we spend the quarter on?
+A: The reason REQ-D3 exists: a holdback experiment
+   ships WITH the feature, not after it.
+   → BLK-04 · DATA · high · Status: OPEN</pre>
+<div class="callout"><b>THE TALLY</b> 16 questions across three banks → <b>6 BLOCKER · 6 OPEN ·
+4 ANSWERED</b>. The external bank's sharpest question — "will you nag me like a social app?" —
+became a requirement (REQ-DP5, the never-nag rule) instead of a reassurance. All six blockers are
+rendered in §3 below.</div>`,
+ dims:[[2,"Evidence presence","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"],[6,"Falsifiability","Q-03…Q-08","q"]],
  verdict:"VERDICT: PASS",vclass:"",
- gate:`An internal FAQ with no BLOCKER tags was not written honestly — every real initiative has something uncomfortable in it. Read BLOCKERS.md before continuing: if a blocker changes what the product <i>is</i>, go back to Stage 1 now, while it's cheap.`},
+ gate:`An internal FAQ with no BLOCKER tags wasn't written honestly. Read BLOCKERS.md before continuing — if a blocker changes what the product <i>is</i>, go back to Stage 1 now, while it's cheap.`},
 
-{n:3,t:"Demo spec",why:"Prose can hide a hole. A demo script can't.",
+{n:3,t:"Demo spec",why:"Prose can hide a hole. A demo script can't — so this stage is screens.",
  prompt:`Stage 3. Narrate the experience end to end:
-the surfaces, the primary flow step by step,
+the screens, the primary flow step by step,
 and the failure states — what fails and
-exactly what the admin sees.
+exactly what the user sees.
 
 Add "what this deliberately does not show",
 so the demo doesn't promise what the
 requirements won't fund.`,
- art:`<div class="mock">
-  <div class="mock-bar">Audit log — user removal</div>
-  <div class="mock-head"><span>Removed <b>j.rivera</b> · 12 Nov, 14:02</span><span class="pill bad">INCOMPLETE</span></div>
-  <div class="mock-row"><span>Directory sync</span><span class="pill ok">confirmed · 4s</span></div>
-  <div class="mock-row"><span>Document store</span><span class="pill ok">confirmed · 11s</span></div>
-  <div class="mock-row"><span>File-share integration</span><span class="pill bad">no response — access may be retained</span></div>
-  <div class="mock-row"><span>Chat provider</span><span class="pill warn">unverifiable — provider unavailable</span></div>
-  <div class="mock-foot">F5 rule: silence never renders as success. With no confirmation record, this
-entry says "check did not run" — it can never show complete by default.</div>
- </div>
- <div class="fchips">
-  <span class="fchip"><b>F1</b> still has access → incomplete, named</span>
-  <span class="fchip"><b>F2</b> no response in 60s → updates if late</span>
-  <span class="fchip"><b>F3</b> provider outage ≠ failure — labelled apart</span>
-  <span class="fchip"><b>F4</b> can't be checked → stated once, at connect</span>
-  <span class="fchip"><b>F5</b> mechanism fails → never silent</span>
- </div>
- <p class="note" style="margin-top:.9rem">F3 decides whether the feature is trusted: if a partner's
-routine outage renders like genuine retained access, admins learn to ignore the red state within a
-month. Deliberately not shown: a "force removal" button — remediation has no agreed contract while
-BLK-05 is open, and the spec says so out loud.</p>`+link("03-demo-spec.md"),
- dims:[[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","REVISE","revise"]],
- verdict:"VERDICT: REVISE → fixed → PASS",vclass:"rev",
- gate:`The critic's instruction: the spec had no scope boundary — a reader seeing F1 assumes they can remediate from there, and the press release never promises that. The "what this deliberately does not show" section exists because the critic demanded it.`},
+ art:`<div class="mock-grid">
+ <div class="mock"><div class="mock-bar">Setup · step 2 of 3</div><div class="mock-body">
+   <h5>Who do you work with?</h5>
+   <div class="chips"><span class="chip">maya@acme.co ×</span><span class="chip">dev@acme.co ×</span><span class="chip ghost">type an email…</span></div>
+   <div class="mbtns"><span class="mbtn primary">Send invites &amp; continue</span><span class="mbtn quiet">Skip for now</span></div>
+   <div class="mbtns" style="margin-top:.5rem"><span class="mbtn disabled">⊘ Import from contacts</span></div>
+   <span class="why-dis">disabled on purpose — "pending privacy review" (BLK-01). The roadmap made visible without shipping the risk.</span>
+ </div></div>
+ <div class="mock"><div class="mock-bar">New workspace · first open</div><div class="mock-body">
+   <h5>Start with something real</h5>
+   <div class="tmpls">
+     <div class="tmpl"><b>Project tracker</b><span>3 example tasks · owners · dates</span></div>
+     <div class="tmpl"><b>Team wiki</b><span>home + "how we work" stub</span></div>
+     <div class="tmpl"><b>Meeting notes</b><span>dated page + recurring template</span></div>
+     <div class="tmpl empty"><b>Start empty</b><span>the blank canvas — always last, never removed</span></div>
+   </div>
+ </div></div>
+</div>
+<div class="fchips">
+ <span class="fchip"><b>F1</b> bounce → "bounced — check address" in composer</span>
+ <span class="fchip"><b>F3</b> template fails → blank canvas + retry, never a dead screen</span>
+ <span class="fchip"><b>F4</b> skipped → no scheduled re-prompt, ever</span>
+ <span class="fchip"><b>F5</b> send fails server-side → said out loud, chips preserved</span>
+</div>
+<p class="note" style="margin-top:.9rem">F5 guards the meta-failure: a silent send-failure would
+recreate the original invisibility inside the fix. Deliberately not shown: contact import (three
+blockers), invite incentives (BLK-05).</p>`,
+ dims:[[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"]],
+ verdict:"VERDICT: PASS",vclass:"",
+ gate:`The judge's note singled out the disabled import button as the spec's best decision — and F5 as the spec refusing to contain a copy of the defect it fixes.`},
 
 {n:4,t:"Docs",why:"An honest complexity meter — written before a line of code exists.",
  prompt:`Stage 4. Draft the customer-facing docs from
-the approved PR and external FAQ: what it
-does, how to use it, failure behaviour,
-limits, troubleshooting.
+the approved PR and external FAQ: setup,
+templates, invite states, troubleshooting.
 
 Where a paragraph won't come, do NOT write
 around it — record it under "could not be
 written yet" with the blocker behind it.`,
  art:`<div class="docpage">
-  <h5>Reading the confirmation block</h5>
+  <h5>Invite states</h5>
   <table><tr><th>State</th><th>Means</th></tr>
-  <tr><td><code>Complete</code></td><td>Every integration confirmed removal, times shown</td></tr>
-  <tr><td><code>Incomplete</code></td><td>An integration reported the user still present, or didn't respond — it is named</td></tr>
-  <tr><td><code>Unverifiable — provider unavailable</code></td><td>Not the same as incomplete: it means <i>we don't know</i></td></tr>
-  <tr><td><code>Unverifiable — not supported</code></td><td>This integration exposes no way to check</td></tr></table>
+  <tr><td><span class="pill ok">Sent</span></td><td>The email went out</td></tr>
+  <tr><td><span class="pill ok">Joined</span></td><td>They're in — their name appears in Members</td></tr>
+  <tr><td><span class="pill bad">Bounced</span></td><td>The address didn't accept mail — check it and resend</td></tr></table>
  </div>
  <div class="callout"><b>COULD NOT BE WRITTEN YET — the deliverable of this stage</b>
-"Which of your integrations are covered?" — the first question a reader will have, and the docs
-cannot answer it (→ BLK-05). "How far back does the report go?" — every phrasing either overpromises
-or advertises the gap (→ BLK-06). Neither question had been forced by Stages 1–3. Writing the docs
-early is what surfaced them.</div>`+link("04-docs.md"),
+"Import your contacts" — the button is visible-but-disabled in setup, and this page cannot explain
+it, because what it will be allowed to do is a privacy determination that has not been made
+(→ BLK-01). Written the moment counsel answers; not a word sooner.</div>`,
  dims:[[3,"Alternative named","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"]],
  verdict:"VERDICT: PASS",vclass:"",
- gate:`Under dimension 8, an explicit gap is complete and a TBD is not. A doc that cannot be written is a feature that cannot ship — each "could not be written yet" entry gets assigned before the next stage.`},
+ gate:`Under dimension 8, an explicit gap is complete and a TBD is not. A doc that cannot be written is a feature that cannot ship — the gap is the finding.`},
 
 {n:5,t:"Telemetry",why:"If the PR claims it, telemetry must measure it — or the claim comes out.",
- prompt:`Stage 5. North star plus input metrics, each
-tied to a specific PR claim by paragraph
-number. Instrumentation points — and whether
-each exists today. Baselines you don't have
-are [UNKNOWN], not estimates.
+ prompt:`Stage 5. North star plus input metrics,
+each tied to a PR claim by paragraph number.
+Baselines you don't have are [UNKNOWN],
+not estimates.
 
-Close with the claims that cannot be measured:
-each is a decision — instrument it, or cut it.`,
+Close with the claims that cannot be
+measured — each is instrument-or-cut.`,
  art:`<div class="callout" style="border-style:solid;border-color:var(--rule)"><b style="color:var(--ink-3)">NORTH STAR</b>
-<b>Revocation Propagation Rate</b> — % of deprovision events where every connected integration
-confirmed within 60s. Unverifiable events count in the denominator: a metric that excludes the cases
-it cannot see is the same mistake as the audit log.</div>
+<b>Day-14 Multiplayer Rate</b> — % of new workspaces with ≥2 members <i>who have each taken an
+action</i> by day 14. The second clause is the metric refusing its own gaming vector: membership
+without action is seat inflation, not a team.</div>
 <table style="margin-top:.9rem"><tr><th>Metric</th><th>Measures</th><th>Baseline</th></tr>
-<tr><td>M1 propagation latency p95</td><td>PR ¶3 "within 60 seconds"</td><td><span class="tag t-unk">[UNKNOWN]</span></td></tr>
-<tr><td>M2 silent-failure count</td><td>PR ¶2 "nothing surfaces"</td><td><span class="tag t-unk">[UNKNOWN]</span></td></tr>
-<tr><td>M3 admin-visible error rate</td><td>PR ¶3 "the admin finds out"</td><td>0 <span class="tag t-obs">[OBSERVED]</span> — no error path exists; success is this going <i>up</i></td></tr>
-<tr><td>M4 unverifiable share</td><td>PR ¶3, implicitly</td><td><span class="tag t-unk">[UNKNOWN]</span></td></tr></table>
-<div class="callout"><b>CANNOT BE MEASURED</b> PR ¶2's "keeps read access for 90 days" observes cache
-<i>policy</i>, not actual access — whether anyone opened a document is invisible to the platform.
-Decision recorded: keep the visible [NEEDS EVIDENCE] gap; do not substitute the 4,200 figure, which
-counts something else.</div>`+link("05-telemetry.md"),
- dims:[[2,"Evidence presence","REVISE","revise"],[5,"Traceability","PASS","pass"],[8,"Completeness","PASS","pass"]],
- verdict:"VERDICT: REVISE → OVERRIDDEN",vclass:"rev",
- gate:`The critic flagged the empty baselines — correctly, by its own rule. The user overrode: the baseline is <i>unknowable</i> before instrumentation exists, and filling it in would mean inventing a figure. Both positions went to DECISIONS.md. Not re-litigated. That log entry is the mechanism working.`},
+<tr><td>M1 invite funnel: attempted→sent→accepted→acted</td><td>PR ¶3</td><td><span class="tag t-unk">[UNKNOWN]</span> — R1 builds it</td></tr>
+<tr><td>M2 invite-screen discovery, week 1</td><td>PR ¶4</td><td>4% <span class="tag t-obs">[OBSERVED]</span></td></tr>
+<tr><td>M3 skip rate on the invite step</td><td>the never-nag rule's health</td><td>n/a — new</td></tr>
+<tr><td>M6 <b>the experiment</b>: day-30 retention, invite-first vs holdback</td><td>PR ¶2's [ASSUMED] causal claim</td><td>5.4× correlational <span class="tag t-obs">[OBSERVED]</span></td></tr></table>
+<div class="callout"><b>CANNOT BE MEASURED YET</b> "Teammates cause retention" — correlation observed,
+causation needs M6's holdback. Decision recorded: the claim stays [ASSUMED] in the PR until the
+readout, and launch copy may cite the 5.4× as correlation only.</div>`,
+ dims:[[2,"Evidence presence","PASS","pass"],[5,"Traceability","PASS","pass"],[8,"Completeness","PASS","pass"]],
+ verdict:"VERDICT: PASS",vclass:"",
+ gate:`No override needed here — nothing unmeasured was stated as measured. (Contrast: the ghost-seats run needed one at this exact stage, and its log entry is in that example's DECISIONS.md.)`},
 
 {n:6,t:"Requirements",why:"Only now. And every one cites the paragraph it came from.",
  prompt:`Stage 6. Requirements with Source: lines,
-Given/When/Then criteria, Discovery/Delivery
-grouping. Any requirement whose source chain
-touches [ASSUMED] is flagged RESTS ON
-ASSUMPTION.
+Given/When/Then, Discovery/Delivery grouping.
+Anything whose source chain touches [ASSUMED]
+is flagged RESTS ON ASSUMPTION.
 
 Anything with no source goes to Flagged —
 don't delete it, don't source-wash it.`,
  art:`<div class="trace2">
   <div><h4 style="margin-bottom:.5rem">01-press-release.md · ¶3</h4>
-   <p class="src-para" id="src3">Ghost Seats closes the loop. Every deprovisioning event now waits on
-   a confirmation from each connected integration… anything that does not arrive marks the event
-   incomplete and names the integration that failed, on the audit entry the admin already reads.</p>
-   <p class="note" style="margin-top:.6rem">Hover a requirement → its source lights up. 12
-   requirements; all 24 citations machine-verified by <code>scripts/verify_sources.py</code>.</p></div>
+   <p class="src-para" id="src3">From today, setup asks who you work with — right after your workspace
+   gets a name. Type addresses or skip in one click. The composer is available from every screen, and
+   the full invite funnel is measured: attempted, sent, accepted, first-action.</p>
+   <p class="note" style="margin-top:.6rem">Hover a requirement → its source lights up. 8
+   requirements, 17 citations, all machine-verified by <code>verify_sources.py</code>.</p></div>
   <div id="reqs6"></div>
  </div>
- <div class="req" style="border-color:var(--accent);border-style:dashed;margin-top:.9rem">
-  <span class="rid">REQ-DP9 · Force removal from the audit entry</span>
-  <span class="rsrc">Source: NONE — FLAGGED, not customer-derived</span>
-  <p class="rst" style="margin-bottom:0">The first thing everyone asks for after the demo — and nothing
-  upstream asks for it. Held out of every release slice, exported with an <code>unsliced</code> label,
-  not deleted. The honest fix is upstream: add remediation to the press release and let it flow down
-  with a source. That costs a re-review — which is exactly why people would rather sneak it in here.</p>
- </div>`,
- dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[5,"Traceability","REVISE","revise"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"],[6,"Falsifiability","Q-16","q"]],
- verdict:"VERDICT: REVISE → fixed → PASS",vclass:"rev",
- gate:`The REVISE was REQ-DP9 — the scope-creep rule firing on the one requirement everybody wanted. Also carried here: REQ-D5 and REQ-DP5 are flagged RESTS ON ASSUMPTION, because intake claims C6 and C7 reached them with no source ever attached.`},
+ <div class="callout"><b>HELD AT THE DOOR</b> Invite incentives arrived wanting to be a requirement
+ and left as a candidate citing EFAQ-05 / BLK-05 — with the stated logic that paying for a behaviour
+ not yet shown causal is paying for a metric. Visible, unscheduled, waiting on its owner.</div>`,
+ dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"],[6,"Falsifiability","Q-11","q"]],
+ verdict:"VERDICT: PASS",vclass:"",
+ gate:`REQ-D3 — the holdback experiment — is flagged RESTS ON ASSUMPTION, because it inherits C5 from intake. The tag travelled four stages to get here, and nothing was allowed to launder it.`},
 
-{n:7,t:"Release plan",why:"Vertical slices and a DAG — where this becomes an ADLC, not a writing exercise.",
+{n:7,t:"Release plan",why:"Vertical slices and a DAG — where this becomes a plan, not a document.",
  prompt:`Stage 7. Cut the requirements into vertical
-slices — independently shippable, independently
-testable, narrowed by scenario, not by layer.
+slices — independently shippable, testable,
+narrowed by scenario, not by layer.
 
 Reconcile: every requirement in exactly one
-slice, orphans declared, DAG acyclic. Blocked
-slices are NOT SCHEDULABLE, with the owner who
-unblocks them. Then run export_jira.py.`,
- art:`<pre class="dag">R1 ──▶ R2 ──▶ R3  <span class="blk">[BLOCKED BY BLK-05]</span>
- │
- └───▶ R4          <span class="blk">[BLOCKED BY BLK-01 · 02 · 03 · 06]</span></pre>
+slice. Blocked slices are NOT SCHEDULABLE,
+with the owner who unblocks them.
+Then run export_jira.py.`,
+ art:`<pre class="dag">R1 ──▶ R3 ──▶ R4   <span class="blk">[BLOCKED BY BLK-01 · 02 · 04 · 06]</span>
+
+R2 (parallel)       <span class="blk">[R2 + R3 BLOCKED BY BLK-03 — an ownership dispute]</span></pre>
 <table><tr><th></th><th>Ships</th><th>Status</th></tr>
-<tr><td><code>R1</code></td><td>Confirmation recorded, one integration — dark, on purpose: it measures the real failure rate</td><td>schedulable</td></tr>
-<tr><td><code>R2</code></td><td>The admin sees it — audit entry, never "complete" by default</td><td>schedulable</td></tr>
-<tr><td><code>R3</code></td><td>All integrations, honest coverage, real baseline</td><td style="color:var(--accent)">blocked — BLK-05 unowned</td></tr>
-<tr><td><code>R4</code></td><td>Historical enumeration + customer notification</td><td style="color:var(--accent)">blocked — four blockers</td></tr></table>
-<pre class="logbox" style="margin-top:.9rem;font-size:.64rem">jira-import.csv · 4 epics · 12 stories · epics precede stories · Source: lines survive verbatim
-Story,"REQ-D1 · Record a confirmation result…","…Source: PR ¶3 / IFAQ-14…","GIVEN a workspace with
-three connected integrations / WHEN an admin removes a user and integration B does not confirm…"</pre>`+link("07-release-plan.md"),
+<tr><td><code>R1</code></td><td>Invite funnel instrumented end to end, incl. abandoned attempts. Dark — measure before you move.</td><td>schedulable today</td></tr>
+<tr><td><code>R2</code></td><td>Template gallery replaces the blank empty state</td><td style="color:var(--accent)">blocked — BLK-03</td></tr>
+<tr><td><code>R3</code></td><td>Invite step + composer, typed addresses, never-nag rule</td><td style="color:var(--accent)">blocked — BLK-03</td></tr>
+<tr><td><code>R4</code></td><td>Contact import + the holdback experiment</td><td style="color:var(--accent)">blocked — four blockers</td></tr></table>
+<pre class="logbox" style="margin-top:.9rem;font-size:.64rem">jira-import.csv · 4 epics · 8 stories · epics precede stories · Source: lines survive verbatim
+Story,"REQ-DP5 · The never-nag rule","…Source: EFAQ-02 / 03-demo-spec.md F4…","GIVEN a user who
+skipped the invite step / WHEN they use the product for 30 days / THEN no surface re-prompts…"</pre>`,
  dims:[[5,"Traceability","PASS","pass"],[8,"Completeness","PASS","pass"]],
  verdict:"VERDICT: PASS",vclass:"",
- gate:`Two of four slices unschedulable is the correct output of six open blockers — a fully green plan would mean the pipeline quietly picked answers to questions that belong to counsel, compliance and two engineering leads.`},
+ gate:`R1 is the only slice that requires no meeting — and it produces the number every other decision needs. The plan says which meeting unblocks each of the rest, by name.`},
 
 {n:8,t:"Readiness",why:"The go/no-go — and what the session still doesn't know, stated plainly.",
- prompt:`Stage 8. Confidence block first. Then: open
+ prompt:`Stage 8. Confidence block first. Then:
 blockers by severity, assumptions that must
-hold and what breaks if they don't, top three
-reasons this fails — most likely first, not
-most dramatic — and the smallest set of
-answers that would change the recommendation.
+hold, top three reasons this fails — most
+likely first, not most dramatic — and the
+smallest set of answers that would change
+the recommendation.
 
-If the honest answer is "not yet decidable,"
-write that.`,
- art:`<pre class="logbox">SESSION CONFIDENCE · ghost-seats · after Stage 8
-Claims:        4 observed · 1 reported · 2 assumed · 2 unknown
-Requirements:  12 total · 2 resting on assumptions · 1 unsourced, flagged
-Release:       4 slices · 2 schedulable · 2 not schedulable
-Questions:     20 open · 2 with no owner assigned
-Blockers:      6 open (6 high)
-Context pack:  absent — strategic fit and feasibility not evaluated</pre>
-<div class="callout" style="border-style:solid"><b>RECOMMENDATION — GO WITH CONDITIONS, R1 + R2 only</b>
-Not a recommendation on funding the initiative — that turns on Q-04 and two legal blockers this
-session cannot evaluate. It is a recommendation on what can start while five people answer five
-questions. The ask: an owner for BLK-05, one conversation on BLK-06, and Q-04 from the VP. Three
-conversations; two under thirty minutes.</div>
-<p class="para" style="margin-top:.9rem"><b>Top reason this fails</b> — BLK-06 comes back "forward
-only": the promised report can't be built, ¶7 gets rewritten, and "was I affected?" becomes
-permanently unanswerable. Most likely, least dramatic — which is why it's ranked first.</p>`+link("08-readiness.md"),
+If it's not decidable, say so.`,
+ art:`<pre class="logbox">SESSION CONFIDENCE · empty-workspace · after Stage 8
+Claims:        5 observed · 1 reported · 2 assumed · 2 unknown
+Requirements:  8 total · 1 resting on assumption · 0 unsourced
+Release:       4 slices · 1 schedulable today · 3 blocked
+Questions:     11 open · 0 with no owner assigned
+Blockers:      6 open (4 high · 2 medium)</pre>
+<div class="callout" style="border-style:solid"><b>RECOMMENDATION — GO, ON R1 TODAY</b>
+R1 needs no meeting, no lawyer, no ownership ruling — and it arms the experiment that tests the
+assumption the whole initiative rests on. The rest: one decision (BLK-03, from the VP), one
+afternoon (deliverability data), one calculation (experiment power). Each named, each owned.</div>
+<p class="para" style="margin-top:.9rem"><b>Top reason this fails</b> — BLK-03 stays disputed and the
+two easiest slices stall behind an ownership question. A failure by meeting, not by engineering:
+the most likely and the least dramatic, which is why it's ranked first.</p>`,
  dims:[[2,"Evidence presence","PASS","pass"],[5,"Traceability","PASS","pass"],[8,"Completeness","PASS","pass"],[6,"Falsifiability","carried","q"]],
  verdict:"VERDICT: PASS",vclass:"",
- gate:`The gate here is yours, not the skill's. It has given you the agenda — the questions, the owners, the assumptions, the order — and it has no opinion on the decision. A GO covering R3/R4 would have failed this review.`}
+ gate:`The gate here is yours, not the skill's. It has given you the agenda — questions, owners, assumptions, order — and it has no opinion on the decision. A GO covering R4 would have failed this review.`}
 ];
 
 const MODES={full:[0,1,2,3,4,5,6,7,8],targeted:[0,1,2,5,6,7],lightweight:[0,1,2,6]};
@@ -741,67 +716,82 @@ const MODE_NOTE={full:"",
  targeted:"Targeted skips 3, 4, 8 — scope is known, alignment is the problem. Stage 2 runs the internal bank only.",
  lightweight:"Lightweight skips 3, 4, 5, 7, 8 — mandate work: the what is fixed, you need clean requirements. Stage 2 runs the internal bank only."};
 
-/* draft toggle data (stage 1) */
-const DRAFTS={
- 1:{doc:`<div class="toggle" id="drafttog"><button data-draft="1" aria-pressed="true">Draft 1</button><button data-draft="2" aria-pressed="false">Revised — the diff</button></div>
-<p class="para"><span class="mark">¶1</span>Today we are making user removal verifiable. When an
-administrator removes someone, the platform now confirms every connected integration has actually
-dropped that person's access — and records the result on the audit entry.</p>
-<p class="para"><span class="mark">¶6</span>Spokesperson:</p>
-<blockquote>"Deprovisioning should be verifiable, not assumed. With Ghost Seats, administrators get
-confirmation from every connected integration within 60 seconds. We're pleased to bring this level
-of visibility to our customers." — VP Product</blockquote>
-<p class="note">Describes the defect accurately. Six structural dimensions pass. And ¶6, whose one
-job is the why-now, restates the subheading.</p>`,
- 2:`<div class="toggle" id="drafttog"><button data-draft="1" aria-pressed="false">Draft 1</button><button data-draft="2" aria-pressed="true">Revised — the diff</button></div>
-<p class="para"><span class="mark">¶1</span>…records the result on the audit entry. <span class="chg">Every
-enterprise customer who signs a data processing agreement with us is already relying on that
-confirmation existing. Until today it did not — and the audit log we give them to prove it says the
-opposite.</span></p>
-<p class="para"><span class="mark">¶6</span>Spokesperson:</p>
-<blockquote><span class="chg">"We sell an audit log as evidence. An audit log that records an intention
-rather than an outcome is not evidence — and every customer who handed one to their auditor was
-handing over something we had not verified. That is why this is the work now, not next year."</span>
-— VP Product</blockquote>
-<p class="note">The rationale is the author's, supplied after the critic observed its absence. Q-04
-stays OPEN: stated is not adjudicated.</p>`}};
-const QTEXT={
- 1:`<span class="qid">Q-04 · STRATEGIC FIT — not a verdict</span><p>The document never says why the
-company should spend a quarter fixing this now. I can see the rationale is <i>absent</i>. I cannot
-tell you what the right one is — I have no strategy document to check a candidate against.</p>
-<p class="ask">Ask: your VP · Not evaluable from the document alone.</p>`,
- 2:`<span class="qid">Q-04 · STILL OPEN</span><p>The rationale is now stated. Whether it is the
-<i>right</i> one is not something a document can tell me. Stage 5 later found the added ¶1 sentence
-is also the one claim no telemetry can reach — the critic's question and the measurement rule point
-at the same soft spot.</p><p class="ask">Ask: your VP · Q-04 remains OPEN.</p>`};
+/* stage 1: drafts change artifact AND judge column */
+const S1={
+ 1:{doc:`<div class="toggle" id="drafttog"><button data-draft="1" aria-pressed="true">Draft 1 — what the judge caught</button><button data-draft="2" aria-pressed="false">Revised</button></div>
+<p class="para"><span class="mark">¶2</span>Most workspaces die alone. 61% never gain a second member
+in their first two weeks <span class="tag t-obs">[OBSERVED]</span>. <span class="chg">Teams that
+don't invite churn <b>because</b> they never experience collaboration — the product's entire
+value.</span> The invite screen is buried three clicks deep in settings
+<span class="tag t-obs">[OBSERVED]</span>…</p>
+<p class="note">The highlighted sentence is a <b>causal claim wearing no tag</b>, sitting beside two
+correlations that don't establish it — and the entire initiative rests on that "because."</p>`,
+    dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","REVISE","revise"],[3,"Alternative named","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"],[4,"Strategic fit","Q-09","q"],[6,"Falsifiability","Q-01, Q-02","q"]],
+    verdict:"VERDICT: REVISE",vclass:"rev",
+    q:`<span class="qid">THE JUDGE'S INSTRUCTION — dimension 2</span><p>¶2 writes "teams churn
+<i>because</i> they never experience collaboration" — untagged causation beside two correlations.
+Tag the correlation [OBSERVED], the causation [ASSUMED] with a pointer to the experiment that would
+settle it, and make the un-instrumented invite-attempts gap visible. Don't soften the paragraph —
+sharpen its honesty.</p><p class="ask">The most common real structural failure, and load-bearing here.</p>`},
+ 2:{doc:`<div class="toggle" id="drafttog"><button data-draft="1" aria-pressed="false">Draft 1 — what the judge caught</button><button data-draft="2" aria-pressed="true">Revised</button></div>
+<p class="para"><span class="mark">¶2</span>…single-member workspaces churn at 5.4× by day 30
+<span class="tag t-obs">[OBSERVED: retention cohorts]</span>. <span class="chg">We believe the
+teammates are the cause and not just the company retained teams keep
+<span class="tag t-asm">[ASSUMED — C5; the experiment that would settle it is REQ-D3]</span>.</span>
+<span class="chg"><span class="tag t-unk">[NEEDS EVIDENCE: how many users attempt an invite and
+abandon — attempts are not instrumented]</span></span></p>
+<p class="para"><span class="mark">¶7</span><blockquote>"…and because that pattern is a correlation
+until we test it, <span class="chg">this ships with its own experiment, not just its own
+dashboard.</span>" — VP Product</blockquote></p>
+<p class="note">The author folded the judge's finding into the narrative, not just the tags — that
+last sentence is now the initiative's best defence in review.</p>`,
+    dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[3,"Alternative named","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"],[4,"Strategic fit","Q-09 OPEN","q"],[6,"Falsifiability","Q-01, Q-02","q"]],
+    verdict:"VERDICT: PASS",vclass:"",
+    q:`<span class="qid">Q-09 · STRATEGIC FIT — never a verdict</span><p>Is activation the company's
+priority this cycle — or a growth-team preference wearing a strategy costume? Not evaluable from the
+document; the growth lead's "this quarter" (intake) is not a strategy.</p>
+<p class="ask">Ask: VP Product · The judge is barred from ruling on this. It routes the question.</p>`}};
 
 const REQS6=[
- {id:"REQ-D1 · Record a confirmation result per integration",src:"Source: PR ¶3 / IFAQ-14",
-  st:"Records, per deprovision event, whether each integration confirmed removal — and when.",
-  gwt:"GIVEN three connected integrations\nWHEN  integration B does not confirm within 60s\nTHEN  the event is recorded incomplete and names B"},
- {id:"REQ-DP1 · Show confirmation state on the audit entry",src:"Source: PR ¶3 / EFAQ-05",
-  st:"The audit entry shows each integration's outcome and timestamp.",
-  gwt:"GIVEN an incomplete event\nWHEN  the admin opens the audit entry\nTHEN  it shows incomplete and names the integration"}];
+ {id:"REQ-D1 · Instrument the invite funnel end to end",src:"Source: PR ¶3 / IFAQ-07",
+  st:"Every invite records attempted, sent, accepted, first-action — including attempts abandoned before send.",
+  gwt:"GIVEN a user opens the composer and closes it without sending\nWHEN  the session ends\nTHEN  an attempted event exists with no sent event"},
+ {id:"REQ-DP4 · Composer available from anywhere",src:"Source: PR ¶3 / PR ¶4",
+  st:"Sidebar composer on every screen, with per-invite status: sent, opened, joined, bounced.",
+  gwt:"GIVEN an invite whose email bounced\nWHEN  the inviter opens the composer\nTHEN  that invite shows bounced with a resend action"}];
 
-/* ── carousel ── */
-let mode="full", sel=0;
+let mode="full", sel=0, fsel=0;
 const stagesEl=$("#stages");
 STAGES.forEach(s=>{
   const b=document.createElement("button");
   b.className="stage"; b.type="button"; b.setAttribute("role","tab");
   b.innerHTML=`<span class="n">${s.n}</span><span class="t">${s.t}</span>`;
-  b.onclick=()=>{sel=s.n;render(true)};
+  b.onclick=()=>{sel=s.n;fsel=0;render(true)};
   stagesEl.appendChild(b);
 });
 
-function attachDraft(d){
-  $("#c-art").innerHTML = d===1 ? DRAFTS[1].doc : DRAFTS[1][2];
-  $("#c-art").insertAdjacentHTML("beforeend",
-   `<p class="filelink">Both drafts kept: <a href="${GH}01-press-release-draft1.md">draft 1</a> · <a href="${GH}01-press-release.md">revised</a></p>`);
-  $$("#drafttog button").forEach(b=>b.onclick=()=>attachDraft(+b.dataset.draft));
-  const q=$("#qbox-slot"); if(q) q.innerHTML=QTEXT[d];
+function criticHTML(dims,verdict,vclass,gate){
+  let h=dims.map(([n,name,v,cls])=>
+    `<div class="dim"><span>${n}</span><span>${name}</span><span class="v ${cls}">${v}</span></div>`).join("");
+  h+=`<div class="verdict-line ${vclass}"><b>${verdict}</b></div>`;
+  h+= gate.startsWith("<span") ? `<div class="qbox">${gate}</div>` : `<p class="gatenote">${gate}</p>`;
+  return h;
 }
-
+function drawDraft(d){
+  const D=S1[d];
+  $("#c-art").innerHTML=D.doc;
+  $("#c-critic").innerHTML=criticHTML(D.dims,D.verdict,D.vclass,D.q);
+  $$("#drafttog button").forEach(b=>b.onclick=()=>drawDraft(+b.dataset.draft));
+}
+function drawFulldoc(){
+  const files=FILES[sel];
+  if(fsel>=files.length)fsel=0;
+  $("#ftabs").innerHTML=files.map((f,i)=>
+    `<button class="ftab" aria-pressed="${i===fsel}">${f}</button>`).join("");
+  $$("#ftabs .ftab").forEach((b,i)=>b.onclick=()=>{fsel=i;drawFulldoc()});
+  $("#fdoc").textContent=DOCS[files[fsel]]||"(not embedded)";
+  $("#fdoc").scrollTop=0;
+}
 function render(animate){
   const run=MODES[mode];
   $$("#stages .stage").forEach((b,i)=>{
@@ -810,25 +800,20 @@ function render(animate){
   });
   const note=$("#skipnote");
   if(MODE_NOTE[mode]){note.hidden=false;note.textContent=MODE_NOTE[mode]}else note.hidden=true;
-  if(!run.includes(sel)) sel=run[0];
+  if(!run.includes(sel)){sel=run[0];fsel=0}
   $$("#stages .stage").forEach((b,i)=>b.setAttribute("aria-selected", i===sel));
 
   const s=STAGES[sel];
-  $("#car-stg").textContent=`STAGE ${s.n} OF 8 · ${mode.toUpperCase()} MODE`;
+  $("#car-stg").textContent=`STAGE ${s.n} OF 8 · ${mode.toUpperCase()} MODE · EMPTY WORKSPACE`;
   $("#car-title").textContent=s.t;
   $("#car-why").textContent=s.why;
   $("#c-prompt").textContent=s.prompt;
 
-  if(s.art==="DRAFT_TOGGLE"){ $("#c-art").innerHTML=""; }
-  else $("#c-art").innerHTML=s.art;
-
-  let critic=s.dims.map(([n,name,v,cls])=>
-    `<div class="dim"><span>${n}</span><span>${name}</span><span class="v ${cls}">${v}</span></div>`).join("");
-  critic+=`<div class="verdict-line ${s.vclass}"><b>${s.verdict}</b></div>`;
-  critic+= s.gate==="QBOX" ? `<div class="qbox" id="qbox-slot"></div>` : `<p class="gatenote">${s.gate}</p>`;
-  $("#c-critic").innerHTML=critic;
-
-  if(s.art==="DRAFT_TOGGLE") attachDraft(1);
+  if(s.art==="DRAFT_TOGGLE"){ drawDraft(1); }
+  else{
+    $("#c-art").innerHTML=s.art;
+    $("#c-critic").innerHTML=criticHTML(s.dims,s.verdict,s.vclass,s.gate);
+  }
   if(sel===6){
     $("#reqs6").innerHTML=REQS6.map(r=>`<div class="req"><span class="rid">${r.id}</span><span class="rsrc">${r.src}</span><p class="rst">${r.st}</p><pre class="gwt">${r.gwt}</pre></div>`).join("");
     $$("#reqs6 .req").forEach(el=>{
@@ -836,18 +821,17 @@ function render(animate){
       el.addEventListener("mouseenter",()=>on(true)); el.addEventListener("mouseleave",()=>on(false));
     });
   }
-  // nav
+  drawFulldoc();
   const idx=run.indexOf(sel), prev=run[idx-1], next=run[idx+1];
   $("#nav-prev").disabled=prev===undefined;
   $("#nav-next").disabled=next===undefined;
   $("#nav-prev-t").textContent=prev!==undefined?`${prev} · ${STAGES[prev].t}`:"start";
   $("#nav-next-t").textContent=next!==undefined?`${next} · ${STAGES[next].t}`:"done";
   $("#nav-pos").textContent=`${idx+1} / ${run.length}`;
-
   if(animate){const p=$("#car-pane");p.classList.remove("enter");void p.offsetWidth;p.classList.add("enter")}
 }
-$("#nav-prev").onclick=()=>{const r=MODES[mode],i=r.indexOf(sel);if(i>0){sel=r[i-1];render(true)}};
-$("#nav-next").onclick=()=>{const r=MODES[mode],i=r.indexOf(sel);if(i<r.length-1){sel=r[i+1];render(true)}};
+$("#nav-prev").onclick=()=>{const r=MODES[mode],i=r.indexOf(sel);if(i>0){sel=r[i-1];fsel=0;render(true)}};
+$("#nav-next").onclick=()=>{const r=MODES[mode],i=r.indexOf(sel);if(i<r.length-1){sel=r[i+1];fsel=0;render(true)}};
 document.addEventListener("keydown",e=>{
   if(e.target.closest("input,textarea"))return;
   if(e.key==="ArrowRight")$("#nav-next").click();
@@ -860,62 +844,26 @@ $$(".modes button").forEach(b=>b.onclick=()=>{
 });
 render(false);
 
-/* ── blockers ── */
+/* blockers */
 const BLOCKERS=[
- {id:"BLK-01",cat:"SECURITY",surf:"IFAQ-07",ask:"What is the actual exposure window per integration — is 90 days a ceiling, or the number we happened to find on the two we examined?",owner:"security lead",blocks:"REQ-D5, R4"},
- {id:"BLK-02",cat:"PRIVACY",surf:"RFAQ-01/02",ask:"Does retained read access after revocation constitute a failure of our processor erasure obligations — and is it reportable, on what clock?",owner:"privacy counsel / DPO",blocks:"REQ-DP5, R4"},
- {id:"BLK-03",cat:"LEGAL",surf:"IFAQ-04/06",ask:"What do our DPAs commit us to on revocation timeliness — and what is owed for occurrences that already happened?",owner:"legal counsel",blocks:"REQ-DP5, R4"},
- {id:"BLK-04",cat:"REGULATORY",surf:"RFAQ-06",ask:"Have we been attesting to an access-control criterion that does not operate as described — and what is owed to the auditor?",owner:"compliance lead",blocks:"disclosure posture"},
- {id:"BLK-05",cat:"DEPENDENCY",surf:"IFAQ-10/12",ask:"Who is accountable for the integration contract — platform or partnerships — and which integrations expose a membership read at all?",owner:"platform + partnerships, jointly",blocks:"REQ-D3, R3"},
- {id:"BLK-06",cat:"DATA",surf:"IFAQ-14",ask:"Can the affected population be enumerated retroactively — or only from the instrumentation date forward?",owner:"platform engineering lead",blocks:"REQ-D6, REQ-DP5, R4"}];
+ {id:"BLK-01",cat:"PRIVACY",sev:"high",surf:"IFAQ-03, RFAQ-02",ask:"Importing an address book means holding personal data of people who never signed up. Lawful basis? Retention of non-user contacts? Can we honour a deletion request from someone who was never our user?",owner:"privacy counsel",blocks:"contact import, R4"},
+ {id:"BLK-02",cat:"REGULATORY",sev:"high",surf:"RFAQ-01",ask:"An invite email to a non-user — transactional message from the inviting user, or marketing from us? CAN-SPAM, CASL, and ePrivacy-style regimes answer differently, and the answer changes sender identity and footers per market.",owner:"compliance lead",blocks:"contact import, R4"},
+ {id:"BLK-03",cat:"DEPENDENCY",sev:"high",surf:"IFAQ-01",ask:"Growth and product both claim the first-run surface, and the last collision shipped conflicting experiments. Who is the single owner of the onboarding surface and the activation number?",owner:"VP Product",blocks:"R2, R3 — the two easiest slices"},
+ {id:"BLK-04",cat:"DATA",sev:"high",surf:"IFAQ-02",ask:"Does current signup volume give a day-30 holdback experiment acceptable power inside one quarter — and if not, what is the honest alternative design?",owner:"data & analytics lead",blocks:"the experiment, R4"},
+ {id:"BLK-05",cat:"COMMERCIAL",sev:"medium",surf:"IFAQ-05, EFAQ-05",ask:"Do invite incentives create teams or farm seats — and is discounting a behaviour that already correlates with retention just margin given away?",owner:"commercial lead",blocks:"candidates only"},
+ {id:"BLK-06",cat:"SECURITY",sev:"medium",surf:"IFAQ-04",ask:"What does an attacker get from the address-book token store — and are we widening OAuth scope for a feature whose value rests on an [ASSUMED] claim?",owner:"security lead",blocks:"contact import, R4"}];
 $("#blk-cards").innerHTML=BLOCKERS.map(b=>`
- <div class="card"><div class="cat"><span>${b.id} · ${b.cat}</span><span class="sev">high</span></div>
+ <div class="card"><div class="cat"><span>${b.id} · ${b.cat}</span><span class="sev">${b.sev}</span></div>
  <div class="surf">Surfaced by ${b.surf}</div><p class="ask">${b.ask}</p>
  <div class="owner">Ask: ${b.owner}<span class="st">OPEN</span><br>
  <span style="color:var(--ink-3)">Blocks: ${b.blocks}</span></div></div>`).join("");
 
-/* ── what it doesn't know ── */
-const RUNS={
- 0:{conf:`SESSION CONFIDENCE · ghost-seats · after Stage 8
-Claims:        4 observed · 1 reported · 2 assumed · 2 unknown
-Questions:     20 open · 2 with no owner assigned
-Blockers:      6 open (6 high)
-Context pack:  absent — strategic fit and feasibility
-               were not evaluated`,
-   note:"PMs read this as a to-do list, which is exactly what it is. A tool that tells you what it doesn't know is more trustworthy than one that doesn't.",
-   para:`Deprovisioning fails to reach at least one integration in roughly 4,200 accounts per quarter
-<span class="tag t-obs">[OBSERVED: event log]</span>, and nothing surfaces when it happens
-<span class="tag t-obs">[OBSERVED: no error path]</span>. The removed person keeps read access — 90
-days on the two integrations examined <span class="tag t-obs">[OBSERVED]</span>, assumed for the rest
-<span class="tag t-asm">[ASSUMED]</span>. Admins find out at access reviews, if at all
-<span class="tag t-rep">[REPORTED: two support leads]</span>.
-<span class="tag t-unk">[NEEDS EVIDENCE: how many removed users actually opened a document]</span>`,
-   pnote:"The [NEEDS EVIDENCE] gap is the number the press release most wants and is least able to get. It stays visible — a plausible invented number gets quoted back at the author in a review."},
- 1:{conf:`SESSION CONFIDENCE · ghost-seats-ctx · after Stage 2
-Claims:        4 observed · 1 reported · 2 assumed · 2 unknown
-Questions:     13 open · 2 with no owner assigned
-Blockers:      6 open (6 high)
-Context pack:  1 document — strategic fit evaluable;
-               legal, privacy, feasibility still not`,
-   note:"One two-page strategy doc: four questions closed, one opened, one sharpened — zero blockers resolved. That ratio points both ways.",
-   para:`<i>The problem paragraph is unchanged — a strategy document reaches none of it.</i> What
-changed is the rationale: <span class="chg">"This is the commitment in this year's second pillar taken
-literally: a customer should answer their auditor's questions using artifacts they generate
-themselves."</span> And the critic found a conflict inside the alignment — the delivery plan needs an
-integration-agreement change the same document defers to next year.`,
-   pnote:"That conflict was invisible at tier 0. Context doesn't produce verdicts; it upgrades \"does this match strategy?\" into \"the pillar says yes, the budget line says no — which wins?\" The first needs a meeting. The second is the meeting agenda."}};
-function drawRun(r){const R=RUNS[r];$("#conf-block").textContent=R.conf;$("#conf-note").textContent=R.note;
- $("#prov-para").innerHTML=R.para;$("#prov-note").innerHTML=R.pnote}
-$$(".toggle button[data-run]").forEach(b=>b.onclick=()=>{
- $$(".toggle button[data-run]").forEach(x=>x.setAttribute("aria-pressed",x===b));drawRun(+b.dataset.run)});
-drawRun(0);
-
-/* ── context builder ── */
+/* context builder */
 const SLOTS=[
  {k:"strategy",t:"Strategy or vision doc",u:"Dimension 4 cites a line instead of asking a question"},
  {k:"metrics",t:"Metric definitions + baselines",u:"Stage 5 targets grounded; the north star validated, not invented"},
  {k:"prds",t:"Prior PRDs or post-mortems",u:"“What exists today” answered; you stop re-proposing the rejected"},
- {k:"ownership",t:"Ownership map / team boundaries",u:"Blocker owners resolve to actual teams; unowned questions get owners"},
+ {k:"ownership",t:"Ownership map / team boundaries",u:"Blocker owners resolve to actual teams; disputes become citations"},
  {k:"legal",t:"Contracts, DPAs, regulatory constraints",u:"The regional FAQ cites your real obligations, not generic regimes"},
  {k:"telemetry",t:"Telemetry export or support tickets",u:"The problem paragraph carries [OBSERVED] instead of [ASSUMED]"}];
 const picked={};
@@ -938,11 +886,11 @@ const DIMSTATE=[[1,"Customer specificity","auth"],[2,"Evidence presence","teleme
  [4,"Strategic fit","strategy"],[5,"Traceability","auth"],[6,"Falsifiability","ownership"],[7,"Clarity","auth"],[8,"Completeness","auth"]];
 function updateBuilder(){
   const n=Object.keys(picked).length, has=k=>k in picked;
-  const q=20-(has("strategy")?4:0)-(has("metrics")?2:0)-(has("telemetry")?2:0)-(has("prds")?1:0);
+  const q=11-(has("strategy")?2:0)-(has("metrics")?1:0)-(has("telemetry")?1:0)-(has("prds")?1:0)-(has("ownership")?2:0);
   $("#bld-conf").textContent=
 `SESSION CONFIDENCE · your-session
-Claims:        ${4+(has("telemetry")?2:0)} observed · ${Math.max(0,2-(has("telemetry")?1:0)-(has("prds")?1:0))} assumed
-Questions:     ${q} open · ${has("ownership")?0:2} with no owner
+Claims:        ${5+(has("telemetry")?2:0)} observed · ${Math.max(0,2-(has("telemetry")?1:0)-(has("prds")?1:0))} assumed
+Questions:     ${Math.max(2,q)} open
 Blockers:      6 open — unchanged by any document
 Context pack:  ${n===0?"absent":n+" document"+(n>1?"s":"")}`;
   $("#bld-dims").innerHTML=DIMSTATE.map(([i,name,need])=>{
@@ -962,7 +910,7 @@ $("#dl-context").onclick=()=>{
 $("#dl-prompt").onclick=async()=>{
   const ks=Object.keys(picked);
   const list=SLOTS.filter(s=>ks.includes(s.k)).map(s=>`- ${s.t} (\`${picked[s.k]}\`)`).join("\n");
-  const p=`Run the working-backwards skill on this problem.\n\nContext pack in wb/context/${ks.length?":\n"+list:" — empty. Run at tier 0 and tell me what you therefore can't evaluate."}\n\nThe problem: <the trigger — what data, incident or request surfaced this>\nThe customer: <a specific segment, not "everyone">\nThe constraint: <deadline, mandate, budget, or none>\n\nStart at Stage 0. Name the mode and the stages it skips, state your context tier,\nand list the critic dimensions you cannot evaluate. Never invent a figure — use\n[NEEDS EVIDENCE] where I haven't given you one.`;
+  const p=`Run the working-backwards skill on this problem.\n\nContext pack in wb/context/${ks.length?":\n"+list:" — empty. Run at tier 0 and tell me what you therefore can't evaluate."}\n\nThe problem: <the trigger — what data, incident or request surfaced this>\nThe customer: <a specific segment, not "everyone">\nThe constraint: <deadline, mandate, budget, or none>\n\nStart at Stage 0. Name the mode and the stages it skips, state your context tier,\nand list the judge dimensions you cannot evaluate. Never invent a figure — use\n[NEEDS EVIDENCE] where I haven't given you one.`;
   const btn=$("#dl-prompt");
   try{await navigator.clipboard.writeText(p);btn.textContent="Copied"}
   catch(e){dl("kickoff-prompt.md",p);btn.textContent="Downloaded"}

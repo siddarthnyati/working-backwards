@@ -1,0 +1,146 @@
+Issue Type,Summary,Description,Acceptance Criteria,Epic Name,Parent,Labels,Priority
+Epic,R1 · Measure before you move,"Ships: the invite funnel instrumented end to end, including abandoned attempts; D14MR computable per cohort. Dark — no user-facing change.
+
+Requirements: REQ-D1, REQ-D2
+
+Depends on: —
+
+Test harness:
+- Composer open-and-close produces attempted with no sent
+- Full sequence produces four ordered events
+- D14MR excludes members with zero actions on a seeded cohort",,R1 Measure before you move,,working-backwards release-slice,Medium
+Story,REQ-D1 · Instrument the invite funnel end to end,"Every invite records attempted, sent, accepted, and first-action events with workspace, actor, and timestamps — including attempts abandoned before send.
+
+Source: PR ¶3 / IFAQ-07
+
+Provenance: [OBSERVED] × 1, [UNKNOWN] × 1
+
+Out of scope: showing funnel data to customers
+
+Depends on: —","GIVEN a user opens the invite composer and closes it without sending
+WHEN  the session ends
+THEN  an attempted event exists with no sent event, attributable to that workspace
+AND   a full send-accept-act sequence produces all four events in order",,R1 Measure before you move,working-backwards discovery,Medium
+Story,"REQ-D2 · Baseline members-with-action, not members","The Day-14 Multiplayer Rate is computable per cohort, counting only members with at least one action.
+
+Source: 05-telemetry.md / PR ¶1
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: setting the target (Q-04)
+
+Depends on: REQ-D1","GIVEN a cohort with invited members who never acted
+WHEN  D14MR is computed
+THEN  those members do not count toward multiplayer status
+AND   the report states cohort size and period",,R1 Measure before you move,working-backwards discovery,Medium
+Epic,R2 · The workspace does work on arrival,"Ships: template gallery replaces the blank empty state; Start empty preserved; load-failure fallback.
+
+Requirements: REQ-DP2
+
+Depends on: —
+
+Blocked by: BLK-03
+
+Test harness:
+- Gallery renders on first open; Start empty is the last card
+- Template creates content without replacing existing content
+- Simulated load failure falls back to blank canvas with retry",,R2 The workspace does work on arrival,,working-backwards release-slice blocked,Highest
+Story,REQ-DP2 · Template gallery replaces the blank empty state,"A new workspace opens on a template gallery; each card creates a working pre-populated page; Start empty is always present.
+
+Source: PR ¶5 / EFAQ-04
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: template authoring by customers; localisation (Q-08)
+
+Depends on: —","GIVEN a brand-new workspace
+WHEN  the owner opens it first
+THEN  the gallery renders with Start empty as the final card
+AND   opening a template creates content without replacing anything
+AND   a template load failure falls back to the blank canvas with a retry (F3)",,R2 The workspace does work on arrival,working-backwards delivery blocked,Medium
+Epic,"R3 · The invite step, typed addresses only","Ships: invite step in first-run (skippable, never-nag), composer everywhere, per-invite status including bounced.
+
+Requirements: REQ-DP1, REQ-DP4, REQ-DP5
+
+Depends on: R1
+
+Blocked by: BLK-03
+
+Test harness:
+- Skip is one click, no dialog, same destination as send
+- Bounce renders in composer with resend; server failure preserves chips
+- 30-day never-nag assertion: no scheduled re-prompt event exists",,"R3 The invite step, typed addresses only",,working-backwards release-slice blocked,Highest
+Story,REQ-DP1 · Invite step in first-run setup,"Workspace setup includes an invite step — email chips, send, or skip — between naming and first content.
+
+Source: PR ¶1 / PR ¶3
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: contact import (REQ-DP3)
+
+Depends on: REQ-D1","GIVEN a user on the invite step
+WHEN  they select Skip for now
+THEN  setup continues immediately with no confirmation dialog
+AND   sending invites and skipping reach the same next screen",,"R3 The invite step, typed addresses only",working-backwards delivery blocked,Medium
+Story,REQ-DP4 · Invite composer available from anywhere,"The composer opens from the sidebar on every screen and shows per-invite status: sent, opened, joined, bounced.
+
+Source: PR ¶3 / PR ¶4
+
+Provenance: [OBSERVED] × 2
+
+Out of scope: bulk CSV invite
+
+Depends on: REQ-D1","GIVEN an invite whose email bounced
+WHEN  the inviter opens the composer
+THEN  that invite shows bounced with a resend action (F1)
+AND   a server-side send failure is shown and preserves the entered addresses (F5)",,"R3 The invite step, typed addresses only",working-backwards delivery blocked,Medium
+Story,REQ-DP5 · The never-nag rule,"Skipping the invite step is one click, gates nothing, and triggers no scheduled re-prompt anywhere in the product.
+
+Source: EFAQ-02 / 03-demo-spec.md F4
+
+Provenance: [OBSERVED] × 1
+
+Out of scope: lifecycle marketing email (owned elsewhere — and constrained by BLK-02)
+
+Depends on: REQ-DP1","GIVEN a user who skipped the invite step
+WHEN  they use the product for 30 days
+THEN  no surface re-prompts them to invite on any schedule
+AND   the composer remains one click away in the sidebar throughout",,"R3 The invite step, typed addresses only",working-backwards delivery blocked,Medium
+Epic,R4 · Import and the experiment,"Ships: contact import (if review permits) and the holdback readout on the causal claim.
+
+Requirements: REQ-DP3, REQ-D3
+
+Depends on: R1, R3
+
+Blocked by: BLK-01, BLK-02, BLK-04, BLK-06
+
+Test harness:
+- Import retains only selected addresses; non-selected discarded at session end
+- Holdback assignment at creation; readout states effect size, CI, cohort sizes, or declares underpower",,R4 Import and the experiment,,working-backwards release-slice blocked,Highest
+Story,REQ-DP3 · Contact import,"Where privacy, regulatory and security review permit, users can import contacts to populate the invite composer.
+
+Source: PR ¶3 / EFAQ-03 / RFAQ-02
+
+Provenance: [OBSERVED] × 1, [UNKNOWN] × 1
+
+Out of scope: everything until the blockers resolve
+
+Depends on: BLK-01, BLK-02, BLK-06
+
+Conditional on: BLK-01 (lawful basis, non-user retention), BLK-02 (invite email classification), BLK-06 (OAuth scope and token storage). The button ships disabled with a ""pending review"" tooltip until all three resolve.","GIVEN all three blockers resolve permissive
+WHEN  a user imports contacts
+THEN  only selected addresses are retained, and non-selected contact data is discarded at session end",,R4 Import and the experiment,working-backwards delivery shape-pending blocked,Highest
+Story,REQ-D3 · Holdback experiment on the causal claim,"A randomized holdback cohort retains the old first-run, and day-30 retention is compared against the invite-first cohort.
+
+Source: PR ¶2 / IFAQ-02
+
+Provenance: [OBSERVED] × 1, [ASSUMED] × 1 → RESTS ON ASSUMPTION
+
+Out of scope: acting on the result
+
+Depends on: REQ-D1, BLK-04
+
+Conditional on: BLK-04 — if volume cannot power it in a quarter, the design changes (longer window, or a proxy endpoint) and the PR's causal framing stays [ASSUMED]","GIVEN assignment at workspace creation
+WHEN  cohorts are compared at day 30
+THEN  the readout states effect size, confidence interval, and cohort sizes
+AND   if the experiment is underpowered at current volume, the readout says so rather than extending silently",,R4 Import and the experiment,working-backwards discovery rests-on-assumption shape-pending blocked,Highest
