@@ -20,6 +20,15 @@
         ],
         "createdAt": "2026-08-31T02:18:47.384Z",
         "reason": "Impeccable build decision: 1px corner-softening on the keyboard focus-visible outline only — a micro accessibility detail, not part of the documented 6px/999px/0px shape system. Not a card or panel radius."
+      },
+      {
+        "rule": "side-tab",
+        "value": "border-left:3px solid var(--accent)",
+        "files": [
+          "docs/index.html"
+        ],
+        "createdAt": "2026-08-31T04:06:13.270Z",
+        "reason": "Impeccable build decision: standard markdown blockquote left-border (the universal blockquote convention, same rendered-document family as the already-sanctioned .diffline marker), not a decorative card accent. Scoped to .mddoc blockquote only."
       }
     ]
   }

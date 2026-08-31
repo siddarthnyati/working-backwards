@@ -56,6 +56,11 @@ typography:
     fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
     fontSize: "1.15rem"
     fontWeight: 400
+  doc-h1:
+    fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
+    fontSize: "1.28rem"
+    fontWeight: 500
+    letterSpacing: "-0.01em"
   headline:
     fontFamily: "Hanken Grotesk, -apple-system, Segoe UI, sans-serif"
     fontSize: "1.22rem"
@@ -228,10 +233,13 @@ Two radius values, used by role, never mixed within one component family:
 - **Border:** 1px Hairline Border throughout.
 
 ### Diff Blocks (signature component)
-The hero's press-release paragraphs render as diff lines: Diff Add Green-tinted background, a 3px Diff Add Green left border (the diff tool's literal added-line marker — the one deliberate exception to "no colored side-borders," earned by the committed code-review world's own native grammar, not used elsewhere on the page), a mono `+` gutter, prose in Comment Gray.
+The hero's press-release paragraphs render as diff lines: Diff Add Green-tinted background, a 3px Diff Add Green left border (the diff tool's literal added-line marker), a mono `+` gutter, prose in Comment Gray.
 
 ### Navigation (stage tabs)
 9-tab sharp-cornered grid, Panel Charcoal at rest, Merge Blue fill + white text when selected, a Merge Blue underline rail (`transform: scaleX()`-driven, never `width`) that glides between the selected tab and the previous one.
+
+### Rendered Document (`.mddoc`)
+"The complete artifact, as written to disk" no longer dumps raw markdown into a `<pre>` — a small dependency-free renderer (`mdToHtml()`) converts headings, bold/italic/inline-code, blockquotes, lists, tables, and fenced blocks into real typography, reusing the page's existing type scale and token system rather than inventing document-specific styles. Two deliberate exceptions to the "no colored side-borders" default now exist on this page — the hero's `.diffline` marker and `.mddoc blockquote`'s left border — both earned by the same reasoning: they're the literal, universal convention for their respective content (a diff addition; a quoted block), not a decorative card accent, and neither is used anywhere else. Fenced code blocks (`.mddoc pre`) reuse the Elevated Charcoal background already established for `.mock`/`.logbox`, so a Q&A block embedded in a rendered document reads as the same "console output" material as everywhere else on the page. `.csv` files bypass the renderer entirely and stay in a plain `.raw` monospace block — CSV isn't markdown, and parsing it as prose would corrupt quoted fields.
 
 ## Do's and Don'ts
 
