@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-08-31T02:18:47.384Z",
         "reason": "Impeccable build decision: 1px corner-softening on the keyboard focus-visible outline only — a micro accessibility detail, not part of the documented 6px/999px/0px shape system. Not a card or panel radius."
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "docs/index.html"
+        ],
+        "createdAt": "2026-08-31T04:10:19.297Z",
+        "reason": "Impeccable build decision: this file's only two side-tab border-lefts are the literal diff-tool added-line marker (.diffline, the committed Review Queue world's native grammar) and the standard markdown blockquote left-border (.mddoc blockquote) — both reviewed, neither a decorative card accent. No other side-tab borders exist in this file; re-review if a new one is added."
       }
     ]
   }
