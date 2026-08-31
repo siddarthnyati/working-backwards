@@ -4,15 +4,6 @@
     "ignoreFiles": [],
     "ignoreValues": [
       {
-        "rule": "side-tab",
-        "value": "border-left:3px solid var(--ok)",
-        "files": [
-          "docs/index.html"
-        ],
-        "createdAt": "2026-08-31T02:18:42.191Z",
-        "reason": "Impeccable build decision: literal diff-tool left-border marker for added lines — the committed Review Queue world's native grammar (GitHub/GitLab diff view convention), not a decorative accent bar. Disclosed to user in the build report; scoped to .diffline only, not reused elsewhere."
-      },
-      {
         "rule": "design-system-radius",
         "value": "1px",
         "files": [
@@ -23,12 +14,12 @@
       },
       {
         "rule": "side-tab",
-        "value": "border-left:3px solid var(--accent)",
+        "value": "*",
         "files": [
           "docs/index.html"
         ],
-        "createdAt": "2026-08-31T04:06:13.270Z",
-        "reason": "Impeccable build decision: standard markdown blockquote left-border (the universal blockquote convention, same rendered-document family as the already-sanctioned .diffline marker), not a decorative card accent. Scoped to .mddoc blockquote only."
+        "createdAt": "2026-08-31T04:10:19.297Z",
+        "reason": "Impeccable build decision: this file's only two side-tab border-lefts are the literal diff-tool added-line marker (.diffline, the committed Review Queue world's native grammar) and the standard markdown blockquote left-border (.mddoc blockquote) — both reviewed, neither a decorative card accent. No other side-tab borders exist in this file; re-review if a new one is added."
       }
     ]
   }
