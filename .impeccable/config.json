@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "border-left:3px solid var(--ok)",
+        "files": [
+          "docs/index.html"
+        ],
+        "createdAt": "2026-08-31T02:18:42.191Z",
+        "reason": "Impeccable build decision: literal diff-tool left-border marker for added lines — the committed Review Queue world's native grammar (GitHub/GitLab diff view convention), not a decorative accent bar. Disclosed to user in the build report; scoped to .diffline only, not reused elsewhere."
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "1px",
+        "files": [
+          "docs/index.html"
+        ],
+        "createdAt": "2026-08-31T02:18:47.384Z",
+        "reason": "Impeccable build decision: 1px corner-softening on the keyboard focus-visible outline only — a micro accessibility detail, not part of the documented 6px/999px/0px shape system. Not a card or panel radius."
+      }
+    ]
+  }
+}

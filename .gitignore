@@ -8,3 +8,7 @@ working-backwards-build-brief.md
 .DS_Store
 __pycache__/
 *.pyc
+
+# Impeccable skill: session-local cache and verification screenshots, not durable project state
+.impeccable/hook.cache.json
+.impeccable/review/
