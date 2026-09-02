@@ -2,6 +2,38 @@
 
 ## A Claude Skill that runs Amazon's Working Backwards process end to end and terminates in engineer-ready requirements — not a press release you still have to translate.
 
+### **[▶ Open the working prototype](https://siddarthnyati.github.io/working-backwards/)**
+
+Step through a real nine-stage run — the prompt, the artifact it produced, and the LLM
+judge's verdict at every stage, with the complete document loaded underneath. Then see
+**[the mechanics](https://siddarthnyati.github.io/working-backwards/mechanics.html)** —
+every agent in the pipeline and the exact prompt that drives it.
+
+<a href="https://siddarthnyati.github.io/working-backwards/">
+<img src="docs/assets/walkthrough-demo.png" alt="The walkthrough at Stage 3: the prompt on the left, the demo spec rendered as UI mockups in the middle, the LLM judge on the right" width="100%"></a>
+<sup>Stage 3 of the walkthrough — the demo spec as actual screens: the invite step with a deliberately disabled control ("pending privacy review · BLK-01"), the template gallery, and the judge's gate beside it.</sup>
+
+<table><tr>
+<td width="50%"><a href="https://siddarthnyati.github.io/working-backwards/">
+<img src="docs/assets/judge-revise.png" alt="The LLM judge failing draft 1 on dimension 2 — an untagged causal claim"></a>
+<sup><b>LLM as judge, catching a real one</b> — draft 1 wrote "teams churn <i>because</i>…" with no tag beside two correlations. VERDICT: REVISE, with the exact sentence to fix.</sup></td>
+<td width="50%"><a href="https://siddarthnyati.github.io/working-backwards/reports/empty-workspace.html">
+<img src="docs/assets/report-overview.png" alt="The interactive session report: confidence numbers, stage verdicts, blocker cards"></a>
+<sup><b>The output isn't just markdown</b> — every session compiles to an interactive report.html: verdicts, blockers, filterable requirements, the DAG, the judge log. Every number parsed from the artifacts, not typed.</sup></td>
+</tr></table>
+
+### The test runs — open them live
+
+| Run | The problem | Live report | Artifacts |
+|---|---|---|---|
+| **Empty Workspace** — drives the site walkthrough | SaaS onboarding: 61% of new workspaces never gain a second member. UI at every stage; the `[ASSUMED]` causal claim carried from intake to readiness | **[report](https://siddarthnyati.github.io/working-backwards/reports/empty-workspace.html)** | [`examples/empty-workspace/`](examples/empty-workspace/) |
+| **Ghost Seats** | Platform defect: user removal silently fails to propagate; the audit log says they're gone. Includes an honest judge override at Stage 5 | **[report](https://siddarthnyati.github.io/working-backwards/reports/ghost-seats.html)** | [`examples/ghost-seats/`](examples/ghost-seats/) |
+| **Silent Step-Down** | Payments: 3DS timeout falls back to unauthenticated processing, shifting liability. The reconciliation check catches double-counted scope | **[report](https://siddarthnyati.github.io/working-backwards/reports/silent-stepdown.html)** | [`examples/silent-stepdown/`](examples/silent-stepdown/) |
+
+All three are fictional, run end to end by the skill, and machine-verified —
+`scripts/verify_sources.py` checks every requirement's citation resolves.
+
+---
 **5 August 2026** — Working Backwards is available today as an installable Claude Skill. It runs
 Amazon's PR/FAQ discovery process as a nine-stage gated pipeline: press release, external and
 internal and regional FAQs, demo spec, docs, telemetry, requirements with acceptance criteria,
@@ -11,8 +43,6 @@ answer it derives from. The last artifact is a JIRA-importable CSV.
 
 It is MIT licensed, works with or without any knowledge of your company, and tells you plainly
 what it could not evaluate.
-
-**[See it running →](https://siddarthnyati.github.io/working-backwards)**
 
 ---
 
@@ -110,7 +140,8 @@ docs, telemetry plan, requirements, release plan, readiness — plus `BLOCKERS.m
 `QUESTIONS.md`, `CONFIDENCE.md`, `jira-import.csv` and `session.json` — plus `report.html`, an
 interactive single-page report compiled from the artifacts by `scripts/build_report.py`: blockers,
 filterable requirements, the DAG, the judge log, every raw artifact embedded. The markdown is the
-system of record; the report is what you send to a human. See
+system of record; the report is what you send to a human — the three example reports are
+linked live in the runs table at the top of this page. See
 [`examples/empty-workspace/`](examples/empty-workspace/) for the run the site walks through
 (UI-heavy, so every stage has something to see), [`examples/ghost-seats/`](examples/ghost-seats/)
 for a platform-defect run that includes an honest critic override, and
