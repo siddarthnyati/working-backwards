@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Empty Workspace — demo one-pager</title>
+<!-- Leadership one-pager. Fill every {{PLACEHOLDER}}; delete nothing structural.
+     Palette is deliberately neutral and swappable: change --brand to your org's accent.
+     Every number here must also exist in 03-demo-spec.md or upstream — this page is a
+     view, never a second source of truth. -->
+<style>
+:root{--brand:#1f4e5f;--ink:#16181a;--ink-2:#4a4f54;--ink-3:#8a9096;--line:#dfe3e6;
+--bg:#ffffff;--panel:#f5f7f8;--warn:#8a4b12;--warn-bg:#faf0e4;
+--sans:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+font-size:16px;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{max-width:54rem;margin:0 auto;padding:2.2rem 1.4rem 3rem}
+h1{font-size:1.7rem;font-weight:650;letter-spacing:-.015em;margin:0 0 .2rem}
+h2{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+color:var(--brand);margin:2rem 0 .8rem;border-top:2px solid var(--brand);padding-top:.6rem}
+p{margin:0 0 .8rem}
+.meta{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);margin-bottom:.4rem}
+.what{font-size:1.12rem;color:var(--ink-2);max-width:46rem}
+.tag{font-family:var(--mono);font-size:.62rem;padding:.1rem .35rem;border:1px solid var(--line);
+color:var(--ink-3);white-space:nowrap;vertical-align:middle}
+.tag.warn{color:var(--warn);border-color:var(--warn);background:var(--warn-bg)}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.7rem}
+.num{border:1px solid var(--line);padding:.9rem 1rem;background:var(--panel)}
+.num b{display:block;font-size:1.7rem;font-weight:650;letter-spacing:-.02em}
+.num span{font-size:.78rem;color:var(--ink-2);display:block;margin:.15rem 0 .4rem}
+.persona{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line)}
+.persona>div{padding:1rem 1.1rem;min-width:0}
+.persona>div:first-child{border-right:1px solid var(--line);background:var(--panel)}
+.persona h3{font-size:.95rem;margin:0 0 .35rem}
+.persona .r{font-family:var(--mono);font-size:.68rem;color:var(--ink-3);display:block;margin-bottom:.5rem}
+.persona p{font-size:.86rem;color:var(--ink-2);margin:0}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:.7rem}
+.screen{border:1px solid var(--ink-3);background:var(--bg);min-width:0}
+.screen .bar{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+color:var(--ink-3);padding:.35rem .6rem;border-bottom:1px solid var(--line);background:var(--panel)}
+.screen .body{padding:.7rem .75rem;font-size:.8rem;color:var(--ink-2)}
+.notdo{border:1px dashed var(--ink-3);padding:.8rem 1rem;font-size:.88rem;color:var(--ink-2)}
+.ask{border:1px solid var(--line)}
+.ask-row{display:grid;grid-template-columns:7rem 1fr 11rem;gap:0;border-bottom:1px solid var(--line)}
+.ask-row:last-child{border-bottom:0}
+.ask-row>div{padding:.6rem .8rem;font-size:.82rem;min-width:0}
+.ask-row .id{font-family:var(--mono);font-size:.7rem;color:var(--warn)}
+.ask-row .own{font-family:var(--mono);font-size:.7rem;color:var(--ink-2)}
+.decision{background:var(--panel);border-left:3px solid var(--brand);padding:.9rem 1.1rem;
+font-size:.95rem;margin-top:1rem}
+footer{margin-top:2rem;padding-top:.8rem;border-top:1px solid var(--line);
+font-family:var(--mono);font-size:.66rem;color:var(--ink-3)}
+@media(max-width:640px){.persona{grid-template-columns:1fr}
+.persona>div:first-child{border-right:0;border-bottom:1px solid var(--line)}
+.ask-row{grid-template-columns:1fr}.ask-row>div{padding:.45rem .8rem}}
+@media print{.page{padding:0}body{font-size:13px}}
+</style>
+</head>
+<body><div class="page">
+  <div class="meta">empty-workspace · demo one-pager · generated from 03-demo-spec.md · 2026-08-30 · status: discovery</div>
+  <h1>A workspace that starts as a team</h1>
+  <p class="what">New workspaces begin with teammates in the room and something real to work on — and inviting never blocks anyone.</p>
+
+  <h2>Why now</h2>
+  <div class="nums">
+    <div class="num"><b>61%</b><span>of new workspaces never gain a second member in 14 days</span><span class="tag">[OBSERVED: product analytics, 6-mo cohort]</span></div>
+    <div class="num"><b>5.4×</b><span>day-30 churn, single-member vs 3+-member workspaces</span><span class="tag">[OBSERVED: retention cohorts]</span></div>
+    <div class="num"><b>&lt;4%</b><span>of new workspaces ever find the invite screen in week one</span><span class="tag">[OBSERVED: IA analytics]</span></div>
+    <div class="num"><b>?</b><span>how many users try to invite and abandon — attempts are not instrumented</span><span class="tag warn">[NEEDS EVIDENCE → R1]</span></div>
+  </div>
+  <p style="font-size:.82rem;color:var(--ink-2);margin-top:.6rem">The causal link — that teammates <i>cause</i> retention rather than merely accompany it — is <span class="tag warn">[ASSUMED — C5]</span>, and this ships with the holdback experiment that tests it (REQ-D3).</p>
+
+  <h2>Who it affects</h2>
+  <div class="persona">
+    <div><h3>The team lead who meant to invite everyone</h3><span class="r">team leads at 5–50-person companies creating a workspace self-serve, intending to bring their team</span>
+      <p><b>Today:</b> sets the workspace up on a Tuesday, can't find the invite screen (it's three clicks into settings), works alone in an empty canvas, and is back in the old tool by Friday. Not a decision — it just never started.</p></div>
+    <div><h3>After</h3><span class="r">setup asks who they work with; the workspace opens on real content</span>
+      <p>Invites are step 2 of setup — or one click to skip, with no nagging ever. The first screen is a template gallery, not a blank page. Every invite shows its status: sent, opened, joined, bounced.</p></div>
+  </div>
+
+  <h2>The experience</h2>
+  <div class="flow">
+    <div class="screen"><div class="bar">Setup · step 2 of 3</div><div class="body">"Who do you work with?" — email chips, <b>Send invites &amp; continue</b> or <b>Skip for now</b> (one click, no dialog). Import-from-contacts is present but disabled: "pending privacy review."</div></div>
+    <div class="screen"><div class="bar">First open</div><div class="body">Template gallery — project tracker, team wiki, meeting notes, each usable in one click. "Start empty" is always the last card.</div></div>
+    <div class="screen"><div class="bar">Composer, anywhere</div><div class="body">Sidebar invite composer with per-invite status. A bounce shows "bounced — check address" with a resend, in the composer, same day.</div></div>
+    <div class="screen"><div class="bar">Failure state</div><div class="body">If the send fails server-side, it says so and keeps the typed addresses. Silence never renders as success — the current defect, not rebuilt inside the fix.</div></div>
+  </div>
+
+  <h2>What it deliberately does not do</h2>
+  <div class="notdo">No contact import until privacy, regulatory and security review answer (BLK-01 · 02 · 06 — the disabled button is the honest version). No invite incentives (BLK-05). No re-prompting anyone who skipped — the never-nag rule is a requirement (REQ-DP5), not a promise.</div>
+
+  <h2>The ask</h2>
+  <div class="ask">
+    <div class="ask-row"><div class="id">BLK-03 · DEPENDENCY</div><div>Growth and product both claim the first-run surface. One named owner unblocks the two easiest slices.</div><div class="own">VP Product</div></div>
+    <div class="ask-row"><div class="id">BLK-04 · DATA</div><div>Does signup volume power the day-30 holdback experiment inside a quarter?</div><div class="own">data &amp; analytics lead</div></div>
+    <div class="ask-row"><div class="id">BLK-01 · PRIVACY</div><div>Lawful basis and retention for imported non-user contacts.</div><div class="own">privacy counsel</div></div>
+  </div>
+  <div class="decision"><b>Decision requested:</b> approve R1 (instrument the invite funnel — dark, no meeting required) to start this sprint, and name the single owner of the onboarding surface (BLK-03) this week. R2–R4 are not being committed today.</div>
+
+  <footer>Working Backwards session empty-workspace · every figure above appears in the session artifacts with its provenance · full spec: 03-demo-spec.md · judge log: DECISIONS.md</footer>
+</div></body>
+</html>

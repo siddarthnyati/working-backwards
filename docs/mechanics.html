@@ -45,13 +45,19 @@ display:flex;justify-content:space-between;gap:1rem;align-items:baseline;flex-wr
 text-transform:uppercase}
 .agent-head h3{font-size:1.15rem}
 .agent-head .out{font-family:var(--mono);font-size:.66rem;color:var(--accent-ink)}
-.agent-body{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.agent-body{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:0}
 .agent-body>div{padding:1.1rem 1.3rem;min-width:0}
-.agent-body>div:first-child{border-right:1px solid var(--rule)}
+.agent-body>div:not(:last-child){border-right:1px solid var(--rule)}
 .promptbox{font-family:var(--mono);font-size:.7rem;line-height:1.65;color:var(--ink-2);
 white-space:pre-wrap;border-left:2px solid var(--ink-3);padding-left:.75rem;margin:0}
 .gate{font-size:.86rem;color:var(--ink-2)}
 .gate b{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;color:var(--accent-ink)}
+.push{font-size:.82rem;color:var(--ink-2)}
+.push li{margin-bottom:.55rem;line-height:1.45}
+.push ul{margin:.2rem 0 0;padding-left:1rem}
+.push .say{display:block;font-style:italic;color:var(--accent-ink);font-size:.8rem}
+.budget{font-family:var(--mono);font-size:.64rem;color:var(--ink-3);border-top:1px solid var(--rule);
+padding-top:.5rem;margin-top:.6rem;display:block}
 .dims{font-family:var(--mono);font-size:.7rem;color:var(--ink-2);margin:.5rem 0 .8rem;line-height:1.7}
 .dims .r{color:var(--bad);font-weight:600}
 .callout{border:1px dashed var(--accent);padding:.9rem 1.1rem;margin:1.2rem 0;font-size:.9rem}
@@ -76,7 +82,7 @@ letter-spacing:.02em;padding:.1em .55em;border:1px solid;border-radius:999px}
 footer{padding:2.6rem 0 4rem;border-top:1px solid var(--rule);font-size:.84rem;color:var(--ink-3)}
 footer p{max-width:46rem}
 @media(max-width:820px){.agent-body{grid-template-columns:1fr}
-.agent-body>div:first-child{border-right:0;border-bottom:1px solid var(--rule)}
+.agent-body>div:not(:last-child){border-right:0;border-bottom:1px solid var(--rule)}
 .steps{grid-template-columns:1fr 1fr}}
 </style>
 </head>
@@ -125,6 +131,37 @@ footer p{max-width:46rem}
   column lists the rubric dimensions applied at that stage — <span style="color:var(--bad)">
   red</span> marks the ones that can fail it.</p>
   <div id="agents" style="margin-top:1.6rem"></div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Inside the intake agent's head</h2>
+  <p class="lede">Intake is deliberately the hard stage — problem formation is the whole game. It
+  opens with one unled question: <i>"What's on your mind? Say it however it comes out."</i> Your
+  answer is recorded <b>verbatim</b>, and the distance between that and the final problem statement
+  is the stage's proof of work. From there, every answer runs through five scans:</p>
+  <div class="scroll"><table>
+    <tr><th>#</th><th>Scan</th><th>Fires when</th><th>What you hear</th></tr>
+    <tr><td>1</td><td>Costume scan</td><td>build / add / need / should in the problem statement</td>
+        <td>"That's a solution wearing a problem costume — what did you <i>observe</i>?"</td></tr>
+    <tr><td>2</td><td>Enumerable-customer</td><td>"everyone," or a role with no segment</td>
+        <td>"Could you name ten? What fields would the query filter on?"</td></tr>
+    <tr><td>3</td><td>Number hygiene</td><td>any figure without a source</td>
+        <td>"Where does that live? If nowhere, it's [ASSUMED] — out loud."</td></tr>
+    <tr><td>4</td><td>Causality scan</td><td>"because / so that / which means" joining two observations</td>
+        <td>"The correlation is observed. The <i>because</i> is its own claim."</td></tr>
+    <tr><td>5</td><td>Inversion</td><td>"nothing" to "what would make this not worth fixing?"</td>
+        <td>"No kill condition means a belief, not a problem."</td></tr>
+  </table></div>
+  <div class="callout"><b>THE BUDGET — WHY THE PRESSURE ENDS</b>
+  Six challenges at intake, two at every later gate, counted out loud ("challenge 3 of 6"). At the
+  limit, the agent stops: the unresolved challenge is written to DECISIONS.md with both positions
+  and to QUESTIONS.md <i>owned by you</i>, and the pipeline proceeds without comment. Same
+  philosophy as overrides — the record is the mechanism, the guilt is not. A tool that interrogates
+  forever gets abandoned; a tool that never pushes is a form.</div>
+  <p class="note">The interrogation closes with the one question that is never challenged:
+  <i>"What are you afraid the answer is — what do you believe here that you've never checked?"</i>
+  Those answers become Declared assumptions, and Stage 6 flags any requirement resting on them.
+  Full protocol: <code>references/interrogation.md</code>.</p>
 </div></section>
 
 <section><div class="wrap">
@@ -298,7 +335,7 @@ owner role, Status: OPEN. You never resolve
 one. If the internal bank surfaces nothing
 uncomfortable, rewrite it — it wasn't honest.`,
  gate:"Read BLOCKERS.md before continuing. If a blocker changes what the product IS, go back to Stage 1 now while it's cheap. An internal FAQ with zero BLOCKER tags fails review by definition."},
-{n:3,role:"Demo Narrator",t:"Demo spec",out:"03-demo-spec.md",
+{n:3,role:"Demo Narrator",t:"Demo spec",out:"03-demo-spec.md + 03-demo.html (leadership one-pager)",
  ref:"references/demo-spec.md",
  dims:"5 · 7 · 8 — REVISE if the scope boundary is missing",
  prompt:`Stage 3. Read references/demo-spec.md first.
@@ -380,6 +417,63 @@ recommendation. If the honest recommendation
 is "not yet decidable," write that. Then run
 build_report.py.`,
  gate:"Yours entirely. The skill has produced the agenda — questions, owners, assumptions, order — and has no opinion on the decision. A GO scoped over slices that open blockers block fails its own review."}];
+const PUSH={
+0:`<ul>
+<li>Your problem statement contains build/add/need verbs — a solution wearing a problem costume.<span class="say">"That's the fix. What did you observe before you concluded it?"</span></li>
+<li>Your customer is "everyone" or a bare role.<span class="say">"Could you name ten of them? What fields would the query filter on?"</span></li>
+<li>A number arrives with no source.<span class="say">"Where does that figure live? If nowhere, I'm tagging it [ASSUMED] out loud."</span></li>
+<li>Two observations joined by "because."<span class="say">"The correlation is observed. The 'because' is its own claim — and right now it's [ASSUMED]."</span></li>
+<li>"Nothing" to the kill-condition question.<span class="say">"A problem with no condition that would make it not worth fixing is a belief, not a problem."</span></li>
+</ul><span class="budget">BUDGET: 6 challenges, counted out loud — "challenge 3 of 6." At the limit: recorded, owned by you, proceed.</span>`,
+1:`<ul>
+<li>A figure appears that intake never established.<span class="say">"I don't invent numbers. Writing [NEEDS EVIDENCE: …] and continuing."</span></li>
+<li>The solution paragraph could have been written before the problem paragraph.<span class="say">"This is skills-forward. What does the customer need that forced this shape?"</span></li>
+<li>The spokesperson quote restates the subheading.<span class="say">"Its one job is the why-now. Why this quarter and not next year?"</span></li>
+</ul><span class="budget">BUDGET: 2 at the gate. The judge handles the artifact; these challenge your thinking.</span>`,
+2:`<ul>
+<li>An internal question is polite.<span class="say">"That's the version that gets a polite answer. The hostile version is: what happens at 3am when this fails and who gets sued?"</span></li>
+<li>Zero BLOCKER tags after the internal bank.<span class="say">"Every real initiative has something uncomfortable. Rewriting with the hostile versions."</span></li>
+<li>An ANSWERED tag with no provenance inside it.<span class="say">"That's OPEN in costume — answered by whom, based on what?"</span></li>
+</ul><span class="budget">BUDGET: 2. Blockers themselves are never softened — they're questions with owners, not negotiable findings.</span>`,
+3:`<ul>
+<li>You can't narrate a step without improvising.<span class="say">"Where I improvised is a hole in the spec. Writing it down as the finding."</span></li>
+<li>A failure state renders the same as an outage.<span class="say">"If can't-know looks like failed, users learn to ignore the signal in a month."</span></li>
+<li>No scope boundary section.<span class="say">"The first viewer will assume remediation is included. Saying out loud that it isn't, and why."</span></li>
+</ul><span class="budget">BUDGET: 2. Plus the rule that needs no budget: silence never renders as success.</span>`,
+4:`<ul>
+<li>A paragraph won't come and you try to write around it.<span class="say">"A stalled paragraph is a product gap. It goes under 'could not be written yet' with its blocker."</span></li>
+<li>"TBD" appears.<span class="say">"[UNKNOWN] is a complete answer. TBD records that someone stopped typing."</span></li>
+</ul><span class="budget">BUDGET: 2.</span>`,
+5:`<ul>
+<li>You offer an estimated baseline.<span class="say">"A baseline you don't have is [UNKNOWN], not an estimate — is it missing, or unobtainable before instrumentation exists?"</span></li>
+<li>A PR claim has no metric and no entry in the unmeasurable list.<span class="say">"Instrument it, or cut the claim. Deciding neither ships an unverifiable promise."</span></li>
+<li>The north star is gameable.<span class="say">"What's the cheapest way to move this number without creating the value? That goes in the definition."</span></li>
+</ul><span class="budget">BUDGET: 2.</span>`,
+6:`<ul>
+<li>A requirement cites nothing.<span class="say">"Not customer-derived. Flagged — find its source, push it upstream into the PR, or move it to candidates. Not deleted, not source-washed."</span></li>
+<li>A requirement's chain touches [ASSUMED] without a flag.<span class="say">"Citation without provenance documents the chain of custody on a guess. Flagging RESTS ON ASSUMPTION."</span></li>
+</ul><span class="budget">BUDGET: 2. Citation existence isn't judged at all — verify_sources.py checks it mechanically.</span>`,
+7:`<ul>
+<li>Slices are layers (schema → API → UI).<span class="say">"Nothing ships until everything ships. Narrow the customer scenario instead."</span></li>
+<li>A requirement lands in two slices.<span class="say">"Then one of them isn't independently shippable — that's how double-counted scope enters a tracker."</span></li>
+<li>You put a date on a blocked slice.<span class="say">"That's a commitment to a shape nobody has agreed. It's NOT SCHEDULABLE, with the owner who unblocks it."</span></li>
+</ul><span class="budget">BUDGET: 2.</span>`,
+8:`<ul>
+<li>The GO covers slices that open blockers block.<span class="say">"That silently answers questions that belong to counsel. Scoping the GO to what's actually unblocked."</span></li>
+<li>The failure list is ranked by drama.<span class="say">"Most likely first. The honest #1 is usually boring — an ownership dispute, not a catastrophe."</span></li>
+<li>A new assumption appears here for the first time.<span class="say">"Assumptions enter at intake, tagged. One surfacing at readiness means a stage upstream let it through untagged."</span></li>
+</ul><span class="budget">BUDGET: 2 — and the final decision is yours, unchallenged.</span>`};
+const GATEQ={
+0:"Is the customer a list-of-ten yet?",
+1:"Which sentence are you least sure of? · Would a team reorganise a quarter around the subheading — honestly?",
+2:"Which blocker do you already suspect the answer to — and are you avoiding asking? · Whose voice is missing from the internal bank?",
+3:"Narrate the demo back in three sentences — where did you improvise? · What will viewers assume this includes that it doesn't?",
+4:"Which section were you tempted to write around? · Is getting-started short because it's simple, or incomplete?",
+5:"Which metric would you quietly game if your bonus depended on it? · Which PR claim ships unmeasured, and why is that acceptable?",
+6:"Which requirement do you want most — does its source demand it, or merely permit it? · Which flagged item are you hoping nobody notices?",
+7:"If you could only ship R1, is it still worth doing? · Which blocked slice are you already mentally committing a date to?",
+8:"If this fails, which of the top three will it have been — and what did you do about it today? · Who reads this, and what will they challenge first?"};
+AGENTS.forEach(a=>a.gateq=GATEQ[a.n]);
 document.getElementById("agents").innerHTML=AGENTS.map(a=>`
 <div class="agent">
  <div class="agent-head"><div><span class="role">Agent ${a.n} · ${a.role}</span><h3>${a.t}</h3></div>
@@ -387,9 +481,11 @@ document.getElementById("agents").innerHTML=AGENTS.map(a=>`
  <div class="agent-body">
   <div><h4>The author prompt</h4><pre class="promptbox">${a.prompt}</pre>
    <p class="note" style="margin-top:.7rem">Behavior spec: <code>${a.ref}</code></p></div>
+  <div><h4>When it pushes back</h4><div class="push">${PUSH[a.n]}</div></div>
   <div><h4>The judge, then the gate</h4>
    <div class="dims">Dimensions applied: ${a.dims}</div>
-   <p class="gate">${a.gate}</p></div>
+   <p class="gate">${a.gate}</p>
+   <p class="gate" style="margin-top:.6rem"><b>GATE QUESTIONS</b><br>${a.gateq||""}</p></div>
  </div>
 </div>`).join("");
 </script>

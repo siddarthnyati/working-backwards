@@ -45,7 +45,9 @@ used as context; correct it now or it propagates.
 > the least provenance.
 
 **Gate** — is the customer a segment you could build a list of ten from? If not, nothing
-downstream is worth generating.
+downstream is worth generating. (Every later gate also asks that stage's two thinking
+questions — see the gate table in references/interrogation.md — and your answers are
+recorded in DECISIONS.md beside the verdict.)
 
 ## Stage 1 — Press release
 
@@ -88,7 +90,9 @@ go back to Stage 1 now while it's cheap.
 
 **Author prompt**
 > Stage 3. Read references/demo-spec.md first. Describe the experience concretely:
-> surfaces, the primary flow step by step,
+> surfaces, the primary flow step by step — and produce both outputs: 03-demo-spec.md
+> (the system of record) and 03-demo.html (the leadership one-pager, from
+> assets/templates/03-demo.html),
 > and the failure states — what fails, and exactly what the user sees. Prose can hide a
 > hole; a demo script can't. Include a "what this deliberately does not show" section so
 > the demo doesn't promise what the requirements won't fund.

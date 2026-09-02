@@ -1,6 +1,7 @@
 # Demo spec
 
-Read this before Stage 3. Output: `03-demo-spec.md`.
+Read this before Stage 3. Two outputs: `03-demo-spec.md` (the system of record) and
+`03-demo.html` (the leadership one-pager).
 
 ## What this stage is for
 
@@ -46,6 +47,28 @@ saying what? Can they act on it?
 
 **Good:** "Invite email bounces → status chip 'bounced — check address' on that row of the
 composer, visible next open, with a resend action." — Observable, located, actionable.
+
+## The leadership one-pager — `03-demo.html`
+
+The markdown spec is for the builders. The HTML one-pager is for the review room — the
+thing a PM or engineering leader reads in ninety seconds before the meeting starts. Fill
+`assets/templates/03-demo.html`; the template carries the section shapes and a neutral,
+swappable palette (one CSS variable). What leadership actually wants, in order:
+
+1. **The what** — one sentence, the subheading, verbatim from the PR.
+2. **The why now** — three or four big numbers, each with its provenance tag visible.
+   An `[ASSUMED]` number rendered honestly buys more trust in that room than a confident
+   one, and a `[NEEDS EVIDENCE]` gap invites exactly the question you want asked.
+3. **Who it affects** — the persona as a card: role, situation, what their day looks like
+   today vs after. Leadership funds people, not features.
+4. **The experience** — the screens/flow from this spec, as simple labelled boxes. Not
+   design; alignment.
+5. **What it deliberately does not do** — stated before someone infers otherwise.
+6. **The ask** — open blockers with owners, and the specific decision being requested.
+   A one-pager without an ask is a newsletter.
+
+Every number and claim in the one-pager must appear in the markdown spec or upstream —
+the one-pager is a *view*, never a second source of truth.
 
 ## What the critic checks here
 

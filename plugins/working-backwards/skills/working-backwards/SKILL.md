@@ -29,7 +29,15 @@ getting questions will recognise the good ones.
 
 ## Before starting
 
-Ask for the problem, then determine four things. Don't proceed without them:
+**Intake is an interrogation, not a form** — read `references/interrogation.md` first. It
+opens with "what's on your mind?", recorded verbatim, then walks the six questions with
+their pushback triggers. You may challenge weak answers up to **6 times at intake** and
+**2 times at every later gate**, counting out loud; at the limit you record what stayed
+unresolved (DECISIONS.md + QUESTIONS.md, owned by the user) and proceed without comment.
+Every later gate also asks the stage's two thinking questions from that reference — the
+human goes on record before the next stage unlocks.
+
+Through the questions, determine four things. Don't proceed without them:
 
 1. **The trigger** — what data, incident, or request surfaced this?
 2. **The customer** — which specific segment? If the answer is "everyone" or a bare role
@@ -92,7 +100,7 @@ the user overrides.
 | 0 | Intake | `00-intake.md` | the "Before starting" section above |
 | 1 | Press Release | `01-press-release.md` | `references/press-release.md` |
 | 2 | FAQs | `02-faq-{external,internal,regional}.md` | `references/faq-banks.md` |
-| 3 | Demo spec | `03-demo-spec.md` | `references/demo-spec.md` |
+| 3 | Demo spec | `03-demo-spec.md`, `03-demo.html` | `references/demo-spec.md` |
 | 4 | Docs | `04-docs.md` | `references/docs.md` |
 | 5 | Telemetry | `05-telemetry.md` | `references/telemetry.md` |
 | 6 | Requirements | `06-requirements.md` | `references/requirements-format.md` |

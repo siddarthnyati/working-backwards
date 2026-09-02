@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{INITIATIVE}} — demo one-pager</title>
+<!-- Leadership one-pager. Fill every {{PLACEHOLDER}}; delete nothing structural.
+     Palette is deliberately neutral and swappable: change --brand to your org's accent.
+     Every number here must also exist in 03-demo-spec.md or upstream — this page is a
+     view, never a second source of truth. -->
+<style>
+:root{--brand:#1f4e5f;--ink:#16181a;--ink-2:#4a4f54;--ink-3:#8a9096;--line:#dfe3e6;
+--bg:#ffffff;--panel:#f5f7f8;--warn:#8a4b12;--warn-bg:#faf0e4;
+--sans:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+font-size:16px;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{max-width:54rem;margin:0 auto;padding:2.2rem 1.4rem 3rem}
+h1{font-size:1.7rem;font-weight:650;letter-spacing:-.015em;margin:0 0 .2rem}
+h2{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+color:var(--brand);margin:2rem 0 .8rem;border-top:2px solid var(--brand);padding-top:.6rem}
+p{margin:0 0 .8rem}
+.meta{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);margin-bottom:.4rem}
+.what{font-size:1.12rem;color:var(--ink-2);max-width:46rem}
+.tag{font-family:var(--mono);font-size:.62rem;padding:.1rem .35rem;border:1px solid var(--line);
+color:var(--ink-3);white-space:nowrap;vertical-align:middle}
+.tag.warn{color:var(--warn);border-color:var(--warn);background:var(--warn-bg)}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.7rem}
+.num{border:1px solid var(--line);padding:.9rem 1rem;background:var(--panel)}
+.num b{display:block;font-size:1.7rem;font-weight:650;letter-spacing:-.02em}
+.num span{font-size:.78rem;color:var(--ink-2);display:block;margin:.15rem 0 .4rem}
+.persona{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line)}
+.persona>div{padding:1rem 1.1rem;min-width:0}
+.persona>div:first-child{border-right:1px solid var(--line);background:var(--panel)}
+.persona h3{font-size:.95rem;margin:0 0 .35rem}
+.persona .r{font-family:var(--mono);font-size:.68rem;color:var(--ink-3);display:block;margin-bottom:.5rem}
+.persona p{font-size:.86rem;color:var(--ink-2);margin:0}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:.7rem}
+.screen{border:1px solid var(--ink-3);background:var(--bg);min-width:0}
+.screen .bar{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+color:var(--ink-3);padding:.35rem .6rem;border-bottom:1px solid var(--line);background:var(--panel)}
+.screen .body{padding:.7rem .75rem;font-size:.8rem;color:var(--ink-2)}
+.notdo{border:1px dashed var(--ink-3);padding:.8rem 1rem;font-size:.88rem;color:var(--ink-2)}
+.ask{border:1px solid var(--line)}
+.ask-row{display:grid;grid-template-columns:7rem 1fr 11rem;gap:0;border-bottom:1px solid var(--line)}
+.ask-row:last-child{border-bottom:0}
+.ask-row>div{padding:.6rem .8rem;font-size:.82rem;min-width:0}
+.ask-row .id{font-family:var(--mono);font-size:.7rem;color:var(--warn)}
+.ask-row .own{font-family:var(--mono);font-size:.7rem;color:var(--ink-2)}
+.decision{background:var(--panel);border-left:3px solid var(--brand);padding:.9rem 1.1rem;
+font-size:.95rem;margin-top:1rem}
+footer{margin-top:2rem;padding-top:.8rem;border-top:1px solid var(--line);
+font-family:var(--mono);font-size:.66rem;color:var(--ink-3)}
+@media(max-width:640px){.persona{grid-template-columns:1fr}
+.persona>div:first-child{border-right:0;border-bottom:1px solid var(--line)}
+.ask-row{grid-template-columns:1fr}.ask-row>div{padding:.45rem .8rem}}
+@media print{.page{padding:0}body{font-size:13px}}
+</style>
+</head>
+<body><div class="page">
+  <div class="meta">{{SESSION_ID}} · demo one-pager · generated from 03-demo-spec.md · {{DATE}} · status: discovery</div>
+  <h1>{{INITIATIVE}}</h1>
+  <p class="what">{{THE_WHAT — the PR subheading, verbatim. One sentence.}}</p>
+
+  <h2>Why now</h2>
+  <div class="nums">
+    <!-- 3–4 stat blocks. Every number carries its provenance tag — an honest [ASSUMED]
+         buys more trust in the room than a confident invention. -->
+    <div class="num"><b>{{NUMBER}}</b><span>{{what it means}}</span><span class="tag">{{[OBSERVED: source]}}</span></div>
+    <div class="num"><b>{{NUMBER}}</b><span>{{what it means}}</span><span class="tag">{{[OBSERVED: source]}}</span></div>
+    <div class="num"><b>{{?}}</b><span>{{the number you want and don't have}}</span><span class="tag warn">{{[NEEDS EVIDENCE / ASSUMED]}}</span></div>
+  </div>
+
+  <h2>Who it affects</h2>
+  <div class="persona">
+    <div><h3>{{Persona name-of-role}}</h3><span class="r">{{segment, from the intake — the list-of-ten definition}}</span>
+      <p><b>Today:</b> {{their day now — the failure as they experience it}}</p></div>
+    <div><h3>After</h3><span class="r">{{what changes for them}}</span>
+      <p>{{their day after — concrete, observable, in their vocabulary}}</p></div>
+  </div>
+
+  <h2>The experience</h2>
+  <div class="flow">
+    <!-- One .screen box per screen/step from the demo spec. Labels, not design. -->
+    <div class="screen"><div class="bar">{{screen label}}</div><div class="body">{{what the user sees/does}}</div></div>
+    <div class="screen"><div class="bar">{{screen label}}</div><div class="body">{{…}}</div></div>
+    <div class="screen"><div class="bar">{{failure state}}</div><div class="body">{{what they see when it fails — leadership asks this first}}</div></div>
+  </div>
+
+  <h2>What it deliberately does not do</h2>
+  <div class="notdo">{{The scope boundary from the demo spec, stated before someone infers otherwise — with the blocker that keeps each thing out.}}</div>
+
+  <h2>The ask</h2>
+  <div class="ask">
+    <!-- One row per open blocker that gates this. -->
+    <div class="ask-row"><div class="id">{{BLK-nn · CAT}}</div><div>{{the question, one line}}</div><div class="own">{{owner role}}</div></div>
+    <div class="ask-row"><div class="id">{{BLK-nn · CAT}}</div><div>{{…}}</div><div class="own">{{owner role}}</div></div>
+  </div>
+  <div class="decision"><b>Decision requested:</b> {{the specific decision this meeting should produce — scoped, dated, named. A one-pager without an ask is a newsletter.}}</div>
+
+  <footer>Working Backwards session {{SESSION_ID}} · every figure above appears in the session artifacts with its provenance · full spec: 03-demo-spec.md · judge log: DECISIONS.md</footer>
+</div></body>
+</html>

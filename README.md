@@ -26,7 +26,7 @@ every agent in the pipeline and the exact prompt that drives it.
 
 | Run | The problem | Live report | Artifacts |
 |---|---|---|---|
-| **Empty Workspace** — drives the site walkthrough | SaaS onboarding: 61% of new workspaces never gain a second member. UI at every stage; the `[ASSUMED]` causal claim carried from intake to readiness | **[report](https://siddarthnyati.github.io/working-backwards/reports/empty-workspace.html)** | [`examples/empty-workspace/`](examples/empty-workspace/) |
+| **Empty Workspace** — drives the site walkthrough | SaaS onboarding: 61% of new workspaces never gain a second member. UI at every stage; the `[ASSUMED]` causal claim carried from intake to readiness | **[report](https://siddarthnyati.github.io/working-backwards/reports/empty-workspace.html)** · [demo one-pager](https://siddarthnyati.github.io/working-backwards/demos/empty-workspace-demo.html) | [`examples/empty-workspace/`](examples/empty-workspace/) |
 | **Ghost Seats** | Platform defect: user removal silently fails to propagate; the audit log says they're gone. Includes an honest judge override at Stage 5 | **[report](https://siddarthnyati.github.io/working-backwards/reports/ghost-seats.html)** | [`examples/ghost-seats/`](examples/ghost-seats/) |
 | **Silent Step-Down** | Payments: 3DS timeout falls back to unauthenticated processing, shifting liability. The reconciliation check catches double-counted scope | **[report](https://siddarthnyati.github.io/working-backwards/reports/silent-stepdown.html)** | [`examples/silent-stepdown/`](examples/silent-stepdown/) |
 
