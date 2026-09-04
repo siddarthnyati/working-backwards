@@ -411,7 +411,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <div class="col-critic"><h4 class="h">LLM as judge</h4><div id="c-critic" style="margin-top:.8rem"></div></div>
     </div>
     <div class="fulldoc">
-      <div class="fulldoc-bar"><h4>The complete artifact, as written to disk</h4><div id="ftabs" style="display:flex;gap:.4rem;flex-wrap:wrap"></div></div>
+      <div class="fulldoc-bar"><h4>The complete artifact — and the model's pushback</h4><div id="ftabs" style="display:flex;gap:.4rem;flex-wrap:wrap"></div></div>
       <div id="fdoc"></div>
     </div>
     <div class="car-nav">
@@ -650,6 +650,17 @@ Add "what this deliberately does not show."`,
    <p style="font-size:.8rem;color:var(--ink-2);margin:0 0 .6rem">You'll be charged $12 on Apr 3 unless you cancel. No hard feelings either way.</p>
    <div class="mbtns"><span class="mbtn primary">Keep my plan</span><span class="mbtn quiet">Cancel now — one tap</span></div>
  </div></div>
+ <div class="mock"><div class="mock-bar">In-app banner · day 12+</div><div class="mock-body">
+   <p style="font-family:var(--mono);font-size:.68rem;margin:0 0 .5rem;padding:.45rem .6rem;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent-ink)">Trial ends in 2 days — you'll be charged $12 on Apr 3.</p>
+   <div class="mbtns"><span class="mbtn primary">Keep my plan</span><span class="mbtn quiet">Cancel now</span></div>
+   <span class="why-dis" style="color:var(--ink-3)">the backstop for the unopened email (F1) — returns daily until decided</span>
+ </div></div>
+ <div class="mock"><div class="mock-bar">One-tap cancel</div><div class="mock-body">
+   <h5>You're cancelled — that's it.</h5>
+   <p style="font-size:.8rem;color:var(--ink-2);margin:0 0 .6rem">No survey, no "are you sure," no retention maze. Your data stays for 30 days if you come back.</p>
+   <div class="mbtns"><span class="mbtn quiet">Resubscribe anytime</span></div>
+   <span class="why-dis" style="color:var(--ink-3)">the parity rule: never more steps than subscribing took (asserted in CI)</span>
+ </div></div>
  <div class="mock"><div class="mock-bar">Receipt · every charge</div><div class="mock-body">
    <h5>$12.00 — paid Apr 3</h5>
    <p style="font-size:.8rem;color:var(--ink-2);margin:0 0 .6rem"><b>Next renewal: May 3, $12.00.</b> Cancel anytime in one tap.</p>
@@ -687,7 +698,10 @@ with the blocker behind it.`,
  <div class="callout"><b>COULD NOT BE WRITTEN YET — the deliverable of this stage</b>
  "What if I was already charged and didn't mean to be?" — the answer for past charges is a legal and
  commercial determination (→ BLK-03). Until it lands, this page stays silent rather than promising.
- A doc that cannot be written is a policy that hasn't been decided — the gap is the finding.</div>`,
+ A doc that cannot be written is a policy that hasn't been decided — the gap is the finding.</div>
+ <p class="note" style="margin-top:.8rem">The doc also compiles to a real, openable help page —
+ <a href="demos/surprise-charge-docs.html">open 04-docs.html</a> — because gaps land harder when
+ they sit in a layout the customer would actually see.</p>`,
  dims:[[3,"Alternative named","PASS","pass"],[5,"Traceability","PASS","pass"],[7,"Clarity","PASS","pass"],[8,"Completeness","PASS","pass"]],
  verdict:"VERDICT: PASS",vclass:"",
  gate:`Under dimension 8 an explicit gap is complete and a TBD is not. The unwritable answer about past charges is exactly the question support will be asked on day one — now it has an owner before launch, not after.`},
@@ -927,17 +941,126 @@ function mdToHtml(md){
   }
   return html;
 }
+const HTMLPAGES={3:["demos/surprise-charge-demo.html","03-demo.html"],4:["demos/surprise-charge-docs.html","04-docs.html"]};
+const PBDOC=[
+`MODEL PUSHBACK · Stage 0 · the interrogation (4 of 6 challenges used)
+
+CHALLENGE 1 of 6 · costume scan
+You said: "We need to send trial-ending reminder emails — people are getting
+charged without realizing and it's killing us in reviews."
+It pushed: "Reminder emails are the fix. What did you OBSERVE before you
+concluded it?"
+Changed: the feature request became an observation — 38% of refunds cite
+"forgot to cancel"; "surprise charge" is the #1 ticket category in week 3.
+
+CHALLENGE 2 of 6 · enumerable customer
+You said: "It's happening to trial users."
+It pushed: "'Trial users' is a bare role. Who exactly? Could you name ten?"
+Changed: the forgot-cohort — stopped opening by day 3, charged on day 14.
+Two queryable fields; a real list.
+
+CHALLENGE 3 of 6 · causality scan
+You said: "They refund because they feel tricked."
+It pushed: "The refunds are observed. The 'because' is its own claim."
+Changed: reviews say "tricked" [REPORTED]; the causal link stays [ASSUMED].
+
+CHALLENGE 4 of 6 · number hygiene
+You said: "It's killing us in reviews."
+It pushed: "Any data connecting reviews to conversion?"
+Changed: none exists — tagged [ASSUMED], and out of the meeting vocabulary.
+
+Challenges 5–6: unused. The kill-condition question was answered without
+pushback and recorded.`,
+`MODEL PUSHBACK · Stage 1 · the judge, then the gate
+
+VERDICT ON DRAFT 1: REVISE — dimension 1 (customer specificity)
+"¶2 opens 'Everyone hates surprise charges.' Everyone is not a customer —
+the intake already did this work and the press release threw it away.
+Rewrite ¶2 around the forgot-cohort, with its numbers and their tags."
+
+GATE · Which sentence are you least sure of?
+You: "'Cancelling takes one tap' — some markets may prescribe more steps."
+→ carried to BLK-02 / Q-02.
+
+GATE · Would a team reorganise a quarter around the subheading — honestly?
+You: "Support would. Finance wouldn't — which is why the experiment exists."`,
+`MODEL PUSHBACK · Stage 2 · the gate
+
+GATE · Which blocker do you already suspect the answer to — and are you
+avoiding asking because of it?
+You: "BLK-02. I suspect some markets already require this notice — which
+makes us late, not generous. Asking anyway is the point."
+→ recorded beside the verdict. Five blockers raised, every one a question
+with a named owner; the skill resolves none of them.`,
+`MODEL PUSHBACK · Stage 3 · the gate
+
+GATE · What will the first viewer assume this includes that it doesn't?
+You: "A win-back discount in the cancel flow."
+→ the scope-boundary section now says it out loud, and the leadership
+one-pager repeats it before anyone can infer otherwise.
+
+Standing rule enforced without budget: silence never renders as success —
+a failed reminder send is logged and visible, never silently excused (F5).`,
+`MODEL PUSHBACK · Stage 4 · the judge's note
+
+The answer to "what if I was already charged?" would not come — and the
+skill refused to write around it. It sits under "could not be written yet"
+with its blocker (BLK-03, legal counsel), because a doc that cannot be
+written is a policy that hasn't been decided. TBD would have hidden that;
+the recorded gap surfaces it.`,
+`MODEL PUSHBACK · Stage 5 · the gate that redesigned the metric
+
+GATE · Which metric would you quietly game if your bonus depended on it?
+You: "Reminder open rate — I'd send at 9am Tuesday and call it engagement."
+→ the north star became Surprise Rate: % of first charges followed by a
+refund or "surprise" ticket within 7 days. It counts the fury, not the
+email — and it's computable from existing data, so the baseline exists
+before anything ships.
+
+GATE · Which PR claim ships unmeasured?
+You: "C6 — reviews hurting conversion."
+→ cut from the launch narrative entirely; the case stands on refunds and
+tickets alone.`,
+`MODEL PUSHBACK · Stage 6 · the gate
+
+GATE · Which requirement do you want most — does its source demand it, or
+merely permit it?
+You: "The win-back discount. Nothing upstream demands it."
+→ moved to candidates, not the numbered set. From DECISIONS.md, verbatim:
+"I'm a little annoyed, which probably means the rule is working."
+
+Also enforced: REQ-D2 carries RESTS ON ASSUMPTION — it inherits C5 from
+intake, four stages later, still tagged. Provenance can't be laundered on
+the way down.`,
+`MODEL PUSHBACK · Stage 7 · the gate
+
+GATE · If you could only ship R1, is it still worth doing?
+You: "Yes — the baseline alone changes the finance conversation from
+beliefs to numbers."
+→ that answer is the plan's spine: two slices need nobody's permission,
+and each blocked slice names the exact meeting that unblocks it.`,
+`MODEL PUSHBACK · Stage 8 · the last gate
+
+GATE · If this fails, which of the top three will it have been — and what
+did you do about it today?
+You: "Finance never agrees to the experiment and R3 dies in a meeting loop."
+→ the ask shrank to match: one co-design meeting, not approval of anyone's
+beliefs. The final decision is yours, unchallenged — the skill produced
+the agenda and has no opinion on the verdict.`];
 function drawFulldoc(){
   const files=FILES[sel];
-  if(fsel>=files.length)fsel=0;
-  $("#ftabs").innerHTML=files.map((f,i)=>
-    `<button class="ftab" aria-pressed="${i===fsel}">${f}</button>`).join("");
-  $$("#ftabs .ftab").forEach((b,i)=>b.onclick=()=>{fsel=i;drawFulldoc()});
-  const name=files[fsel], src=DOCS[name];
-  const fdoc=$("#fdoc");
-  if(!src){fdoc.className="mddoc";fdoc.innerHTML="<p>(not embedded)</p>"}
-  else if(name.endsWith(".csv")){fdoc.className="";fdoc.innerHTML=`<pre class="raw">${mdEscape(src)}</pre>`}
-  else{fdoc.className="mddoc";fdoc.innerHTML=mdToHtml(src)}
+  const items=files.map(f=>({label:f,kind:"file",text:DOCS[f]}));
+  items.push({label:"⚡ model pushback",kind:"pb",text:PBDOC[sel]});
+  if(fsel>=items.length)fsel=0;
+  let tabs=items.map((it,i)=>`<button class="ftab" aria-pressed="${i===fsel}">${it.label}</button>`).join("");
+  if(HTMLPAGES[sel]) tabs+=`<a class="ftab" style="text-decoration:none" href="${HTMLPAGES[sel][0]}">open ${HTMLPAGES[sel][1]} as a page ↗</a>`;
+  $("#ftabs").innerHTML=tabs;
+  $$("#ftabs button.ftab").forEach((b,i)=>b.onclick=()=>{fsel=i;drawFulldoc()});
+  const it=items[fsel], fdoc=$("#fdoc");
+  if(it.kind==="pb"){fdoc.className="";fdoc.innerHTML=`<pre class="raw">${mdEscape(it.text)}</pre>`}
+  else if(!it.text){fdoc.className="mddoc";fdoc.innerHTML="<p>(not embedded)</p>"}
+  else if(it.label.endsWith(".csv")){fdoc.className="";fdoc.innerHTML=`<pre class="raw">${mdEscape(it.text)}</pre>`}
+  else{fdoc.className="mddoc";fdoc.innerHTML=mdToHtml(it.text)}
   fdoc.scrollTop=0;
 }
 function render(animate){

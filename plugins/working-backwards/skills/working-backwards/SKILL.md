@@ -101,7 +101,7 @@ the user overrides.
 | 1 | Press Release | `01-press-release.md` | `references/press-release.md` |
 | 2 | FAQs | `02-faq-{external,internal,regional}.md` | `references/faq-banks.md` |
 | 3 | Demo spec | `03-demo-spec.md`, `03-demo.html` | `references/demo-spec.md` |
-| 4 | Docs | `04-docs.md` | `references/docs.md` |
+| 4 | Docs | `04-docs.md`, `04-docs.html` | `references/docs.md` |
 | 5 | Telemetry | `05-telemetry.md` | `references/telemetry.md` |
 | 6 | Requirements | `06-requirements.md` | `references/requirements-format.md` |
 | 7 | Release plan | `07-release-plan.md`, `jira-import.csv` | `references/release-decomposition.md` |

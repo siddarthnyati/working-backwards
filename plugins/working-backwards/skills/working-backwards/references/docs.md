@@ -35,6 +35,13 @@ Rules for the gaps:
 - Never document a capability whose shape depends on an open blocker "optimistically."
   A doc that guesses becomes a commitment the review never approved.
 
+## The openable page — `04-docs.html`
+
+Alongside the markdown, render the doc as a standalone HTML page (reuse the one-pager
+template's neutral styles). The markdown is the system of record; the HTML is what you show
+a reviewer — a help page reads completely differently when it looks like a help page, and
+the "not yet documented" gaps land harder when they sit in a real layout.
+
 ## Voice
 
 Second person, present tense, the customer's vocabulary — no internal system names, no
