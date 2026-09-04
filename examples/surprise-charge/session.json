@@ -1,0 +1,38 @@
+{
+  "session_id": "surprise-charge",
+  "created": "2026-08-31",
+  "updated": "2026-08-31",
+  "initiative": "The Surprise Charge — trial users forget, get billed, rage-refund",
+  "fictional": true,
+  "mode": "full",
+  "stages": { "planned": [0,1,2,3,4,5,6,7,8], "skipped": [], "current": 8, "completed": [0,1,2,3,4,5,6,7,8] },
+  "context": { "tier": 0, "path": "wb/context/", "files": [], "dimensions_not_evaluable": [4,6] },
+  "interrogation": { "budget": 6, "used": 4, "unresolved": 0,
+    "first_statement": "We need to send trial-ending reminder emails — people are getting charged without realizing and it's killing us in reviews." },
+  "critic": {
+    "verdicts": [
+      { "stage": 0, "artifact": "00-intake.md", "verdict": "PASS" },
+      { "stage": 1, "artifact": "01-press-release-draft1.md", "verdict": "REVISE", "dimension": 1, "resolved": true, "note": "'Everyone hates surprise charges' — everyone is not a customer" },
+      { "stage": 1, "artifact": "01-press-release.md", "verdict": "PASS", "questions": ["Q-04","Q-01","Q-02"] },
+      { "stage": 2, "artifact": "02-faq-*.md", "verdict": "PASS" },
+      { "stage": 3, "artifact": "03-demo-spec.md", "verdict": "PASS" },
+      { "stage": 4, "artifact": "04-docs.md", "verdict": "PASS" },
+      { "stage": 5, "artifact": "05-telemetry.md", "verdict": "PASS" },
+      { "stage": 6, "artifact": "06-requirements.md", "verdict": "PASS" },
+      { "stage": 7, "artifact": "07-release-plan.md", "verdict": "PASS" },
+      { "stage": 8, "artifact": "08-readiness.md", "verdict": "PASS" }
+    ],
+    "overrides": []
+  },
+  "blockers": [
+    { "id": "BLK-01", "category": "COMMERCIAL", "severity": "high", "owner_role": "finance lead", "status": "OPEN" },
+    { "id": "BLK-02", "category": "REGULATORY", "severity": "high", "owner_role": "compliance lead", "status": "OPEN" },
+    { "id": "BLK-03", "category": "LEGAL", "severity": "high", "owner_role": "legal counsel", "status": "OPEN" },
+    { "id": "BLK-04", "category": "DATA", "severity": "medium", "owner_role": "analytics lead", "status": "OPEN" },
+    { "id": "BLK-05", "category": "DEPENDENCY", "severity": "medium", "owner_role": "platform engineering lead", "status": "OPEN" }
+  ],
+  "questions": { "total": 7, "open": 7, "no_owner": [] },
+  "claims": { "observed": 3, "reported": 1, "assumed": 2, "unknown": 1, "assumed_ids": ["C5","C6"] },
+  "requirements": { "total": 7, "discovery": 2, "delivery": 5, "unsourced_flagged": [], "rests_on_assumption": ["REQ-D2"], "shape_pending": ["REQ-D2","REQ-DP3"] },
+  "release": { "slices": 4, "schedulable": ["R1","R2"], "not_schedulable": ["R3","R4"] }
+}

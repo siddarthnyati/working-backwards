@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Surprise Charge — demo one-pager</title>
+<!-- Leadership one-pager. Fill every {{PLACEHOLDER}}; delete nothing structural.
+     Palette is deliberately neutral and swappable: change --brand to your org's accent.
+     Every number here must also exist in 03-demo-spec.md or upstream — this page is a
+     view, never a second source of truth. -->
+<style>
+:root{--brand:#1f4e5f;--ink:#16181a;--ink-2:#4a4f54;--ink-3:#8a9096;--line:#dfe3e6;
+--bg:#ffffff;--panel:#f5f7f8;--warn:#8a4b12;--warn-bg:#faf0e4;
+--sans:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+font-size:16px;line-height:1.5;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{max-width:54rem;margin:0 auto;padding:2.2rem 1.4rem 3rem}
+h1{font-size:1.7rem;font-weight:650;letter-spacing:-.015em;margin:0 0 .2rem}
+h2{font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+color:var(--brand);margin:2rem 0 .8rem;border-top:2px solid var(--brand);padding-top:.6rem}
+p{margin:0 0 .8rem}
+.meta{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);margin-bottom:.4rem}
+.what{font-size:1.12rem;color:var(--ink-2);max-width:46rem}
+.tag{font-family:var(--mono);font-size:.62rem;padding:.1rem .35rem;border:1px solid var(--line);
+color:var(--ink-3);white-space:nowrap;vertical-align:middle}
+.tag.warn{color:var(--warn);border-color:var(--warn);background:var(--warn-bg)}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:.7rem}
+.num{border:1px solid var(--line);padding:.9rem 1rem;background:var(--panel)}
+.num b{display:block;font-size:1.7rem;font-weight:650;letter-spacing:-.02em}
+.num span{font-size:.78rem;color:var(--ink-2);display:block;margin:.15rem 0 .4rem}
+.persona{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line)}
+.persona>div{padding:1rem 1.1rem;min-width:0}
+.persona>div:first-child{border-right:1px solid var(--line);background:var(--panel)}
+.persona h3{font-size:.95rem;margin:0 0 .35rem}
+.persona .r{font-family:var(--mono);font-size:.68rem;color:var(--ink-3);display:block;margin-bottom:.5rem}
+.persona p{font-size:.86rem;color:var(--ink-2);margin:0}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:.7rem}
+.screen{border:1px solid var(--ink-3);background:var(--bg);min-width:0}
+.screen .bar{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+color:var(--ink-3);padding:.35rem .6rem;border-bottom:1px solid var(--line);background:var(--panel)}
+.screen .body{padding:.7rem .75rem;font-size:.8rem;color:var(--ink-2)}
+.notdo{border:1px dashed var(--ink-3);padding:.8rem 1rem;font-size:.88rem;color:var(--ink-2)}
+.ask{border:1px solid var(--line)}
+.ask-row{display:grid;grid-template-columns:7rem 1fr 11rem;gap:0;border-bottom:1px solid var(--line)}
+.ask-row:last-child{border-bottom:0}
+.ask-row>div{padding:.6rem .8rem;font-size:.82rem;min-width:0}
+.ask-row .id{font-family:var(--mono);font-size:.7rem;color:var(--warn)}
+.ask-row .own{font-family:var(--mono);font-size:.7rem;color:var(--ink-2)}
+.decision{background:var(--panel);border-left:3px solid var(--brand);padding:.9rem 1.1rem;
+font-size:.95rem;margin-top:1rem}
+footer{margin-top:2rem;padding-top:.8rem;border-top:1px solid var(--line);
+font-family:var(--mono);font-size:.66rem;color:var(--ink-3)}
+@media(max-width:640px){.persona{grid-template-columns:1fr}
+.persona>div:first-child{border-right:0;border-bottom:1px solid var(--line)}
+.ask-row{grid-template-columns:1fr}.ask-row>div{padding:.45rem .8rem}}
+@media print{.page{padding:0}body{font-size:13px}}
+</style>
+</head>
+<body><div class="page">
+  <div class="meta">surprise-charge · demo one-pager · generated from 03-demo-spec.md · 2026-08-31 · status: discovery</div>
+  <h1>The trial that ends politely</h1>
+  <p class="what">Nobody gets charged by surprise: you'll know before we bill you, and cancelling takes one tap.</p>
+
+  <h2>Why now</h2>
+  <div class="nums">
+    <div class="num"><b>38%</b><span>of refunds cite "forgot to cancel / didn't know"</span><span class="tag">[OBSERVED: refund log]</span></div>
+    <div class="num"><b>#1</b><span>support category in week 3 of every cohort: "surprise charge"</span><span class="tag">[OBSERVED: ticket tags]</span></div>
+    <div class="num"><b>71%</b><span>of eventual refunders never opened the app after trial day 3</span><span class="tag">[OBSERVED: activity × billing]</span></div>
+    <div class="num"><b>?</b><span>charged users who are surprised but silent — never measured</span><span class="tag warn">[UNKNOWN → R1]</span></div>
+  </div>
+  <p style="font-size:.82rem;color:var(--ink-2);margin-top:.6rem">Finance believes reminders will cost conversions; product believes they won't. That claim is <span class="tag warn">[ASSUMED — C5]</span> on both sides — so this ships with the holdback experiment both sides agreed to be bound by (REQ-D2).</p>
+
+  <h2>Who it affects</h2>
+  <div class="persona">
+    <div><h3>The one who forgot</h3><span class="r">trial users who stopped opening the app by day 3 and get charged on day 14 — the forgot-cohort</span>
+      <p><b>Today:</b> discovers the charge on a bank statement, feels tricked, writes the one-star review, then asks for the refund. We return the money. The review stays.</p></div>
+    <div><h3>After</h3><span class="r">told twice before the charge; out in one tap</span>
+      <p>A T-48h email and an in-app banner, each with two equal buttons: keep it, or cancel in one tap. Receipts always show the next renewal date and price.</p></div>
+  </div>
+
+  <h2>The experience</h2>
+  <div class="flow">
+    <div class="screen"><div class="bar">Email · T-48h</div><div class="body">"Your trial ends Thursday — keep it or cancel in one tap." Price, date, two equal buttons. No guilt copy.</div></div>
+    <div class="screen"><div class="bar">In-app banner · day 12+</div><div class="body">The backstop for unopened email: date, price, same two buttons. Returns daily until decided.</div></div>
+    <div class="screen"><div class="bar">One-tap cancel</div><div class="body">One screen, immediate confirmation, data kept 30 days. Never more steps than subscribing took — asserted in CI.</div></div>
+    <div class="screen"><div class="bar">Failure state</div><div class="body">If the reminder send fails, the miss is logged and visible — the charge is never silently excused, and the failure never silently hidden.</div></div>
+  </div>
+
+  <h2>What it deliberately does not do</h2>
+  <div class="notdo">No win-back discounts in the cancel flow — nothing upstream asks for it, and the judge held it at the door. No proactive refunds for past charges until legal answers (BLK-03). No reminders beyond the first charge — scoped to the moment of harm.</div>
+
+  <h2>The ask</h2>
+  <div class="ask">
+    <div class="ask-row"><div class="id">BLK-01 · COMMERCIAL</div><div>Finance co-designs the holdback experiment, so the readout binds both sides.</div><div class="own">finance lead</div></div>
+    <div class="ask-row"><div class="id">BLK-02 · REGULATORY</div><div>Where is this notice already required, and which markets prescribe the cancel method?</div><div class="own">compliance lead</div></div>
+    <div class="ask-row"><div class="id">BLK-03 · LEGAL</div><div>Past surprise charges: exposure, and does the launch framing admit fault?</div><div class="own">legal counsel</div></div>
+  </div>
+  <div class="decision"><b>Decision requested:</b> start R1 (the measurement join) and R2 (banner + honest receipts) this sprint — they need no approvals — and book the one finance co-design meeting that unblocks R3. R4 waits for the compliance memo.</div>
+
+  <footer>Working Backwards session surprise-charge · every figure above appears in the session artifacts with its provenance · full spec: 03-demo-spec.md · judge log: DECISIONS.md</footer>
+</div></body>
+</html>

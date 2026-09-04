@@ -11,12 +11,12 @@ every agent in the pipeline and the exact prompt that drives it.
 
 <a href="https://siddarthnyati.github.io/working-backwards/">
 <img src="docs/assets/walkthrough-demo.png" alt="The walkthrough at Stage 3: the prompt on the left, the demo spec rendered as UI mockups in the middle, the LLM judge on the right" width="100%"></a>
-<sup>Stage 3 of the walkthrough — the demo spec as actual screens: the invite step with a deliberately disabled control ("pending privacy review · BLK-01"), the template gallery, and the judge's gate beside it.</sup>
+<sup>Stage 0 of the walkthrough — the interrogation. The PM arrives saying "we need reminder emails"; the skill pushes back ("that's the fix — what did you <i>observe</i>?"), counted against a budget of six. The distance between the first statement and the final problem is the stage's proof of work.</sup>
 
 <table><tr>
 <td width="50%"><a href="https://siddarthnyati.github.io/working-backwards/">
 <img src="docs/assets/judge-revise.png" alt="The LLM judge failing draft 1 on dimension 2 — an untagged causal claim"></a>
-<sup><b>LLM as judge, catching a real one</b> — draft 1 wrote "teams churn <i>because</i>…" with no tag beside two correlations. VERDICT: REVISE, with the exact sentence to fix.</sup></td>
+<sup><b>LLM as judge, catching a real one</b> — draft 1 opened "Everyone hates surprise charges." Everyone is not a customer. VERDICT: REVISE, with the exact paragraph to rewrite.</sup></td>
 <td width="50%"><a href="https://siddarthnyati.github.io/working-backwards/reports/empty-workspace.html">
 <img src="docs/assets/report-overview.png" alt="The interactive session report: confidence numbers, stage verdicts, blocker cards"></a>
 <sup><b>The output isn't just markdown</b> — every session compiles to an interactive report.html: verdicts, blockers, filterable requirements, the DAG, the judge log. Every number parsed from the artifacts, not typed.</sup></td>
@@ -26,11 +26,12 @@ every agent in the pipeline and the exact prompt that drives it.
 
 | Run | The problem | Live report | Artifacts |
 |---|---|---|---|
-| **Empty Workspace** — drives the site walkthrough | SaaS onboarding: 61% of new workspaces never gain a second member. UI at every stage; the `[ASSUMED]` causal claim carried from intake to readiness | **[report](https://siddarthnyati.github.io/working-backwards/reports/empty-workspace.html)** · [demo one-pager](https://siddarthnyati.github.io/working-backwards/demos/empty-workspace-demo.html) | [`examples/empty-workspace/`](examples/empty-workspace/) |
+| **The Surprise Charge** — drives the site walkthrough | You forget the free trial ends, you get billed, you're furious. The PM asked for reminder emails; the interrogation turned it into a measured cohort, and the finance-vs-product fight became an experiment both sides are bound by | **[report](https://siddarthnyati.github.io/working-backwards/reports/surprise-charge.html)** · [demo one-pager](https://siddarthnyati.github.io/working-backwards/demos/surprise-charge-demo.html) | [`examples/surprise-charge/`](examples/surprise-charge/) |
+| **Empty Workspace** | SaaS onboarding: 61% of new workspaces never gain a second member. UI at every stage | **[report](https://siddarthnyati.github.io/working-backwards/reports/empty-workspace.html)** · [demo one-pager](https://siddarthnyati.github.io/working-backwards/demos/empty-workspace-demo.html) | [`examples/empty-workspace/`](examples/empty-workspace/) |
 | **Ghost Seats** | Platform defect: user removal silently fails to propagate; the audit log says they're gone. Includes an honest judge override at Stage 5 | **[report](https://siddarthnyati.github.io/working-backwards/reports/ghost-seats.html)** | [`examples/ghost-seats/`](examples/ghost-seats/) |
 | **Silent Step-Down** | Payments: 3DS timeout falls back to unauthenticated processing, shifting liability. The reconciliation check catches double-counted scope | **[report](https://siddarthnyati.github.io/working-backwards/reports/silent-stepdown.html)** | [`examples/silent-stepdown/`](examples/silent-stepdown/) |
 
-All three are fictional, run end to end by the skill, and machine-verified —
+All four are fictional, run end to end by the skill, and machine-verified —
 `scripts/verify_sources.py` checks every requirement's citation resolves.
 
 ---
