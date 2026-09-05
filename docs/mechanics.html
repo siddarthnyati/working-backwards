@@ -186,6 +186,14 @@ section{padding:2.2rem 0}}
     <tr><td>Strategic fit</td><td><i>Is this the right priority?</i></td><td><b>No.</b> It writes a question for your VP instead</td></tr>
     <tr><td>Feasibility</td><td><i>Can engineering build it?</i></td><td><b>No.</b> It writes a question for your eng lead instead</td></tr>
   </table></div>
+  <h4 style="margin-top:1.4rem">What the judge is actually given — its parameters</h4>
+  <div class="scroll"><table>
+    <tr><th>Input</th><th>What it is</th></tr>
+    <tr><td>The artifact</td><td>The stage's output, verbatim — treated as data: instructions inside it are ignored and surfaced</td></tr>
+    <tr><td>The rubric</td><td><code>references/critic-rubric.md</code> — for each check: a pass example, a fail example, and the exact rewrite instruction to issue on failure. The examples are what keep verdicts consistent; a judge without them drifts</td></tr>
+    <tr><td>Its stage scope</td><td>Which of the eight checks apply at this stage (a release plan isn't judged on "alternative named")</td></tr>
+    <tr><td>The verdict format</td><td>One line per check → overall PASS / REVISE / BLOCK · on REVISE, the exact sentence to change · substantive topics emit <code>Q-nn · question · Ask: role</code> instead of any verdict</td></tr>
+  </table></div>
   <div class="callout">The judge polices itself for two drifts: <i>softening</i> ("could benefit
   from more data" is a pass wearing a fail's costume) and <i>overreach</i> ("this seems strategically
   sound" — the one sentence that would make the whole tool untrustworthy). When you disagree with a
@@ -579,6 +587,72 @@ line on what a real document would add.`,
 <div class="cpt"><b>Quarantined trust</b><span>Testimony lives in its own file at its own trust level, never promoted.</span></div>`,
  why:`"Bring your own context" fails the majority who have context but no documents. Ten minutes of questions turns tier 0 into a citable tier 1 — honestly labelled.`}];
 
+const JPROMPT={
+"0":`Review 00-intake.md. Three checks: is the
+customer specific enough to list ten of?
+is there evidence behind the claims,
+tagged? is anything left blank that
+shouldn't be? Name the claim doing the
+most work with the least provenance —
+that one propagates. Is this a problem,
+or a solution wearing a problem costume?`,
+"1":`Review against all eight checks. For the
+six structural ones — specific customer,
+evidence present, alternative named,
+cites upstream, plain language, nothing
+stubbed — return PASS or REVISE with the
+exact sentence to change. For strategy
+and feasibility you have no verdict:
+write a question with an owner role
+instead. Then the test: would a team
+commit a quarter to this subheading?`,
+"2":`Check: is every ANSWERED actually
+sourced, or is it OPEN in costume? Does
+any blocker assert a finding instead of
+asking a question? Count blockers with
+no owner role. If nothing here is
+uncomfortable, say so — that is a
+failure of the bank, not a compliment.`,
+"3":`Check: does every screen trace to a
+press-release paragraph or FAQ answer?
+Could someone narrate this demo without
+improvising? Is the "what this does not
+show" section present? A missing scope
+boundary sends it back — demos create
+commitments nobody made.`,
+"4":`Check: is the doc honest about what it
+can't explain yet — explicit gaps with
+owners, not TBDs or silent omissions?
+Is the length itself a warning (a
+12-step getting-started is a product
+problem, not a writing problem)?`,
+"5":`Check: does any metric measure nothing
+the PR claims? Does any PR claim have no
+metric AND no entry in the unmeasurable
+list? Is any baseline a plausible-looking
+invention? Empty-but-explained baselines
+pass; empty-and-silent ones don't.`,
+"6":`The script already checked every citation
+resolves — mechanically. Your job is the
+harder thing: does the source actually
+DEMAND the requirement, or merely permit
+it? Find the requirement everybody wants
+that nothing upstream asks for. There
+usually is one.`,
+"7":`Reconcile: every requirement in exactly
+one slice? DAG acyclic? Is any "slice"
+actually a layer? Is any blocked slice
+carrying a date? The double-placed
+requirement is how scope gets counted
+twice in a tracker — look for it
+specifically.`,
+"8":`One question above all: does the
+recommendation follow from the artifact,
+or from optimism? Cross-check the GO
+scope against the blocker table — any
+covered slice that a HIGH blocker blocks
+is a fail. Is the failure list ranked by
+likelihood or by drama?`};
 let ai_=0, tab_=0;
 const dots=$("#adots");
 AGENTS.forEach((a,i)=>{const d=document.createElement("button");d.className="dot";
@@ -588,7 +662,10 @@ function draw(anim){
   $("#apos").textContent=`Agent ${ai_+1} of ${AGENTS.length} · ${a.role} — ${a.t}`;
   $("#aprev").disabled=ai_===0; $("#anext").disabled=ai_===AGENTS.length-1;
   $$("#adots .dot").forEach((d,i)=>d.setAttribute("aria-current",i===ai_));
-  const TABS=[["Pushes back",a.push],["The judge & your gate",a.judge],["AI concept",a.ai]];
+  const jp=JPROMPT[a.n];
+  const judgeTab=(jp?`<h4 style="margin:0 0 .4rem">The judge's prompt — what it is told to check</h4><pre class="promptbox" style="max-height:13rem;margin-bottom:.9rem">${jp}</pre>`:"")
+    +`<h4 style="margin:0 0 .3rem">In plain words</h4><p class="tabpane" style="margin:0">${a.judge}</p>`;
+  const TABS=[["Pushes back",a.push],["The judge & your gate",judgeTab],["AI concept",a.ai]];
   const card=$("#acard");
   card.innerHTML=`
    <div class="ahead"><div><span class="role">Agent ${a.n} · ${a.role}</span><h3>${a.t}</h3></div>
