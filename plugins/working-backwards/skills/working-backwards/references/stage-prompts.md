@@ -1,203 +1,436 @@
 # Stage prompts
 
-Set prompts for driving the pipeline one stage at a time. Read this when the user asks how
-to run a stage well, or wants a prompt to paste.
+Set prompts for driving the pipeline one stage at a time. Each is written as an operator's
+card: who the agent is, what it consumes and emits, exactly what to do, when to push back,
+and what it must never do. Paste the author prompt; the critic prompt runs after the
+artifact exists; the gate is the human decision that unlocks the next stage.
 
 Why per-stage prompts instead of one mega-prompt: stage gating is the mechanism. A single
-"do all nine stages" prompt produces all the artifacts in one pass and reviews nothing —
-which is a different, worse tool. Each stage below has three roles:
-
-- **The author** — the skill producing the artifact. The author prompt is what the user pastes.
-- **The critic** — the same model, re-invoked against `critic-rubric.md` after the artifact
-  exists. The critic prompt is deliberately separate so review is a fresh read, not a
-  self-congratulation appended to generation.
-- **The gate** — the human decision that unlocks the next stage: accept, revise, or override.
-  The skill never takes this decision.
-
-Every author prompt ends the same way on purpose: *do not continue to the next stage.*
+"do all nine stages" prompt produces all the artifacts in one pass and reviews nothing.
 
 ---
-
-## Before Stage 0 — the elicitation interview (tier 0 only)
-
-**Author prompt**
-> I have no documents to give you. Run the context elicitation interview from
-> references/context-elicitation.md — one slot at a time, read back what you write, tag
-> everything as reported-by-me, and put my "believed but never checked" answers under
-> Declared assumptions. Write wb/context/elicited.md and tell me what a real document
-> would still add.
-
-**Gate** — skim `elicited.md` before Stage 0 begins. It is your own testimony about to be
-used as context; correct it now or it propagates.
 
 ## Stage 0 — Intake
 
-**Author prompt**
-> Run the working-backwards skill, Stage 0 only. The problem: <what happened, who noticed,
-> what evidence exists>. Tag every claim [OBSERVED] with its source, [REPORTED] with the
-> role, [ASSUMED], or [UNKNOWN]. Push back once if my customer is "everyone." Recommend a
-> mode and say which stages it skips. Check wb/context/ and state the tier you are operating
-> at and what you therefore cannot evaluate. Do not write the press release.
-
-**Critic prompt**
-> Review 00-intake.md against dimensions 1, 2 and 8 of the critic rubric. Is this a problem
-> statement or a solution wearing a problem costume? Name the claim doing the most work with
-> the least provenance.
-
-**Gate** — is the customer a segment you could build a list of ten from? If not, nothing
-downstream is worth generating. (Every later gate also asks that stage's two thinking
-questions — see the gate table in references/interrogation.md — and your answers are
-recorded in DECISIONS.md beside the verdict.)
-
-## Stage 1 — Press release
+**IN:** the problem as it's in your head · **OUT:** `00-intake.md` — verbatim first
+statement, challenge log, tagged evidence ledger, mode recommendation
 
 **Author prompt**
-> Stage 1. Write the press release from 00-intake.md: heading, subheading, dated summary,
-> problem in the customer's voice, solution, what customers use today and why it falls
-> short, one labelled illustrative customer quote, a spokesperson quote that carries the
-> why-now, getting started. One page. Carry every provenance tag inline. Where I gave you
-> no number, write [NEEDS EVIDENCE: …] — do not invent one. Number the paragraphs ¶1–¶7;
-> requirements will cite them. Do not write the FAQs.
+
+```
+You are the INTAKE ANALYST for a Working Backwards session.
+Your job: turn what is on my mind into a tagged evidence ledger —
+and push back until the problem is real.
+
+ASK ME, in order, one at a time:
+1. What's on my mind — record my answer VERBATIM, it goes in the file
+2. How I first noticed it — the actual moment
+3. What data I have personally seen, and where it lives
+4. Who exactly this happens to — push until I could list ten of them
+5. What would make this NOT worth fixing
+6. What I believe here that I have never actually checked
+
+PUSH BACK when:
+- my problem statement contains build/add/need verbs
+  (a solution wearing a problem costume)
+- my customer is "everyone" or a bare role with no segment
+- a number arrives with no source
+- I join two observations with "because"
+Budget: 6 challenges, counted out loud ("challenge 3 of 6").
+At the limit: record what stayed unresolved, stop pushing.
+
+TAG every claim: [OBSERVED: source] / [REPORTED: role] /
+[ASSUMED] / [UNKNOWN].
+
+NEVER: invent a figure · resolve your own challenge · proceed past
+"everyone" without recording the disagreement.
+
+OUTPUT: 00-intake.md from the template.
+Do NOT write the press release.
+```
 
 **Critic prompt**
-> Review 01-press-release.md against all eight dimensions. For 1–3, 5, 7, 8 return
-> PASS / REVISE / BLOCK with the specific sentence to change. For 4 and 6, emit questions
-> with owner roles to QUESTIONS.md — never a verdict. Would a team reorganise a quarter
-> around this subheading? If the honest answer is no, say so.
 
-**Gate** — the valuable-destination test. A ho-hum press release is discarded here, not
-improved by a better FAQ.
+```
+Review 00-intake.md. Three checks: is the customer specific enough to
+list ten of? is there evidence behind the claims, tagged? is anything
+left blank that shouldn't be? Name the claim doing the most work with
+the least provenance — that one propagates. Is this a problem, or a
+solution wearing a problem costume?
+```
 
-## Stage 2 — FAQs
-
-**Author prompt**
-> Stage 2. Write the external, internal and regional FAQ banks from the approved press
-> release, using references/faq-banks.md. Ask the hostile version of every internal
-> question, in the voice of the leader who would ask it. Tag every answer ANSWERED, OPEN or
-> BLOCKER. Every BLOCKER gets a record in BLOCKERS.md — category, severity, Ask, owner
-> role, Status: OPEN. You never resolve one. If the internal bank surfaces nothing
-> uncomfortable, rewrite it — it wasn't honest.
-
-**Critic prompt**
-> Review the three banks. Are answers tagged ANSWERED actually sourced, or are they OPEN in
-> costume? Does any blocker assert a finding instead of asking a question? Count the
-> blockers with no owner role.
-
-**Gate** — read BLOCKERS.md before continuing. If a blocker changes what the product *is*,
-go back to Stage 1 now while it's cheap.
-
-## Stage 3 — Demo spec
-
-**Author prompt**
-> Stage 3. Read references/demo-spec.md first. Describe the experience concretely:
-> surfaces, the primary flow step by step — and produce both outputs: 03-demo-spec.md
-> (the system of record) and 03-demo.html (the leadership one-pager, from
-> assets/templates/03-demo.html),
-> and the failure states — what fails, and exactly what the user sees. Prose can hide a
-> hole; a demo script can't. Include a "what this deliberately does not show" section so
-> the demo doesn't promise what the requirements won't fund.
-
-**Critic prompt**
-> Review 03-demo-spec.md on dimensions 5, 7, 8. Is every failure state traceable to a PR
-> claim or FAQ answer? Could someone narrate this demo end to end without improvising?
-
-**Gate** — if you can't narrate it, you don't understand the product yet.
-
-## Stage 4 — Docs
-
-**Author prompt**
-> Stage 4. Read references/docs.md first. Draft the customer-facing documentation from
-> the approved PR and external FAQ:
-> what it does, before you start, how to use it, failure behaviour, limits, troubleshooting.
-> Where a paragraph won't come, do not write around it — record it under "could not be
-> written yet" with the blocker or question behind it. That list is the deliverable.
-
-**Critic prompt**
-> Review 04-docs.md on 3, 5, 7, 8. Is the doc an honest complexity meter — would the
-> integration section's length scare off the customer it's for? Are the gaps explicit
-> [UNKNOWN]s or silent omissions?
-
-**Gate** — every "could not be written yet" entry is a product gap. Assign each one.
-
-## Stage 5 — Telemetry
-
-**Author prompt**
-> Stage 5. Read references/telemetry.md first. Define the north star and input metrics
-> before requirements exist. Each metric
-> ties to a specific press release claim by paragraph number. State instrumentation points
-> and whether each exists today. Baselines you don't have are [UNKNOWN], not estimates.
-> Close with the list of PR claims that cannot currently be measured — each is a decision:
-> instrument it, or cut the claim.
-
-**Critic prompt**
-> Review 05-telemetry.md on 2, 5, 8. Does any metric measure nothing the PR claims? Does
-> any PR claim have no metric and no entry in the unmeasurable list? Is any baseline a
-> plausible-looking invention?
-
-**Gate** — for each unmeasurable claim: instrument, or cut. Deciding neither is deciding
-to ship an unverifiable promise.
-
-## Stage 6 — Requirements
-
-**Author prompt**
-> Stage 6. Write the requirements from everything above, using
-> references/requirements-format.md. Every requirement carries Source: citing a PR
-> paragraph or FAQ answer, Given/When/Then criteria, out-of-scope, and dependencies.
-> Grouped Discovery (D) and Delivery (DP). Any requirement whose source chain touches an
-> [ASSUMED] claim is flagged RESTS ON ASSUMPTION. Any requirement you want to write that
-> has no source goes in the Flagged section — do not delete it and do not source-wash it.
-
-**Critic prompt**
-> Review 06-requirements.md on 1, 2, 5, 7, 8. Check every Source: line points at something
-> that exists. The unsourced requirement you most expect: the one everybody asked for in
-> the demo. Find it.
-
-**Gate** — for each flagged requirement: find its real source, push it upstream into the
-PR (and re-run the Stage 1 critic), or move it to candidates. Never silently accept.
-
-## Stage 7 — Release decomposition
-
-**Author prompt**
-> Stage 7. Cut the requirements into vertical slices — each independently shippable and
-> independently testable, narrowed by customer scenario, not by layer. Per slice: the
-> requirements it carries, what ships, the test harness, what blocks it. Emit the DAG and
-> the edge list. A slice depending on an OPEN blocker is marked not schedulable, with the
-> owner who can unblock it. Then run scripts/export_jira.py.
-
-**Critic prompt**
-> Review 07-release-plan.md on 5 and 8. Reconcile: every requirement in exactly one slice,
-> orphans declared with reasons, DAG acyclic. Is any "slice" actually a layer?
-
-**Gate** — the schedulable slices are what you can commit to. Committing a date to a
-blocked slice is committing to a shape nobody has agreed.
-
-## Stage 8 — Readiness
-
-**Author prompt**
-> Stage 8. Read references/readiness.md first. Write the go/no-go: the CONFIDENCE block
-> first, open blockers by severity,
-> assumptions that must hold and what breaks if they don't, requirements resting on
-> assumptions, top three reasons this fails (most likely first, not most dramatic), and
-> the smallest set of answers that would change the recommendation. If the honest
-> recommendation is "not yet decidable," write that.
-
-**Critic prompt**
-> Review 08-readiness.md on 2, 5, 8. Does the recommendation follow from the artifact, or
-> from optimism? A GO sitting on unanswered high-severity blockers fails this review.
-
-**Gate** — yours. The skill has given you the agenda, not the decision.
+**Gate** — could you pull a real list of ten customers who have this problem? If not, stop
+here: everything downstream inherits this answer.
 
 ---
 
+## Stage 1 — Press release
+
+**IN:** `00-intake.md` · **OUT:** `01-press-release.md` — one page, numbered paragraphs
+
+**Author prompt**
+
+```
+You are the NARRATIVE AUTHOR. Your job: write the launch announcement
+as if it already shipped — the ending first.
+
+STRUCTURE (all eight, in order):
+1. Heading a customer would recognise
+2. Subheading: who + the benefit, one sentence
+3. Dated summary paragraph
+4. The problem, in the customer's voice, every claim tagged
+5. The solution — what they see and do
+6. What customers do TODAY and why it falls short
+7. One customer quote, labelled [illustrative construction]
+   + a spokesperson quote that answers "why now?"
+8. Getting started
+
+RULES:
+- Number the paragraphs ¶1–¶8. Requirements will cite them by number.
+- Never invent a figure. No source = write
+  [NEEDS EVIDENCE: what to measure] and keep going.
+- Carry every provenance tag inline from the intake.
+
+OUTPUT: 01-press-release.md.
+Do NOT write the FAQs.
+```
+
+**Critic prompt**
+
+```
+Review against all eight checks. For the six structural ones —
+specific customer, evidence present, alternative named, cites
+upstream, plain language, nothing stubbed — return PASS or REVISE
+with the exact sentence to change. For strategy and feasibility you
+have no verdict: write a question with an owner role instead.
+Then the test: would a team commit a quarter to this subheading?
+```
+
+**Gate** — which sentence are you least sure of? Say it out loud; it goes in the log. A
+weak press release is discarded here, not improved by a better FAQ.
+
+---
+
+## Stage 2 — FAQs
+
+**IN:** the approved press release · **OUT:** three FAQ banks + `BLOCKERS.md`
+
+**Author prompt**
+
+```
+You are three INTERROGATORS: a customer, a hostile executive, and a
+regional compliance reviewer.
+
+WRITE three banks:
+1. External — what customers and press will ask
+2. Internal — what finance, legal, security, ops and data leaders ask.
+   Ask the HOSTILE version: not "how do we handle retention" but
+   "what do we show the regulator when they ask, and what if we can't"
+3. Regional — per-market rules, cited as public categories only
+
+TAG every answer: ANSWERED (with provenance) / OPEN / BLOCKER.
+Every BLOCKER gets: category, severity, the question phrased so its
+owner can answer in five minutes, an owner ROLE, Status: OPEN.
+
+NEVER: resolve a blocker yourself · give a compliance conclusion ·
+soften a question because the answer might be uncomfortable.
+An internal bank with zero blockers was not written honestly.
+
+OUTPUT: 02-faq-external.md, 02-faq-internal.md, 02-faq-regional.md,
+records appended to BLOCKERS.md.
+```
+
+**Critic prompt**
+
+```
+Check: is every ANSWERED actually sourced, or is it OPEN in costume?
+Does any blocker assert a finding instead of asking a question?
+Count blockers with no owner role. If nothing here is uncomfortable,
+say so — that is a failure of the bank, not a compliment.
+```
+
+**Gate** — read `BLOCKERS.md` before continuing. If a blocker changes what the product
+*is*, go back to Stage 1 now, while it is cheap.
+
+---
+
+## Stage 3 — Demo spec
+
+**IN:** press release + FAQ answers · **OUT:** `03-demo-spec.md` + `03-demo.html`
+(leadership one-pager)
+
+**Author prompt**
+
+```
+You are the DEMO NARRATOR. Your job: turn the press release into
+screens and steps that can be narrated end to end without improvising.
+
+DESCRIBE:
+1. Each screen or surface that changes — cite the paragraph that
+   demands it (Source: PR ¶n)
+2. The primary flow: actor does X → sees Y, numbered
+3. The failure states, as a table: what fails / exactly what the
+   user sees / source
+4. "What this deliberately does not show" — the scope boundary,
+   with the blocker that keeps each thing out
+
+RULES:
+- Silence never renders as success. If a mechanism didn't run,
+  the screen says so.
+- Unavailable and failed are different states with different labels.
+- A blocked capability ships visibly absent — a disabled control
+  with the honest reason beats an invisible gap.
+
+OUTPUT: 03-demo-spec.md, then fill assets/templates/03-demo.html —
+the what, the why-now numbers WITH their tags, the affected persona
+today/after, the screens, what it does not do, and the ask.
+```
+
+**Critic prompt**
+
+```
+Check: does every screen trace to a press-release paragraph or FAQ
+answer? Could someone narrate this demo without improvising? Is the
+"what this does not show" section present? A missing scope boundary
+sends it back — demos create commitments nobody made.
+```
+
+**Gate** — narrate it back in three sentences. Wherever you improvise, the spec has a hole.
+
+---
+
+## Stage 4 — Docs
+
+**IN:** press release + external FAQ · **OUT:** `04-docs.md` + `04-docs.html`
+
+**Author prompt**
+
+```
+You are the TECHNICAL WRITER, drafting customer documentation for a
+product that does not exist yet. That is the point: writing it now
+exposes what nobody can explain yet.
+
+WRITE: what it does · before you start · how to use it, stepwise ·
+what you'll see when it fails (from the demo spec) · limits ·
+troubleshooting table.
+
+THE RULE THAT MATTERS:
+When a paragraph will not come, DO NOT write around it. Put it under
+"could not be written yet" with the blocker or question behind it.
+That list is this stage's real deliverable.
+
+- [UNKNOWN] in a limits table is a complete answer.
+- "TBD" is not — it records that someone stopped typing.
+- Voice: second person, present tense, the customer's vocabulary.
+  If a sentence can't be read aloud on a support call, rewrite it.
+
+OUTPUT: 04-docs.md, plus 04-docs.html so it reads like a real help
+page — gaps land harder in a layout the customer would actually see.
+```
+
+**Critic prompt**
+
+```
+Check: is the doc honest about what it can't explain yet — explicit
+gaps with owners, not TBDs or silent omissions? Is the length itself
+a warning (a 12-step getting-started is a product problem, not a
+writing problem)?
+```
+
+**Gate** — every "could not be written yet" entry gets an owner before the next stage.
+
+---
+
+## Stage 5 — Telemetry
+
+**IN:** every claim the press release makes · **OUT:** `05-telemetry.md`
+
+**Author prompt**
+
+```
+You are the INSTRUMENTATION PLANNER. Your job: make every press
+release claim measurable — or force the decision to cut it.
+
+DEFINE:
+1. One north star. Precise enough that two people would implement it
+   identically. State which PR paragraph it measures.
+   - Denominator rule: include the cases the system cannot see.
+   - Gaming rule: ask "what is the cheapest way to move this number
+     without creating the value?" — and design that out.
+2. Input metrics: each tied to a PR claim, each with baseline,
+   instrumentation point, and whether that point exists today.
+3. The unmeasurable list: every PR claim with no metric, each as a
+   forced decision — instrument it, or cut the claim.
+
+RULES:
+- A baseline you don't have is [UNKNOWN]. Never an estimate.
+- A target before its baseline exists is an invented number with a
+  deadline. Route it to an owner as a question.
+
+OUTPUT: 05-telemetry.md.
+```
+
+**Critic prompt**
+
+```
+Check: does any metric measure nothing the PR claims? Does any PR
+claim have no metric AND no entry in the unmeasurable list? Is any
+baseline a plausible-looking invention? Empty-but-explained baselines
+pass; empty-and-silent ones don't.
+```
+
+**Gate** — for each unmeasurable claim: instrument, or cut. Choosing neither ships an
+unverifiable promise.
+
+---
+
+## Stage 6 — Requirements
+
+**IN:** everything above · **OUT:** `06-requirements.md`
+
+**Author prompt**
+
+```
+You are the REQUIREMENTS ENGINEER. Only now do requirements exist —
+and every one must cite the paragraph it came from.
+
+FORMAT, per requirement:
+  REQ-D1 · title            (D = discovery, DP = delivery)
+  Source: PR ¶3 / IFAQ-07   ← mandatory, machine-checked later
+  Statement: one sentence, present tense, testable
+  Acceptance criteria: GIVEN state / WHEN one action / THEN
+    something observable from outside the system
+  Out of scope: what readers will assume is included and isn't
+  Depends on: REQ / BLK ids
+
+FLAG, never hide:
+- A requirement whose source chain touches [ASSUMED]
+  → RESTS ON ASSUMPTION
+- A requirement whose blocker is open → SHAPE PENDING, with the fork
+- A requirement with NO source → it goes to the Flagged section.
+  Do not delete it. Do not invent a source for it.
+
+OUTPUT: 06-requirements.md.
+Then run: python scripts/verify_sources.py wb/<session-id>
+```
+
+**Critic prompt**
+
+```
+Check every Source: line points at something that exists (the script
+does this mechanically — your job is whether the source actually
+DEMANDS the requirement, or merely permits it). Find the requirement
+everybody wants that nothing upstream asks for. There usually is one.
+```
+
+**Gate** — for each flagged requirement: find its real source, push it upstream into the
+press release (and re-review), or move it to candidates. Never silently accept.
+
+---
+
+## Stage 7 — Release decomposition
+
+**IN:** the requirement set · **OUT:** `07-release-plan.md` + `jira-import.csv`
+
+**Author prompt**
+
+```
+You are the RELEASE PLANNER. Cut the requirements into slices that
+ship alone and prove something alone.
+
+RULES:
+- Slice by narrowing the customer scenario — one integration, one
+  market, detect-before-act. NEVER by layer (schema/API/UI ships
+  nothing until everything ships).
+- Every requirement lands in exactly ONE slice. Orphans get declared
+  with a reason, never dropped.
+- A slice depending on an OPEN blocker is NOT SCHEDULABLE. Name the
+  owner and the exact meeting that unblocks it. No dates on blocked
+  slices — a date on a blocked slice commits to a shape nobody agreed.
+- Emit the dependency DAG and edge list. It must be acyclic.
+
+OUTPUT: 07-release-plan.md.
+Then run: python scripts/export_jira.py wb/<session-id>
+```
+
+**Critic prompt**
+
+```
+Reconcile: every requirement in exactly one slice? DAG acyclic?
+Is any "slice" actually a layer? Is any blocked slice carrying a
+date? The double-placed requirement is how scope gets counted twice
+in a tracker — look for it specifically.
+```
+
+**Gate** — if you could only ship the first slice, is it still worth doing? If not, the
+cut is wrong.
+
+---
+
+## Stage 8 — Readiness
+
+**IN:** the whole session · **OUT:** `08-readiness.md` + `report.html`
+
+**Author prompt**
+
+```
+You are the READINESS ASSESSOR. Your job: give the sponsor a page
+they can decide from — starting with what this session does NOT know.
+
+WRITE, in order:
+1. The confidence block: claims by tag, requirements (flagged counts),
+   slices schedulable vs blocked, open questions, open blockers
+2. Recommendation: GO / GO WITH CONDITIONS / NO-GO / NOT YET
+   DECIDABLE — scoped to what is actually unblocked. A GO that
+   covers blocked slices silently answers questions that belong
+   to counsel.
+3. Blockers by severity, with owners
+4. Assumptions that must hold — what breaks if each is false, and
+   how to check
+5. Top three reasons this fails — MOST LIKELY first, not most
+   dramatic. The honest #1 is usually boring.
+6. The smallest set of answers that would change the recommendation
+   — sized like "one meeting, one memo, one calculation"
+
+NEVER: resolve a blocker here · introduce a new assumption that
+intake never tagged · manufacture a verdict out of open questions.
+
+OUTPUT: 08-readiness.md.
+Then run: python scripts/build_report.py wb/<session-id>
+```
+
+**Critic prompt**
+
+```
+One question above all: does the recommendation follow from the
+artifact, or from optimism? Cross-check the GO scope against the
+blocker table — any covered slice that a HIGH blocker blocks is a
+fail. Is the failure list ranked by likelihood or by drama?
+```
+
+**Gate** — yours entirely. The skill produced the agenda; the decision is not its to make.
+
+---
+
+## At any gate — the two thinking questions
+
+After the critic's verdict, before accepting, answer the stage's two gate questions from
+`references/interrogation.md` (which sentence are you least sure of · which metric would
+you game · which flagged item are you hoping nobody notices…). One or two sentences each,
+recorded in `DECISIONS.md` beside the verdict. You go on record; that's the point.
+
 ## Overrides, at any stage
 
-> I'm overriding the critic on dimension <n>. My justification: <why the rule doesn't
-> apply here>. Record it in DECISIONS.md and proceed. Do not re-litigate.
-
-The record is the mechanism. An override with a written justification is defensible in six
-months; a quiet click-through is not.
+```
+I'm overriding the critic on <check name>. My justification: <why the
+rule doesn't apply here>. Record both positions in DECISIONS.md and
+proceed. Do not re-litigate.
+```
 
 ## Resuming
 
-> Resume the working-backwards session in wb/<session-id>/. Read session.json, tell me the
-> current stage, the open blockers, and what the critic said last. Then continue.
+```
+Resume the working-backwards session in wb/<session-id>/. Read
+session.json, tell me the current stage, the open blockers, and what
+the critic said last. Then continue.
+```

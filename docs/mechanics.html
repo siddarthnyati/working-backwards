@@ -45,11 +45,19 @@ display:flex;justify-content:space-between;gap:1rem;align-items:baseline;flex-wr
 text-transform:uppercase}
 .agent-head h3{font-size:1.15rem}
 .agent-head .out{font-family:var(--mono);font-size:.66rem;color:var(--accent-ink)}
-.agent-body{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:0}
+.agent-io{display:flex;gap:.5rem;flex-wrap:wrap;padding:.6rem 1.3rem;border-bottom:1px solid var(--rule)}
+.iochip{font-family:var(--mono);font-size:.64rem;border:1px solid var(--rule);padding:.3rem .6rem;
+color:var(--ink-2);background:var(--paper)}
+.iochip b{color:var(--accent-ink);font-weight:600;letter-spacing:.06em}
+.agent-body{display:grid;grid-template-columns:1.2fr .95fr .95fr .95fr;gap:0}
+.cpt{margin-bottom:.65rem}
+.cpt b{display:block;font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;color:var(--accent-ink)}
+.cpt span{font-size:.8rem;color:var(--ink-2);line-height:1.4}
 .agent-body>div{padding:1.1rem 1.3rem;min-width:0}
 .agent-body>div:not(:last-child){border-right:1px solid var(--rule)}
-.promptbox{font-family:var(--mono);font-size:.7rem;line-height:1.65;color:var(--ink-2);
-white-space:pre-wrap;border-left:2px solid var(--ink-3);padding-left:.75rem;margin:0}
+.promptbox{font-family:var(--mono);font-size:.64rem;line-height:1.62;color:#dde3f0;
+white-space:pre-wrap;background:#161a26;border-radius:4px;padding:.85rem .95rem;margin:0;
+overflow-x:auto}
 .gate{font-size:.86rem;color:var(--ink-2)}
 .gate b{font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;color:var(--accent-ink)}
 .push{font-size:.82rem;color:var(--ink-2)}
@@ -93,7 +101,10 @@ letter-spacing:.02em;padding:.1em .55em;border:1px solid;border-radius:999px}
 .agent{overflow:hidden}
 footer{padding:2.6rem 0 4rem;border-top:1px solid var(--rule);font-size:.84rem;color:var(--ink-3)}
 footer p{max-width:46rem}
-@media(max-width:820px){.agent-body{grid-template-columns:1fr}
+@media(max-width:1150px){.agent-body{grid-template-columns:1fr 1fr}
+.agent-body>div{border-bottom:1px solid var(--rule)}
+.agent-body>div:nth-child(2n){border-right:0}}
+@media(max-width:700px){.agent-body{grid-template-columns:1fr}
 .agent-body>div:not(:last-child){border-right:0;border-bottom:1px solid var(--rule)}
 .steps{grid-template-columns:1fr 1fr}}
 </style>
@@ -365,132 +376,245 @@ Then continue.</pre>
 <script>
 "use strict";
 const AGENTS=[
-{n:0,role:"Intake Analyst",t:"Intake",out:"00-intake.md",
- ref:"SKILL.md — the “Before starting” section",
- dims:"1 · 2 · 8 — <span class='r'>can BLOCK</span> on 1 (customer is “everyone”)",
- prompt:`Run the working-backwards skill, Stage 0 only.
-The problem: <what happened, who noticed, what
-evidence exists>. Tag every claim [OBSERVED]
-with its source, [REPORTED] with the role,
-[ASSUMED], or [UNKNOWN]. Push back once if my
-customer is "everyone." Recommend a mode and
-say which stages it skips. Check wb/context/
-and state the tier you are operating at.
-Do not write the press release.`,
- gate:"Is the customer a segment you could build a list of ten from? If not, nothing downstream is worth generating. The judge also names the claims doing the most work with the least provenance — those propagate."},
-{n:1,role:"Narrative Author",t:"Press release",out:"01-press-release.md",
- ref:"references/press-release.md",
- dims:"all 8 — <span class='r'>2 and 3 fail most</span>; 4 and 6 emit questions only",
- prompt:`Stage 1. Write the press release from
-00-intake.md: heading, subheading, dated
-summary, problem in the customer's voice,
-what customers use today and why it falls
-short, one labelled illustrative quote, a
-spokesperson quote that carries the why-now,
-getting started. One page. Carry every
-provenance tag inline. Where I gave you no
-number, write [NEEDS EVIDENCE: …] — do not
-invent one. Number the paragraphs ¶1–¶7;
-requirements will cite them.
-Do not write the FAQs.`,
- gate:"The valuable-destination test: would a team reorganise a quarter around this subheading? A ho-hum press release is discarded here — not improved by a better FAQ."},
-{n:2,role:"The Interrogators — external, internal, regional",t:"FAQs",out:"02-faq-{external,internal,regional}.md + BLOCKERS.md",
- ref:"references/faq-banks.md + references/blocker-taxonomy.md",
- dims:"2 · 5 · 7 · 8, plus 6 as questions",
- prompt:`Stage 2. Write the external, internal and
-regional FAQ banks from the approved press
-release, using references/faq-banks.md. Ask
-the hostile version of every internal
-question, in the voice of the leader who
-would ask it. Tag every answer ANSWERED,
-OPEN or BLOCKER. Every BLOCKER gets a record
-in BLOCKERS.md — category, severity, Ask,
-owner role, Status: OPEN. You never resolve
-one. If the internal bank surfaces nothing
-uncomfortable, rewrite it — it wasn't honest.`,
- gate:"Read BLOCKERS.md before continuing. If a blocker changes what the product IS, go back to Stage 1 now while it's cheap. An internal FAQ with zero BLOCKER tags fails review by definition."},
-{n:3,role:"Demo Narrator",t:"Demo spec",out:"03-demo-spec.md + 03-demo.html (leadership one-pager)",
- ref:"references/demo-spec.md",
- dims:"5 · 7 · 8 — REVISE if the scope boundary is missing",
- prompt:`Stage 3. Read references/demo-spec.md first.
-Describe the experience concretely:
-surfaces, the primary flow step by step, and
-the failure states — what fails, and exactly
-what the user sees. Prose can hide a hole; a
-demo script can't. Include a "what this
-deliberately does not show" section so the
-demo doesn't promise what the requirements
-won't fund.`,
- gate:"The narration test: if you can't narrate it end to end without improvising, you don't understand the product yet. Rules enforced by the reference: silence never renders as success; can't-know ≠ failed; blocked capabilities ship visibly absent."},
-{n:4,role:"Technical Writer",t:"Docs",out:"04-docs.md",
- ref:"references/docs.md",
- dims:"3 · 5 · 7 · 8 — explicit gaps are complete, TBDs are not",
- prompt:`Stage 4. Read references/docs.md first.
-Draft the customer-facing documentation from
-the approved PR and external FAQ: what it
-does, before you start, how to use it,
-failure behaviour, limits, troubleshooting.
-Where a paragraph won't come, do not write
-around it — record it under "could not be
-written yet" with the blocker or question
-behind it. That list is the deliverable.`,
- gate:"Every 'could not be written yet' entry is a product gap with a name on it. Assign each one before the next stage — in both worked examples this section surfaced a question no earlier stage had been forced to answer."},
-{n:5,role:"Instrumentation Planner",t:"Telemetry",out:"05-telemetry.md",
- ref:"references/telemetry.md",
- dims:"2 · 5 · 8 — the stage where honest [UNKNOWN]s meet dimension 2",
- prompt:`Stage 5. Read references/telemetry.md first.
-Define the north star and input metrics
-before requirements exist. Each metric ties
-to a specific press release claim by
-paragraph number. State instrumentation
-points and whether each exists today.
-Baselines you don't have are [UNKNOWN], not
-estimates. Close with the list of PR claims
-that cannot currently be measured — each is
-a decision: instrument it, or cut the claim.`,
- gate:"For each unmeasurable claim: instrument, or cut. Deciding neither is deciding to ship an unverifiable promise. Guard the north star's denominator (include what the system can't see) and its gaming vector (count actions, not memberships)."},
-{n:6,role:"Requirements Engineer",t:"Requirements",out:"06-requirements.md",
- ref:"references/requirements-format.md",
- dims:"1 · 2 · 5 · 7 · 8 — <span class='r'>5 is the one that bites</span>",
- prompt:`Stage 6. Read references/requirements-format.md.
-Write the requirements from everything above.
-Every requirement carries Source: citing a PR
-paragraph or FAQ answer, Given/When/Then
-criteria, out-of-scope, and dependencies.
-Grouped Discovery (D) and Delivery (DP). Any
-requirement whose source chain touches an
-[ASSUMED] claim is flagged RESTS ON
-ASSUMPTION. Anything with no source goes in
-the Flagged section — do not delete it and do
-not source-wash it.`,
- gate:"For each flagged requirement: find its real source, push it upstream into the PR (and re-run the Stage 1 judge), or move it to candidates. Then run verify_sources.py — the machine check, not the model, owns citation integrity."},
-{n:7,role:"Release Planner",t:"Release decomposition",out:"07-release-plan.md + jira-import.csv",
- ref:"references/release-decomposition.md",
- dims:"5 · 8 — reconciliation: every requirement in exactly one slice",
- prompt:`Stage 7. Read references/release-decomposition.md.
-Cut the requirements into vertical slices —
-each independently shippable and testable,
-narrowed by customer scenario, not by layer.
-Per slice: requirements, what ships, the test
-harness, what blocks it. Emit the DAG and the
-edge list. A slice depending on an OPEN
-blocker is NOT SCHEDULABLE, with the owner
-who can unblock it. Then run export_jira.py.`,
- gate:"Commit only to the schedulable slices — a date on a blocked slice is a commitment to a shape nobody agreed. The reconciliation check exists because 'one requirement, two epics' is how double-counted scope enters a tracker unnoticed."},
-{n:8,role:"Readiness Assessor",t:"Readiness",out:"08-readiness.md + report.html",
- ref:"references/readiness.md",
- dims:"2 · 5 · 8 — plus the meta-check: does the verdict follow from the artifact?",
- prompt:`Stage 8. Read references/readiness.md first.
-Write the go/no-go: the CONFIDENCE block
-first, open blockers by severity, assumptions
-that must hold and what breaks if they don't,
-top three reasons this fails (most likely
-first, not most dramatic), and the smallest
-set of answers that would change the
-recommendation. If the honest recommendation
-is "not yet decidable," write that. Then run
-build_report.py.`,
- gate:"Yours entirely. The skill has produced the agenda — questions, owners, assumptions, order — and has no opinion on the decision. A GO scoped over slices that open blockers block fails its own review."}];
+{n:0,role:"Intake Analyst",t:"Intake",io:["what's on your mind, verbatim","00-intake.md — challenge log + tagged evidence ledger"],
+ prompt:`You are the INTAKE ANALYST.
+Your job: turn what is on my mind into a
+tagged evidence ledger — and push back
+until the problem is real.
+
+ASK ME, in order:
+1. What's on my mind (record VERBATIM)
+2. How I first noticed it — the moment
+3. What data I've personally seen
+4. Who exactly — until I could list ten
+5. What would make this NOT worth fixing
+6. What I believe but never checked
+
+PUSH BACK on: solution verbs · "everyone" ·
+untagged numbers · "because" between facts.
+Budget: 6 challenges, counted out loud.
+
+TAG everything: [OBSERVED]/[REPORTED]/
+[ASSUMED]/[UNKNOWN].
+NEVER invent a figure.
+Do NOT write the press release.`,
+ judge:`Three checks, in plain words: is the customer specific enough that you could pull a real list of ten? Does every claim have evidence behind it, tagged? Is anything left blank? It can stop the whole run if the customer is still "everyone."`,
+ gate:`Could you pull an actual list of ten customers with this problem? If not, stop — everything downstream inherits this answer.`,
+ ai:[["Bounded agency","pushback is capped and counted — 6 challenges, then it records and moves on"],["Grounding at the source","every claim gets a provenance tag before anything is generated from it"],["Calibrated abstention","unknown stays [UNKNOWN] — never estimated into existence"]]},
+
+{n:1,role:"Narrative Author",t:"Press release",io:["00-intake.md","01-press-release.md — one page, paragraphs numbered ¶1–¶8"],
+ prompt:`You are the NARRATIVE AUTHOR.
+Your job: write the launch announcement as
+if it already shipped — the ending first.
+
+STRUCTURE (all eight, in order):
+1. Heading a customer would recognise
+2. Subheading: who + benefit, one sentence
+3. Dated summary paragraph
+4. The problem, customer's voice, tagged
+5. The solution — what they see and do
+6. What customers do TODAY + why it fails
+7. Customer quote [illustrative] +
+   spokesperson quote answering "why now?"
+8. Getting started
+
+RULES:
+- Number paragraphs ¶1–¶8 — requirements
+  will cite them by number.
+- No source = [NEEDS EVIDENCE: ...],
+  never an invented figure.
+Do NOT write the FAQs.`,
+ judge:`Checks all six writable things: specific customer · evidence behind claims · names what people use today · cites the intake · plain language · nothing stubbed. On strategy and feasibility it has NO verdict — it writes a question with an owner instead. Then the real test: would a team commit a quarter to this subheading?`,
+ gate:`Which sentence are you least sure of? Say it — it goes in the log. A weak press release dies here, not in a better FAQ.`,
+ ai:[["Anti-hallucination by abstention","a visible [NEEDS EVIDENCE] gap outranks a plausible invented number"],["Structured output","eight fixed sections; numbered paragraphs become citation targets"],["LLM-as-judge, scoped","the judge reviews with pass/fail examples per check — and is barred from ruling on strategy"]]},
+
+{n:2,role:"The Interrogators",t:"FAQs",io:["the approved press release","3 FAQ banks + BLOCKERS.md — every blocker owned, none resolved"],
+ prompt:`You are three INTERROGATORS: a customer,
+a hostile executive, and a regional
+compliance reviewer.
+
+WRITE three banks:
+1. External — what customers will ask
+2. Internal — the HOSTILE versions: not
+   "how do we handle retention" but "what
+   do we show the regulator, and what if
+   we can't?"
+3. Regional — per-market rules, as public
+   categories only
+
+TAG every answer:
+ANSWERED (with source) / OPEN / BLOCKER.
+Every BLOCKER: category · severity · the
+question phrased so its owner can answer
+in five minutes · owner ROLE · Status: OPEN.
+
+NEVER: resolve a blocker yourself · give a
+compliance conclusion · soften a question.
+Zero blockers = the bank wasn't honest.`,
+ judge:`Checks: is every "ANSWERED" actually backed by a source, or is it an OPEN in costume? Does any blocker assert a finding instead of asking a question? And the honesty test: if nothing in the internal bank is uncomfortable, the bank failed.`,
+ gate:`Which blocker do you already suspect the answer to — and are you avoiding asking because of it? Read BLOCKERS.md before moving on.`,
+ ai:[["Adversarial self-questioning","the prompt forces the hostile version — a red-team pass on your own plan"],["Authority routing","legal and finance questions get a named owner, never a generated answer"],["No self-resolution","the model has no code path to close its own blocker — only a human changes Status"]]},
+
+{n:3,role:"Demo Narrator",t:"Demo spec",io:["press release + FAQ answers","03-demo-spec.md + 03-demo.html — the leadership one-pager"],
+ prompt:`You are the DEMO NARRATOR.
+Your job: turn the press release into
+screens that can be narrated end to end
+without improvising.
+
+DESCRIBE:
+1. Each screen that changes — with
+   Source: PR ¶n for each
+2. Primary flow: actor does X → sees Y
+3. Failure states, as a table: what fails /
+   exactly what the user sees / source
+4. "What this deliberately does not show"
+   — the scope boundary, with the blocker
+   that keeps each thing out
+
+RULES:
+- Silence never renders as success.
+- Unavailable ≠ failed. Different labels.
+- A blocked capability ships visibly
+  absent: a disabled control with the
+  honest reason.
+
+OUTPUT: the .md spec + the .html one-pager
+(what · why-now numbers with tags ·
+persona · screens · the ask).`,
+ judge:`Checks: does every screen trace back to a press-release paragraph? Could someone narrate it without improvising? Is the "what this does NOT show" section there? Missing scope boundary = sent back, because demos create commitments nobody made.`,
+ gate:`Narrate it back in three sentences. Wherever you improvised, the spec has a hole.`,
+ ai:[["Fail-visible design","the disabled import button with 'pending privacy review' — roadmap shown, risk not shipped"],["Falsifiability by narration","if you can't tell the story step by step, the design isn't real yet"],["Dual output","machine-readable spec + human-readable page from the same source of truth"]]},
+
+{n:4,role:"Technical Writer",t:"Docs",io:["press release + external FAQ","04-docs.md + 04-docs.html — a real, openable help page"],
+ prompt:`You are the TECHNICAL WRITER, documenting
+a product that does not exist yet.
+That's the point: writing it now exposes
+what nobody can explain yet.
+
+WRITE: what it does · before you start ·
+how to use it · what failure looks like ·
+limits · troubleshooting.
+
+THE RULE THAT MATTERS:
+When a paragraph will not come, DO NOT
+write around it. Put it under "could not
+be written yet" with the blocker behind
+it. That list is the real deliverable.
+
+- [UNKNOWN] in a limits table = complete.
+- "TBD" = someone stopped typing. Fail.
+- Voice: readable aloud on a support call.`,
+ judge:`Checks: are the gaps explicit — named, with owners — rather than TBDs or silent omissions? And is the doc's own length a warning? A twelve-step getting-started section is a product problem wearing a documentation costume.`,
+ gate:`Which section were you tempted to write around? Every "could not be written yet" entry gets an owner before the next stage.`,
+ ai:[["Docs-as-eval","the documentation is a test the product design either passes or fails, before any code"],["Explicit-gap principle","a declared unknown is information; a smooth paragraph over a gap is a defect"]]},
+
+{n:5,role:"Instrumentation Planner",t:"Telemetry",io:["every claim the press release makes","05-telemetry.md — north star, inputs, and the unmeasurable list"],
+ prompt:`You are the INSTRUMENTATION PLANNER.
+Your job: make every press-release claim
+measurable — or force the decision to
+cut it.
+
+DEFINE:
+1. One north star, precise enough that two
+   people would build it identically.
+   - Include the cases the system can't
+     see in the denominator.
+   - Ask: "what's the cheapest way to move
+     this number without creating the
+     value?" Design that out.
+2. Input metrics: each tied to a PR claim,
+   each with a baseline and whether its
+   instrumentation exists today.
+3. The unmeasurable list: every claim with
+   no metric → instrument it, or cut it.
+
+RULES:
+- No baseline = [UNKNOWN]. Never estimate.
+- No target before its baseline exists.`,
+ judge:`Checks: does every metric measure something the press release actually claims? Is every unmeasured claim on the instrument-or-cut list? Is any baseline a plausible-looking invention? An empty-but-explained baseline passes; an empty-and-silent one doesn't.`,
+ gate:`Which metric would you quietly game if your bonus depended on it? (In the demo run, that answer redesigned the north star.)`,
+ ai:[["Goodhart defense","the gate question hunts the gaming vector and bakes the defense into the metric definition"],["Measure-or-cut grounding","claims that can't be measured don't get to stay claims"]]},
+
+{n:6,role:"Requirements Engineer",t:"Requirements",io:["everything above","06-requirements.md — every requirement citing its source paragraph"],
+ prompt:`You are the REQUIREMENTS ENGINEER.
+Only now do requirements exist — and every
+one must cite the paragraph it came from.
+
+PER REQUIREMENT:
+  REQ-D1 · title       (D=discovery,
+                        DP=delivery)
+  Source: PR ¶3 / IFAQ-07  ← mandatory
+  Statement: one testable sentence
+  GIVEN state / WHEN one action /
+  THEN observable outcome
+  Out of scope: what readers will assume
+  Depends on: REQ / BLK ids
+
+FLAG, never hide:
+- chain touches [ASSUMED]
+  → RESTS ON ASSUMPTION
+- open blocker shapes it → SHAPE PENDING
+- NO source → Flagged section. Don't
+  delete it. Don't invent a source.
+
+Then run: verify_sources.py`,
+ judge:`The script already checked every citation resolves — mechanically. The judge checks the harder thing: does the source actually DEMAND this requirement, or merely permit it? And it hunts the requirement everybody wants that nothing upstream asked for. There usually is one.`,
+ gate:`Which requirement do you want most — and does its source demand it, or merely permit it? Which flagged item are you hoping nobody notices?`,
+ ai:[["Claim-level data lineage","an [ASSUMED] tag from intake surfaces here, four stages later — it cannot be laundered"],["Generate → verify split","the model proposes citations; a script checks them; the model never grades its own references"],["Scope-creep firewall","'a requirement with no source' is the definition — and it's enforceable"]]},
+
+{n:7,role:"Release Planner",t:"Release plan",io:["the requirement set","07-release-plan.md + jira-import.csv"],
+ prompt:`You are the RELEASE PLANNER.
+Cut the requirements into slices that
+ship alone and prove something alone.
+
+RULES:
+- Slice by narrowing the customer scenario
+  — one integration, one market, detect-
+  before-act. NEVER by layer: schema/API/UI
+  ships nothing until everything ships.
+- Every requirement in exactly ONE slice.
+  Orphans declared, never dropped.
+- A slice on an OPEN blocker is NOT
+  SCHEDULABLE — name the owner and the
+  exact meeting that unblocks it. No dates
+  on blocked slices.
+- Emit the dependency DAG + edge list.
+  It must be acyclic.
+
+Then run: export_jira.py`,
+ judge:`Checks: every requirement in exactly one slice (a double-placed one becomes double-counted scope in the tracker)? Loop-free dependency graph? Any "slice" that's secretly a layer? Any blocked slice quietly carrying a date?`,
+ gate:`If you could only ship the first slice, is it still worth doing? If not, the cut is wrong.`,
+ ai:[["Graph invariants","acyclicity and 1:1 coverage are checked as math, not vibes"],["Schema-constrained export","the CSV comes from a script — the tracker import can't be creatively formatted"]]},
+
+{n:8,role:"Readiness Assessor",t:"Readiness",io:["the whole session","08-readiness.md + report.html"],
+ prompt:`You are the READINESS ASSESSOR.
+Give the sponsor a page they can decide
+from — starting with what this session
+does NOT know.
+
+WRITE, in order:
+1. The confidence block: claims by tag,
+   flagged requirements, slices blocked
+   vs ready, open questions and blockers
+2. Recommendation: GO / GO WITH
+   CONDITIONS / NO-GO / NOT YET DECIDABLE
+   — scoped to what is actually unblocked
+3. Blockers by severity, with owners
+4. Assumptions that must hold + what
+   breaks if each is false
+5. Top 3 reasons this fails — MOST LIKELY
+   first, not most dramatic
+6. The smallest set of answers that would
+   change the recommendation ("one
+   meeting, one memo, one calculation")
+
+NEVER: close a blocker · add a new
+assumption · manufacture a verdict out
+of open questions.`,
+ judge:`One check above all: does the recommendation follow from the artifact, or from optimism? Any slice inside the GO that an open high-severity blocker blocks = fail. Is the failure list ranked by likelihood, or by drama?`,
+ gate:`Yours entirely. If this fails, which of the top three will it have been — and what did you do about it today?`,
+ ai:[["Uncertainty surfacing","the confidence block leads — the sponsor sees the epistemic state before the verdict"],["Abstention as a verdict","NOT YET DECIDABLE is a legitimate answer, by design"],["Human-in-the-loop by construction","the final gate takes no input from the model at all"]]}];
+
 const PUSH={
 0:`<ul>
 <li>Your problem statement contains build/add/need verbs — a solution wearing a problem costume.<span class="say">"That's the fix. What did you observe before you concluded it?"</span></li>
@@ -501,77 +625,57 @@ const PUSH={
 </ul><span class="budget">BUDGET: 6 challenges, counted out loud — "challenge 3 of 6." At the limit: recorded, owned by you, proceed.</span>`,
 1:`<ul>
 <li>A figure appears that intake never established.<span class="say">"I don't invent numbers. Writing [NEEDS EVIDENCE: …] and continuing."</span></li>
-<li>The solution paragraph could have been written before the problem paragraph.<span class="say">"This is skills-forward. What does the customer need that forced this shape?"</span></li>
-<li>The spokesperson quote restates the subheading.<span class="say">"Its one job is the why-now. Why this quarter and not next year?"</span></li>
-</ul><span class="budget">BUDGET: 2 at the gate. The judge handles the artifact; these challenge your thinking.</span>`,
+<li>The solution paragraph could have been written before the problem paragraph.<span class="say">"This starts from what we can build. What does the customer need that forced this shape?"</span></li>
+<li>The spokesperson quote just restates the subheading.<span class="say">"Its one job is the why-now. Why this quarter and not next year?"</span></li>
+</ul><span class="budget">BUDGET: 2 at the gate. The judge handles the document; these challenge your thinking.</span>`,
 2:`<ul>
-<li>An internal question is polite.<span class="say">"That's the version that gets a polite answer. The hostile version is: what happens at 3am when this fails and who gets sued?"</span></li>
+<li>An internal question is polite.<span class="say">"That version gets a polite answer. The hostile version: what happens at 3am when this fails, and who gets sued?"</span></li>
 <li>Zero BLOCKER tags after the internal bank.<span class="say">"Every real initiative has something uncomfortable. Rewriting with the hostile versions."</span></li>
-<li>An ANSWERED tag with no provenance inside it.<span class="say">"That's OPEN in costume — answered by whom, based on what?"</span></li>
-</ul><span class="budget">BUDGET: 2. Blockers themselves are never softened — they're questions with owners, not negotiable findings.</span>`,
+<li>An ANSWERED tag with no source inside it.<span class="say">"That's OPEN in costume — answered by whom, based on what?"</span></li>
+</ul><span class="budget">BUDGET: 2. Blockers themselves are never softened — they're questions with owners.</span>`,
 3:`<ul>
 <li>You can't narrate a step without improvising.<span class="say">"Where I improvised is a hole in the spec. Writing it down as the finding."</span></li>
-<li>A failure state renders the same as an outage.<span class="say">"If can't-know looks like failed, users learn to ignore the signal in a month."</span></li>
-<li>No scope boundary section.<span class="say">"The first viewer will assume remediation is included. Saying out loud that it isn't, and why."</span></li>
-</ul><span class="budget">BUDGET: 2. Plus the rule that needs no budget: silence never renders as success.</span>`,
+<li>A failure state looks identical to an outage.<span class="say">"If can't-know looks like failed, users learn to ignore the signal in a month."</span></li>
+<li>No scope boundary section.<span class="say">"The first viewer will assume the missing thing is included. Saying out loud that it isn't, and why."</span></li>
+</ul><span class="budget">BUDGET: 2. Plus one rule that needs no budget: silence never renders as success.</span>`,
 4:`<ul>
 <li>A paragraph won't come and you try to write around it.<span class="say">"A stalled paragraph is a product gap. It goes under 'could not be written yet' with its blocker."</span></li>
 <li>"TBD" appears.<span class="say">"[UNKNOWN] is a complete answer. TBD records that someone stopped typing."</span></li>
 </ul><span class="budget">BUDGET: 2.</span>`,
 5:`<ul>
-<li>You offer an estimated baseline.<span class="say">"A baseline you don't have is [UNKNOWN], not an estimate — is it missing, or unobtainable before instrumentation exists?"</span></li>
-<li>A PR claim has no metric and no entry in the unmeasurable list.<span class="say">"Instrument it, or cut the claim. Deciding neither ships an unverifiable promise."</span></li>
-<li>The north star is gameable.<span class="say">"What's the cheapest way to move this number without creating the value? That goes in the definition."</span></li>
+<li>You offer an estimated baseline.<span class="say">"A baseline you don't have is [UNKNOWN] — is it missing, or unobtainable before instrumentation exists? Those are different sentences."</span></li>
+<li>A claim has no metric and no entry in the unmeasurable list.<span class="say">"Instrument it, or cut it. Choosing neither ships an unverifiable promise."</span></li>
+<li>The north star can be gamed.<span class="say">"What's the cheapest way to move this number without creating the value? That goes in the definition."</span></li>
 </ul><span class="budget">BUDGET: 2.</span>`,
 6:`<ul>
-<li>A requirement cites nothing.<span class="say">"Not customer-derived. Flagged — find its source, push it upstream into the PR, or move it to candidates. Not deleted, not source-washed."</span></li>
-<li>A requirement's chain touches [ASSUMED] without a flag.<span class="say">"Citation without provenance documents the chain of custody on a guess. Flagging RESTS ON ASSUMPTION."</span></li>
-</ul><span class="budget">BUDGET: 2. Citation existence isn't judged at all — verify_sources.py checks it mechanically.</span>`,
+<li>A requirement cites nothing.<span class="say">"Not customer-derived. Flagged — source it, push it upstream, or move it to candidates. Never deleted, never source-washed."</span></li>
+<li>A requirement's chain touches [ASSUMED] without a flag.<span class="say">"A citation without provenance documents the chain of custody on a guess. Flagging RESTS ON ASSUMPTION."</span></li>
+</ul><span class="budget">BUDGET: 2. Citation existence isn't debated at all — verify_sources.py checks it mechanically.</span>`,
 7:`<ul>
 <li>Slices are layers (schema → API → UI).<span class="say">"Nothing ships until everything ships. Narrow the customer scenario instead."</span></li>
-<li>A requirement lands in two slices.<span class="say">"Then one of them isn't independently shippable — that's how double-counted scope enters a tracker."</span></li>
-<li>You put a date on a blocked slice.<span class="say">"That's a commitment to a shape nobody has agreed. It's NOT SCHEDULABLE, with the owner who unblocks it."</span></li>
+<li>A requirement lands in two slices.<span class="say">"Then one of them isn't independently shippable — and the tracker counts the work twice."</span></li>
+<li>You put a date on a blocked slice.<span class="say">"That commits to a shape nobody has agreed. NOT SCHEDULABLE, with the owner who unblocks it."</span></li>
 </ul><span class="budget">BUDGET: 2.</span>`,
 8:`<ul>
 <li>The GO covers slices that open blockers block.<span class="say">"That silently answers questions that belong to counsel. Scoping the GO to what's actually unblocked."</span></li>
-<li>The failure list is ranked by drama.<span class="say">"Most likely first. The honest #1 is usually boring — an ownership dispute, not a catastrophe."</span></li>
-<li>A new assumption appears here for the first time.<span class="say">"Assumptions enter at intake, tagged. One surfacing at readiness means a stage upstream let it through untagged."</span></li>
+<li>The failure list is ranked by drama.<span class="say">"Most likely first. The honest #1 is usually boring — a meeting that never happens, not a catastrophe."</span></li>
+<li>A brand-new assumption appears here.<span class="say">"Assumptions enter at intake, tagged. One surfacing now means a stage upstream let it through untagged."</span></li>
 </ul><span class="budget">BUDGET: 2 — and the final decision is yours, unchallenged.</span>`};
-const GATEQ={
-0:"Is the customer a list-of-ten yet?",
-1:"Which sentence are you least sure of? · Would a team reorganise a quarter around the subheading — honestly?",
-2:"Which blocker do you already suspect the answer to — and are you avoiding asking? · Whose voice is missing from the internal bank?",
-3:"Narrate the demo back in three sentences — where did you improvise? · What will viewers assume this includes that it doesn't?",
-4:"Which section were you tempted to write around? · Is getting-started short because it's simple, or incomplete?",
-5:"Which metric would you quietly game if your bonus depended on it? · Which PR claim ships unmeasured, and why is that acceptable?",
-6:"Which requirement do you want most — does its source demand it, or merely permit it? · Which flagged item are you hoping nobody notices?",
-7:"If you could only ship R1, is it still worth doing? · Which blocked slice are you already mentally committing a date to?",
-8:"If this fails, which of the top three will it have been — and what did you do about it today? · Who reads this, and what will they challenge first?"};
-const AICON={
-0:["bounded agency (challenge budget)","grounding tags at source","calibrated abstention"],
-1:["anti-hallucination: abstain > invent","structured output (8-part template)","few-shot anchored judging"],
-2:["adversarial self-questioning","authority routing (owner roles)","no self-resolution"],
-3:["falsifiability by narration","fail-visible design","structured artifact + rendered view"],
-4:["docs-as-eval (complexity meter)","explicit-gap > silent omission"],
-5:["Goodhart defense in metric design","measure-or-cut grounding","[UNKNOWN] ≠ estimate"],
-6:["claim-level lineage (provenance propagation)","citation-required generation","deterministic verification (code, not model)"],
-7:["graph invariants (acyclic, 1:1 coverage)","schema-constrained export via script"],
-8:["uncertainty surfacing (CONFIDENCE)","abstention verdict (NOT YET DECIDABLE)","human-in-the-loop by construction"]};
-AGENTS.forEach(a=>a.gateq=GATEQ[a.n]);
+
 document.getElementById("agents").innerHTML=AGENTS.map(a=>`
 <div class="agent">
  <div class="agent-head"><div><span class="role">Agent ${a.n} · ${a.role}</span><h3>${a.t}</h3></div>
- <span class="out">→ ${a.out}</span></div>
+ <span class="out">→ ${a.io[1].split(" — ")[0]}</span></div>
+ <div class="agent-io"><span class="iochip"><b>IN ▸</b> ${a.io[0]}</span><span class="iochip"><b>OUT ▸</b> ${a.io[1]}</span></div>
  <div class="agent-body">
-  <div><h4>The author prompt</h4><pre class="promptbox">${a.prompt}</pre>
-   <p class="note" style="margin-top:.7rem">Behavior spec: <code>${a.ref}</code></p></div>
+  <div><h4>The prompt</h4><pre class="promptbox">${a.prompt}</pre>
+   <p class="note" style="margin-top:.7rem">Full version: <code>references/stage-prompts.md</code></p></div>
   <div><h4>When it pushes back</h4><div class="push">${PUSH[a.n]}</div></div>
-  <div><h4>The judge, then the gate</h4>
-   <div class="dims">Dimensions applied: ${a.dims}</div>
-   <p class="gate">${a.gate}</p>
-   <p class="gate" style="margin-top:.6rem"><b>GATE QUESTIONS</b><br>${a.gateq||""}</p></div>
+  <div><h4>The judge, then your gate</h4>
+   <p class="gate">${a.judge}</p>
+   <p class="gate" style="margin-top:.7rem"><b>YOUR GATE</b><br>${a.gate}</p></div>
+  <div><h4>The AI concept, applied</h4>${a.ai.map(c=>`<div class="cpt"><b>${c[0]}</b><span>${c[1]}</span></div>`).join("")}</div>
  </div>
- <div class="agent-ai"><span class="lbl">AI CONCEPTS</span>${(AICON[a.n]||[]).map(c=>`<span class="aichip">${c}</span>`).join("")}</div>
 </div>`).join("");
 </script>
 </body>
