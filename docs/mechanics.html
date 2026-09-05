@@ -48,17 +48,20 @@ display:block;margin-bottom:.35rem;color:var(--ink-2)}
 .step.judge{background:var(--paper-2)}.step.judge .t{color:var(--accent-ink)}
 
 /* agent stepper */
-.stepbar{display:flex;align-items:center;justify-content:center;gap:1rem;margin:1.4rem 0 .9rem}
-.stepbar button{width:2.5rem;height:2.5rem;border:1px solid var(--rule);background:var(--paper);
-cursor:pointer;font-size:1rem;color:var(--ink);border-radius:50%}
-.stepbar button:hover:not(:disabled){background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.stepbar button:disabled{opacity:.25;cursor:default}
-.stepbar .pos{font-family:var(--mono);font-size:.76rem;color:var(--ink-2);letter-spacing:.05em;
-min-width:17rem;text-align:center}
-.dots{display:flex;gap:.35rem;justify-content:center;margin-bottom:1rem}
-.dot{width:.5rem;height:.5rem;border-radius:50%;background:var(--paper-3);border:1px solid var(--rule);
-cursor:pointer;padding:0}
-.dot[aria-current="true"]{background:var(--accent);border-color:var(--accent)}
+.arail{display:flex;align-items:center;justify-content:center;gap:.45rem;flex-wrap:wrap;
+margin:1.4rem 0 1rem}
+.anav{width:2.1rem;height:2.1rem;border:1px solid var(--rule);background:var(--paper);cursor:pointer;
+font-size:.95rem;color:var(--ink);border-radius:50%;flex:none}
+.anav:hover:not(:disabled){background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.anav:disabled{opacity:.25;cursor:default}
+#achips{display:flex;gap:.3rem;flex-wrap:wrap;justify-content:center}
+.achip{font-family:var(--mono);font-size:.64rem;padding:.4rem .7rem;border:1px solid var(--rule);
+border-radius:999px;background:var(--paper);cursor:pointer;color:var(--ink-2);white-space:nowrap;
+transition:background .15s,color .15s}
+.achip b{font-weight:600;margin-right:.3rem;color:var(--ink-3)}
+.achip:hover{border-color:var(--ink-3)}
+.achip[aria-current="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.achip[aria-current="true"] b{color:var(--accent-ink)}
 .acard{border:1px solid var(--rule);background:var(--paper-2);border-radius:8px;overflow:hidden}
 .acard.enter{animation:fadein .3s ease}
 @keyframes fadein{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
@@ -153,8 +156,7 @@ section{padding:2.2rem 0}}
       with "do not continue."</p></div>
     <div class="step"><span class="t">2 · Author writes</span><p>Reference file as behavior spec,
       template as shape, provenance tags carried.</p></div>
-    <div class="step judge"><span class="t">3 · LLM as judge</span><p>Separate pass. Six checks get
-      verdicts; strategy and feasibility only ever get routed questions.</p></div>
+    <div class="step judge"><span class="t">3 · LLM as judge</span><p>Six checks get verdicts; strategy and feasibility only ever get routed questions.</p></div>
     <div class="step"><span class="t">4 · You gate</span><p>Accept, send back, or override — logged,
       never argued. Then the next stage unlocks.</p></div>
   </div>
@@ -164,12 +166,11 @@ section{padding:2.2rem 0}}
   <h2>The agents.</h2>
   <p class="lede">Each card: what goes in and out, the exact prompt, and three tabs — when it pushes
   back on you, what the judge checks, and the AI concept it demonstrates. Arrow keys work.</p>
-  <div class="stepbar">
-    <button id="aprev" aria-label="previous">‹</button>
-    <span class="pos" id="apos"></span>
-    <button id="anext" aria-label="next">›</button>
+  <div class="arail" id="arail">
+    <button class="anav" id="aprev" aria-label="previous">‹</button>
+    <span id="achips"></span>
+    <button class="anav" id="anext" aria-label="next">›</button>
   </div>
-  <div class="dots" id="adots"></div>
   <div class="acard" id="acard"></div>
 </div></section>
 
@@ -588,80 +589,102 @@ line on what a real document would add.`,
  why:`"Bring your own context" fails the majority who have context but no documents. Ten minutes of questions turns tier 0 into a citable tier 1 — honestly labelled.`}];
 
 const JPROMPT={
-"0":`Review 00-intake.md. Three checks: is the
-customer specific enough to list ten of?
-is there evidence behind the claims,
-tagged? is anything left blank that
-shouldn't be? Name the claim doing the
-most work with the least provenance —
-that one propagates. Is this a problem,
-or a solution wearing a problem costume?`,
-"1":`Review against all eight checks. For the
-six structural ones — specific customer,
-evidence present, alternative named,
-cites upstream, plain language, nothing
-stubbed — return PASS or REVISE with the
-exact sentence to change. For strategy
-and feasibility you have no verdict:
-write a question with an owner role
-instead. Then the test: would a team
-commit a quarter to this subheading?`,
-"2":`Check: is every ANSWERED actually
-sourced, or is it OPEN in costume? Does
-any blocker assert a finding instead of
-asking a question? Count blockers with
-no owner role. If nothing here is
-uncomfortable, say so — that is a
-failure of the bank, not a compliment.`,
-"3":`Check: does every screen trace to a
-press-release paragraph or FAQ answer?
-Could someone narrate this demo without
-improvising? Is the "what this does not
-show" section present? A missing scope
-boundary sends it back — demos create
-commitments nobody made.`,
-"4":`Check: is the doc honest about what it
-can't explain yet — explicit gaps with
-owners, not TBDs or silent omissions?
-Is the length itself a warning (a
-12-step getting-started is a product
-problem, not a writing problem)?`,
-"5":`Check: does any metric measure nothing
-the PR claims? Does any PR claim have no
-metric AND no entry in the unmeasurable
-list? Is any baseline a plausible-looking
-invention? Empty-but-explained baselines
-pass; empty-and-silent ones don't.`,
-"6":`The script already checked every citation
-resolves — mechanically. Your job is the
-harder thing: does the source actually
-DEMAND the requirement, or merely permit
-it? Find the requirement everybody wants
-that nothing upstream asks for. There
-usually is one.`,
-"7":`Reconcile: every requirement in exactly
-one slice? DAG acyclic? Is any "slice"
-actually a layer? Is any blocked slice
-carrying a date? The double-placed
-requirement is how scope gets counted
-twice in a tracker — look for it
-specifically.`,
-"8":`One question above all: does the
-recommendation follow from the artifact,
-or from optimism? Cross-check the GO
-scope against the blocker table — any
-covered slice that a HIGH blocker blocks
-is a fail. Is the failure list ranked by
-likelihood or by drama?`};
+"0":`CHECK, in order:
+1. Customer — specific enough to list
+   ten real people? "Everyone" fails.
+2. Evidence — a tagged source behind
+   every claim?
+3. Completeness — anything left blank?
+
+THEN:
+4. Name the claim doing the most work
+   with the least provenance.
+5. Ask: is this a problem, or a solution
+   wearing a problem costume?`,
+"1":`CHECK, in order:
+1. Customer — specific, not "everyone"
+2. Evidence — every claim tagged
+3. Alternative — what people do today,
+   and why it falls short
+4. Citations — does it cite the intake?
+5. Language — readable aloud in a room
+6. Completeness — no TBDs, no stubs
+→ PASS or REVISE, with the exact
+  sentence to change.
+
+NEVER RULE ON:
+7. Strategy  8. Feasibility
+→ write a question + an owner instead.
+
+FINAL TEST:
+Would a team commit a quarter to this
+subheading?`,
+"2":`CHECK, in order:
+1. Every ANSWERED has a source —
+   or it's OPEN in costume.
+2. Every blocker ASKS — it never
+   asserts a finding.
+3. Every blocker has an owner role.
+4. Honesty: if nothing here is
+   uncomfortable, the bank failed.`,
+"3":`CHECK, in order:
+1. Every screen cites a press-release
+   paragraph or FAQ answer.
+2. The demo can be narrated end to end
+   without improvising.
+3. The "what this does NOT show"
+   section exists.
+→ Missing scope boundary = sent back.
+  Demos create commitments nobody made.`,
+"4":`CHECK, in order:
+1. Gaps are explicit — named, owned —
+   not TBDs or silent omissions.
+2. The length itself: a 12-step
+   getting-started is a product
+   problem, not a writing problem.`,
+"5":`CHECK, in order:
+1. Every metric measures something the
+   press release actually claims.
+2. Every unmeasured claim is on the
+   instrument-or-cut list.
+3. No baseline is a plausible-looking
+   invention.
+→ Empty-but-explained passes.
+  Empty-and-silent fails.`,
+"6":`(Citations already machine-checked
+ by verify_sources.py.)
+
+CHECK, in order:
+1. Does each source DEMAND its
+   requirement — or merely permit it?
+2. Every [ASSUMED] chain is flagged.
+3. Find the requirement everybody
+   wants that nothing upstream asks
+   for. There usually is one.`,
+"7":`CHECK, in order:
+1. Every requirement in exactly ONE
+   slice — a double-placed one gets
+   counted twice in the tracker.
+2. Dependency graph is loop-free.
+3. No "slice" is secretly a layer.
+4. No blocked slice carries a date.`,
+"8":`CHECK, in order:
+1. Does the recommendation follow from
+   the artifact — or from optimism?
+2. GO scope vs blocker table: any
+   covered slice a HIGH blocker blocks
+   = fail.
+3. Failure list ranked by likelihood,
+   not drama.`};
 let ai_=0, tab_=0;
-const dots=$("#adots");
-AGENTS.forEach((a,i)=>{const d=document.createElement("button");d.className="dot";
- d.onclick=()=>{ai_=i;tab_=0;draw(true)};dots.appendChild(d)});
+const chips=$("#achips");
+AGENTS.forEach((a,i)=>{const c=document.createElement("button");c.className="achip";
+ c.innerHTML=`<b>${a.n}</b>${a.t}`;
+ c.onclick=()=>{ai_=i;tab_=0;draw(true)};chips.appendChild(c)});
 function draw(anim){
   const a=AGENTS[ai_];
-  $("#apos").textContent=`Agent ${ai_+1} of ${AGENTS.length} · ${a.role} — ${a.t}`;
   $("#aprev").disabled=ai_===0; $("#anext").disabled=ai_===AGENTS.length-1;
-  $$("#adots .dot").forEach((d,i)=>d.setAttribute("aria-current",i===ai_));
+  $$("#achips .achip").forEach((c,i)=>c.setAttribute("aria-current",i===ai_));
   const jp=JPROMPT[a.n];
   const judgeTab=(jp?`<h4 style="margin:0 0 .4rem">The judge's prompt — what it is told to check</h4><pre class="promptbox" style="max-height:13rem;margin-bottom:.9rem">${jp}</pre>`:"")
     +`<h4 style="margin:0 0 .3rem">In plain words</h4><p class="tabpane" style="margin:0">${a.judge}</p>`;

@@ -341,15 +341,8 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 -->
 
 <header class="hero wrap">
-  <div class="repobar reveal" style="--d:0">
-    <span class="repobar-path">working-backwards / <b>press-release.md</b></span>
-    <span class="repobar-pill">PASS · merge unblocked</span>
-  </div>
   <h1 class="reveal" style="--d:1">Working Backwards that <em>doesn't stop</em> at the press release.</h1>
   <div class="diffblock reveal" style="--d:2">
-    <p class="diffline"><span class="gutter">+</span><span class="linetext">Amazon's PR/FAQ decides <i>whether</i> to build. It ends there by design — and that
-    handoff is where the method dies: the narrative gets admired, then someone opens a blank ticket and
-    starts from zero.</span></p>
     <p class="diffline"><span class="gutter">+</span><span class="linetext">This runs all nine stages — press release, FAQs, demo, docs, telemetry, requirements,
     release plan, readiness — with an LLM judge gating each one. Every requirement cites the paragraph
     it came from, because a requirement that can't cite anything is a fairly precise definition of scope
@@ -370,20 +363,15 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
   <h2>Prompt → artifact → judge → you. Repeat nine times.</h2>
   <div class="steps">
     <div class="step"><span class="num">1</span><span class="t">You prompt the stage</span>
-      <p>One stage at a time — never "do everything." The prompt names the stage, the rules, and ends
-      with <i>do not continue</i>. Ready-made prompts for all nine ship in the skill.</p></div>
+      <p>One stage at a time. Every prompt ends with <i>do not continue</i>.</p></div>
     <div class="step"><span class="num">2</span><span class="t">The agent writes the artifact</span>
-      <p>The skill produces that stage's document and writes it to disk. Every claim carries a
-      provenance tag, and it never invents a figure — gaps stay visible as
-      <code>[NEEDS&nbsp;EVIDENCE]</code>.</p></div>
+      <p>The artifact, written to disk — every claim tagged, no invented figures.</p></div>
     <div class="step judge"><span class="num">3</span><span class="t">LLM as judge</span>
-      <p>A separate review pass scores the artifact against 8 fixed dimensions. Six get real verdicts —
-      <span class="stampword pass">PASS</span> / <span class="stampword revise">REVISE</span> /
-      <span class="stampword block">BLOCK</span>. Two (strategic fit, feasibility) only ever produce
-      <i>questions routed to a named human</i>: the judge is barred from ruling on what it can't know.</p></div>
+      <p>Six checks get verdicts — <span class="stampword pass">PASS</span> /
+      <span class="stampword revise">REVISE</span> / <span class="stampword block">BLOCK</span>.
+      Strategy and feasibility only ever get questions routed to a named human.</p></div>
     <div class="step"><span class="num">4</span><span class="t">You gate</span>
-      <p>Accept, send back, or override. Overrides are logged with your written reasoning in
-      <code>DECISIONS.md</code> — recorded, never argued. Only then does the next stage unlock.</p></div>
+      <p>Accept, send back, or override — logged, never argued. Then the next stage unlocks.</p></div>
   </div>
   <p class="note" style="margin-top:.9rem">Below: a real run. The full machinery is on
   <a href="mechanics.html">the mechanics page</a>; every session also compiles to an
