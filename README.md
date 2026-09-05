@@ -208,7 +208,7 @@ data" is a PASS in a REVISE costume) and drifting substantive. In the worked exa
 returns REVISE three times and fires on the one requirement everybody wanted.
 
 Honest limitation, now with a harness: **the critic is a prompt, and a prompt is consistent, not
-calibrated — so we measure it.** [`evals/`](evals/) holds a 14-case golden set (a pass and a fail per
+calibrated — so we measure it.** the **[evals dashboard](https://siddarthnyati.github.io/working-backwards/evals.html)** shows the committed baseline (11/14, both adversarial cases held), and [`evals/`](evals/) holds the 14-case golden set (a pass and a fail per
 structural dimension, plus a prompt-injection case and an epistemic-firewall case where a "helpful"
 strategic verdict fails the eval) and a runner that scores judge agreement against the labels —
 regression tests for the rubric. What remains unmeasured is outcome-level quality on novel
