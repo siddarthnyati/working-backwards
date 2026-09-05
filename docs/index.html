@@ -32,8 +32,8 @@ p{margin:0 0 1rem}
 a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:.18em}
 a:hover{color:var(--accent)}
 code{font-family:var(--mono);font-size:.82em}
-section{padding:4rem 0;border-top:1px solid var(--rule)}
-.lede{font-size:1.1rem;color:var(--ink-2);max-width:44rem}
+section{padding:2.7rem 0;border-top:1px solid var(--rule)}
+.lede{font-size:.98rem;color:var(--ink-2);max-width:42rem}
 .note{font-size:.85rem;color:var(--ink-3);line-height:1.55;max-width:46rem}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
@@ -131,16 +131,20 @@ html{scrollbar-color:var(--ink-3) var(--paper-2);scrollbar-width:thin}
   justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap}
 .car-head .why{font-style:italic;color:var(--ink-2);font-size:.98rem}
 .car-head .stg{font-family:var(--mono);font-size:.72rem;color:var(--ink-3);letter-spacing:.08em}
-.car-pane{display:grid;grid-template-columns:15.5rem minmax(0,1fr) 16.5rem}
+.car-pane{display:grid;grid-template-columns:minmax(0,1fr) 19rem}
 .car-pane.enter{animation:slidein .32s ease}
 @supports (view-transition-name:none){
   #car-pane{view-transition-name:car-pane}
   ::view-transition-old(car-pane),::view-transition-new(car-pane){animation-duration:.3s}
 }
 @keyframes slidein{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
-.col-prompt{padding:1.2rem;border-right:1px solid var(--rule);background:var(--paper-2)}
 .col-art{padding:1.3rem 1.4rem;min-width:0;overflow-x:auto}
-.col-critic{padding:1.2rem;border-left:1px solid var(--rule);background:var(--paper-2)}
+.col-side{padding:1.2rem;border-left:1px solid var(--rule);background:var(--paper-2)}
+.sidetabs{display:flex;border:1px solid var(--rule);border-radius:5px;overflow:hidden;width:max-content;max-width:100%}
+.sidetabs button{font-family:var(--mono);font-size:.68rem;padding:.42rem .75rem;background:var(--paper);
+border:0;border-right:1px solid var(--rule);cursor:pointer;color:var(--ink-3)}
+.sidetabs button:last-child{border-right:0}
+.sidetabs button[aria-pressed=true]{background:var(--ink);color:var(--paper)}
 .promptbox{font-family:var(--mono);font-size:.72rem;line-height:1.65;color:var(--ink-2);
   white-space:pre-wrap;border-left:2px solid var(--ink-3);padding-left:.75rem;margin-top:.8rem}
 .dim{display:flex;gap:.5rem;align-items:baseline;font-size:.85rem;margin-bottom:.28rem;
@@ -310,8 +314,7 @@ footer a{color:var(--ink-2)}
   .steps{grid-template-columns:1fr 1fr}
   .step:not(:last-child)::after{content:""}
   .car-pane{grid-template-columns:1fr}
-  .col-prompt{border-right:0;border-bottom:1px solid var(--rule)}
-  .col-critic{border-left:0;border-top:1px solid var(--rule)}
+  .col-side{border-left:0;border-top:1px solid var(--rule)}
   .trace2,.builder,.mock-grid{grid-template-columns:1fr}
   .slots{border-right:0;border-bottom:1px solid var(--rule)}
   section{padding:3.2rem 0}
@@ -375,21 +378,16 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <p>Accept, send back, or override. Overrides are logged with your written reasoning in
       <code>DECISIONS.md</code> — recorded, never argued. Only then does the next stage unlock.</p></div>
   </div>
-  <p class="note" style="margin-top:1rem">That's the whole system. Below: a real run — the actual
-  prompt, the artifact it produced, the judge's verdict, and the complete document, at every stage.
-  The full machinery — all nine agents, their prompts, the judge's rubric, the elicitation interview,
-  the deterministic scripts — is on its own page: <a href="mechanics.html">the mechanics</a>. And a
-  session's output isn't just markdown: every run compiles to an interactive report —
-  <a href="reports/surprise-charge.html">open this run's report.html</a>.</p>
+  <p class="note" style="margin-top:.9rem">Below: a real run. The full machinery is on
+  <a href="mechanics.html">the mechanics page</a>; every session also compiles to an
+  <a href="reports/surprise-charge.html">interactive report</a>.</p>
 </div></section>
 
 <!-- §2 walkthrough -->
 <section id="walk"><div class="wrap">
   <h2>The Surprise Charge: you forget the free trial ends, you get billed, you're furious.</h2>
-  <p class="lede">A fictional subscription app, and a problem everyone has personally had. The PM
-  arrives saying <i>"we need reminder emails"</i> — and the first thing the skill does is push back.
-  Step through with the arrows: each stage shows the prompt, what got produced, where the skill
-  pushed back on the user, and the judge's verdict — with the complete artifact loading underneath.</p>
+  <p class="lede">A fictional subscription app, a problem everyone has had. The PM arrives saying
+  <i>"we need reminder emails"</i> — and the first thing the skill does is push back. Arrow keys work.</p>
 
   <div class="modes" role="group" aria-label="Run mode">
     <button data-mode="full" aria-pressed="true">Full · 4–8 hrs</button>
@@ -405,15 +403,23 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
       <div class="why" id="car-why"></div>
     </div>
     <div class="car-pane" id="car-pane">
-      <div class="col-prompt"><h4 class="h">The prompt</h4><div class="promptbox" id="c-prompt"></div>
-        <p class="note" style="margin-top:1rem">All nine stage prompts ship in the skill:
-        <a href="https://github.com/siddarthnyati/working-backwards/blob/main/plugins/working-backwards/skills/working-backwards/references/stage-prompts.md"><code>stage-prompts.md</code></a></p></div>
       <div class="col-art"><h4 class="h">What it produced</h4><div id="c-art" style="margin-top:.8rem"></div></div>
-      <div class="col-critic"><h4 class="h">LLM as judge</h4><div id="c-critic" style="margin-top:.8rem"></div></div>
+      <div class="col-side">
+        <div class="sidetabs" role="tablist">
+          <button data-st="judge" aria-pressed="true">LLM as judge</button>
+          <button data-st="prompt" aria-pressed="false">The prompt</button>
+        </div>
+        <div class="st-pane" id="st-judge"><div id="c-critic" style="margin-top:.8rem"></div></div>
+        <div class="st-pane" id="st-prompt" hidden><div class="promptbox" id="c-prompt" style="margin-top:.8rem"></div>
+          <p class="note" style="margin-top:.9rem">All nine stage prompts ship in the skill:
+          <a href="https://github.com/siddarthnyati/working-backwards/blob/main/plugins/working-backwards/skills/working-backwards/references/stage-prompts.md"><code>stage-prompts.md</code></a></p></div>
+      </div>
     </div>
     <div class="fulldoc">
-      <div class="fulldoc-bar"><h4>The complete artifact — and the model's pushback</h4><div id="ftabs" style="display:flex;gap:.4rem;flex-wrap:wrap"></div></div>
-      <div id="fdoc"></div>
+      <div class="fulldoc-bar"><h4>The complete artifact — and the model's pushback</h4>
+        <button class="ftab" id="fd-toggle" aria-expanded="false">show ⌄</button>
+        <div id="ftabs" style="display:none;gap:.4rem;flex-wrap:wrap"></div></div>
+      <div id="fdoc" hidden></div>
     </div>
     <div class="car-nav">
       <button id="nav-prev">← <span id="nav-prev-t"></span></button>
@@ -426,24 +432,20 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 <!-- §3 blockers -->
 <section id="blockers"><div class="wrap">
   <h2>Five blockers, before a single requirement existed.</h2>
-  <p class="lede">The pipeline's payback moment. At Stage 2 — before requirements, before design —
-  the hostile-question banks surfaced six things that reshape the plan. Each is a <i>question with an
-  owner</i>, never a finding: the skill can't assess legal exposure, so it names the person who can,
-  and it has no way to mark its own question resolved.</p>
+  <p class="lede">Surfaced by the hostile-question banks at Stage 2 — each a <i>question with an
+  owner</i>, never a finding. The skill has no way to mark its own question resolved.</p>
   <div class="cards" id="blk-cards"></div>
-  <p class="note" style="margin-top:1.2rem">The interesting one is <code>BLK-01</code>: the skill put
-  the finance-vs-product disagreement on the record as the project's actual content — and turned it
-  into an experiment both sides agree to be bound by, instead of a hallway argument.</p>
+  <p class="note" style="margin-top:1rem">The interesting one: <code>BLK-01</code> turned the
+  finance-vs-product disagreement into an experiment both sides are bound by.</p>
 </div></section>
 
 <!-- §4 honesty -->
 <section id="unknown"><div class="wrap">
   <h2>One honest word, carried all the way down.</h2>
-  <p class="lede">Finance believes reminders will cost conversions. Product believes they won't.
-  Neither has data — so that claim is tagged <code>[ASSUMED]</code> at intake, survives into the
-  press release, becomes the experiment requirement (REQ-D2), and ends up in the readiness doc's
-  failure modes. Nothing along the way is allowed to round a belief up to a fact — anyone's belief,
-  in either direction.</p>
+  <p class="lede">Finance thinks reminders cost conversions; product disagrees; neither has data.
+  So the claim is tagged <code>[ASSUMED]</code> at intake — and the tag survives into the press
+  release, the experiment requirement, and the readiness failure modes. A belief never gets rounded
+  up to a fact.</p>
   <div class="trace2">
     <div>
       <h4>CONFIDENCE.md — the session's last word</h4>
@@ -477,11 +479,9 @@ Context pack:  absent — strategic fit was not evaluated</pre>
 <!-- §5 context builder -->
 <section id="context"><div class="wrap">
   <h2>What each document you supply actually buys.</h2>
-  <p class="lede">Tick what you have — the confidence meter and judge dimensions update live. Note
-  what never changes: <b>blockers</b>. No document converts a legal or regulatory determination into a
-  lookup; context makes the question citable, not answered.</p>
-  <div class="privacy"><b>Nothing leaves your browser.</b> Dropping a file reads its <i>name</i> and
-  discards the rest — no upload, no parsing, no network requests on this page at all.</div>
+  <p class="lede">Tick what you have — the meter updates live. Note what never changes: blockers.
+  Context makes a legal question citable, not answered.</p>
+  <div class="privacy"><b>Nothing leaves your browser</b> — a dropped file's name is read, the rest discarded. No uploads, no network requests.</div>
   <div class="builder">
     <div class="slots" id="slots"></div>
     <div class="meter">
@@ -518,9 +518,8 @@ skills/working-backwards \
       <p style="font-size:.9rem">Download <code>dist/working-backwards.skill</code> from the repo and
       upload it in settings. Attach your context docs to the conversation — that's tier 1.</p></div>
   </div>
-  <p class="note" style="margin-top:1.6rem"><b>Where this isn't useful:</b> single-team,
-  well-understood, already-aligned work. That's a ticket, not a discovery session — use Lightweight
-  mode for mandates, and don't run Full mode on everything.</p>
+  <p class="note" style="margin-top:1.2rem"><b>Where this isn't useful:</b> single-team, already-aligned
+  work — that's a ticket, not a discovery session.</p>
 </div></section>
 
 <footer><div class="wrap">
@@ -1103,6 +1102,18 @@ function render(animate){
   if(animate){const p=$("#car-pane");p.classList.remove("enter");void p.offsetWidth;p.classList.add("enter")}
   moveRail();
 }
+$("#fd-toggle").onclick=()=>{
+  const open=$("#fd-toggle").getAttribute("aria-expanded")==="true";
+  $("#fd-toggle").setAttribute("aria-expanded",String(!open));
+  $("#fd-toggle").textContent=open?"show ⌄":"hide ⌃";
+  $("#ftabs").style.display=open?"none":"flex";
+  $("#fdoc").hidden=open;
+};
+$$(".sidetabs button").forEach(b=>b.onclick=()=>{
+  $$(".sidetabs button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  $("#st-judge").hidden=b.dataset.st!=="judge";
+  $("#st-prompt").hidden=b.dataset.st!=="prompt";
+});
 $("#nav-prev").onclick=()=>{const r=MODES[mode],i=r.indexOf(sel);if(i>0){sel=r[i-1];fsel=0;renderTransitioned()}};
 $("#nav-next").onclick=()=>{const r=MODES[mode],i=r.indexOf(sel);if(i<r.length-1){sel=r[i+1];fsel=0;renderTransitioned()}};
 document.addEventListener("keydown",e=>{
