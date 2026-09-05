@@ -207,9 +207,12 @@ section naming the two ways critics degrade — softening ("could benefit from a
 data" is a PASS in a REVISE costume) and drifting substantive. In the worked example the critic
 returns REVISE three times and fires on the one requirement everybody wanted.
 
-Honest limitation: **the critic is a prompt, not a model.** It's consistent, not calibrated. There's
-no held-out set of human-labelled press releases behind it. The next version needs one so the rubric
-can be measured rather than asserted.
+Honest limitation, now with a harness: **the critic is a prompt, and a prompt is consistent, not
+calibrated — so we measure it.** [`evals/`](evals/) holds a 14-case golden set (a pass and a fail per
+structural dimension, plus a prompt-injection case and an epistemic-firewall case where a "helpful"
+strategic verdict fails the eval) and a runner that scores judge agreement against the labels —
+regression tests for the rubric. What remains unmeasured is outcome-level quality on novel
+artifacts; that needs human-labelled press releases and is named as the roadmap's top item.
 
 **Does this replace discovery, or the review meeting?**
 Neither, and claiming otherwise would be the thing this repo argues against. It produces the
