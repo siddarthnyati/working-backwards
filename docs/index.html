@@ -370,13 +370,35 @@ footer a{color:var(--ink-2)}
 
 /* compressed challenge ledger (intake) */
 .xch{border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--paper)}
-.xr{display:grid;grid-template-columns:2.4rem minmax(0,1fr);gap:.6rem;padding:.55rem .7rem;
-  border-bottom:1px solid var(--rule);font-size:.83rem;line-height:1.5;color:var(--ink-2)}
+.xr{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:.7rem;padding:.65rem .8rem;
+  border-bottom:1px solid var(--rule);font-size:.85rem;line-height:1.5;color:var(--ink-2)}
 .xr:last-child{border-bottom:0}
-.xr .xn{font-family:var(--mono);font-size:.62rem;font-weight:600;color:var(--accent-ink);padding-top:.15rem}
-.xr .xk{font-family:var(--mono);font-size:.6rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:.15rem}
+.xr .xn{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--accent-ink);padding-top:.1rem}
+.xr .xn i{font-style:normal;color:var(--ink-3);font-size:.6rem}
+.xr .xk{font-family:var(--mono);font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent-ink);background:var(--accent-soft);border-radius:3px;padding:.08rem .4rem;
+  display:inline-block;margin-bottom:.3rem}
+.xr .xq{font-style:italic;color:var(--ink);margin:0 0 .25rem}
+.xr .xa{margin:0;color:var(--ink-2)}
+.xr .xa::before{content:"→ ";color:var(--ok);font-weight:700}
+.xr .xa b{color:var(--ok)}
 .xr b{color:var(--ink)}
-.xr .xg{color:var(--ok);font-weight:600}
+
+/* FAQ cards (stage 2) */
+.faqcard{border:1px solid var(--rule);border-radius:6px;background:var(--paper);margin-bottom:.7rem;overflow:hidden}
+.fq-h{display:flex;align-items:center;gap:.6rem;padding:.5rem .8rem;background:var(--paper-2);border-bottom:1px solid var(--rule)}
+.fq-id{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--ink)}
+.fq-voice{font-family:var(--mono);font-size:.6rem;color:var(--ink-3)}
+.fq-h .pill{margin-left:auto}
+.fq-q{font-style:italic;color:var(--ink);font-size:.9rem;margin:.7rem .8rem .45rem;line-height:1.55}
+.fq-a{font-size:.83rem;color:var(--ink-2);margin:0 .8rem .55rem;line-height:1.5}
+.fq-f{font-family:var(--mono);font-size:.62rem;color:var(--accent-ink);padding:.45rem .8rem;border-top:1px dashed var(--rule)}
+.fq-f b{color:var(--bad)}
+
+/* user-story line on requirements */
+.rstory{font-style:italic;font-size:.88rem;color:var(--ink);margin:0 0 .45rem;line-height:1.5}
+.rstory b{font-style:normal;font-family:var(--mono);font-size:.6rem;letter-spacing:.06em;color:var(--ok);
+  text-transform:uppercase;margin-right:.3rem}
 </style>
 </head>
 <body>
@@ -504,8 +526,8 @@ not truth.</span></pre></div>
 <!-- §3 blockers -->
 <section id="blockers"><div class="wrap">
   <h2>Five blockers, before a single requirement existed.</h2>
-  <p class="lede">Surfaced by the hostile-question banks at Stage 2 — each a <i>question with an
-  owner</i>, never a finding. The skill has no way to mark its own question resolved.</p>
+  <p class="lede">Surfaced by the hostile questions at Stage 2 — each a <i>question with an
+  owner</i>, never a conclusion. The skill has no way to mark its own question resolved.</p>
   <div class="cards" id="blk-cards"></div>
   <p class="note" style="margin-top:1rem">The interesting one: <code>BLK-01</code> turned the
   finance-vs-product disagreement into an experiment both sides are bound by.</p>
@@ -640,7 +662,8 @@ only</span> — as an interrogation. Start by asking
 me what's on my mind and <span class="ps">record my answer
 verbatim</span>. Then: how I first noticed it, what
 data I've personally seen, who it's happening
-to (push me to the list-of-ten), what would
+to (push until I can name ten real
+customers), what would
 make it NOT worth fixing, and what I believe
 but haven't checked.
 <span class="pn2">Challenge my weak answers — up to six
@@ -650,10 +673,10 @@ times, counting out loud.</span> Tag every claim.
  trial-ending reminder emails — people are getting charged without realizing and it's killing us
  in reviews." <span class="tag t-asm">a solution wearing a problem costume</span></p>
  <div class="xch">
-  <div class="xr"><span class="xn">1/6</span><div><span class="xk">costume scan</span>"What did you <b>OBSERVE</b> before you concluded reminder emails?" <span class="xg">→ 38% of refunds cite "forgot to cancel"; #1 ticket tag in week 3.</span></div></div>
-  <div class="xr"><span class="xn">2/6</span><div><span class="xk">enumerable customer</span>"'Trial users' is a bare role. Could you name ten?" <span class="xg">→ the <b>forgot-cohort</b>: stopped opening by day 3, charged on day 14. Two queryable fields.</span></div></div>
-  <div class="xr"><span class="xn">3/6</span><div><span class="xk">causality scan</span>"The refunds are observed. The <b>because</b> is its own claim." <span class="xg">→ "tricked" stays [REPORTED]; the causal link stays [ASSUMED].</span></div></div>
-  <div class="xr"><span class="xn">4/6</span><div><span class="xk">number hygiene</span>"'Killing us in reviews' — any data connecting reviews to conversion?" <span class="xg">→ none. Tagged [ASSUMED], out of the meeting vocabulary.</span></div></div>
+  <div class="xr"><span class="xn">1<i>/6</i></span><div><span class="xk">Problem, or solution?</span><p class="xq">"Reminder emails are a fix. What did you actually <b>observe</b> before you chose it?"</p><p class="xa">The request became evidence: 38% of refunds cite "forgot to cancel"; "surprise charge" is the #1 support topic in week 3.</p></div></div>
+  <div class="xr"><span class="xn">2<i>/6</i></span><div><span class="xk">Who, exactly?</span><p class="xq">"'Trial users' is a label, not a person. Could you name ten of them?"</p><p class="xa">A real, queryable group: the <b>forgot-cohort</b> — stopped opening the app by day 3, still charged on day 14.</p></div></div>
+  <div class="xr"><span class="xn">3<i>/6</i></span><div><span class="xk">Prove the "because"</span><p class="xq">"The refunds are data. 'Because they feel tricked' is a separate claim — where's it from?"</p><p class="xa">Split honestly: "tricked" comes from reviews [REPORTED]; the causal link stays a belief [ASSUMED].</p></div></div>
+  <div class="xr"><span class="xn">4<i>/6</i></span><div><span class="xk">Source that number</span><p class="xq">"'Killing us in reviews' — is there any data connecting reviews to lost sales?"</p><p class="xa">None exists. Tagged [ASSUMED] — and retired from meetings until someone measures it.</p></div></div>
  </div>
  <table style="margin-top:1rem"><tr><th></th><th>Claim</th><th>Provenance</th></tr>
  <tr><td>C1</td><td>38% of refunds cite "forgot to cancel"</td><td><span class="tag t-obs">[OBSERVED]</span> refund log</td></tr>
@@ -662,7 +685,7 @@ times, counting out loud.</span> Tag every claim.
  <tr><td>C7</td><td>How many are surprised but silent</td><td><span class="tag t-unk">[UNKNOWN]</span> → R1</td></tr></table>`,
  dims:[[1,"Customer specificity","PASS","pass"],[2,"Evidence presence","PASS","pass"],[8,"Completeness","PASS","pass"]],
  verdict:"VERDICT: PASS · 4 of 6 challenges used",vclass:"",
- gate:`The judge's note: the interrogation did the work before the judge arrived — the verbatim first statement was a feature request; four challenges later it's an observed cohort with a kill condition. The distance between those two is the stage's proof of work.`},
+ gate:`The judge's note: the interrogation did the work before the judge arrived — the verbatim first statement was a feature request; four challenges later it's a measured group of real customers, plus a stated answer to "what would make this not worth doing." The distance between those two is the stage's proof of work.`},
 
 {n:1,t:"Press release",why:"Write the ending first. If the win can't survive one page, there is no win.",
  prompt:`<span class="pk">Stage 1.</span> Write the press release from the
@@ -677,29 +700,24 @@ requirements will cite them.</span>
  dims:null,verdict:null,vclass:null,gate:"QBOX"},
 
 {n:2,t:"FAQs",why:"Hostile questions do what a review meeting would — before the meeting exists.",
- prompt:`<span class="pk">Stage 2.</span> Three FAQ banks — external,
-internal, regional. <span class="ps">Ask the HOSTILE version
+ prompt:`<span class="pk">Stage 2.</span> Three FAQ sets — customers,
+leadership, per-market. <span class="ps">Ask the HOSTILE version
 of every internal question, in the voice of
 the leader who would ask it.</span> Every BLOCKER
 gets an owner role and stays OPEN —
 <span class="pn2">you resolve nothing.</span>`,
- art:`<pre class="logbox">IFAQ-01 · Finance · <b>BLOCKER</b>
-Q: Some of those "forgot" charges convert into paying
-   customers who stay. If we remind everyone, how much
-   revenue are we handing back — and are you asking me
-   to approve a number you can't state?
-A: Exactly the honest tension. C5 is finance's belief,
-   mine is the opposite, neither has data. REQ-D2 is
-   the experiment both sides agree to be bound by.
-   → BLK-01 · COMMERCIAL · high · Status: OPEN
-
-RFAQ-01 · Auto-renewal rules · <b>BLOCKER</b>
-Q: In which of our markets is the reminder we're
-   designing ALREADY an obligation we haven't been
-   meeting?
-A: Not evaluable here. If yes anywhere, timelines
-   stop being ours to set.
-   → BLK-02 · REGULATORY · high · Status: OPEN</pre>`
+ art:`<div class="faqcard">
+  <div class="fq-h"><span class="fq-id">IFAQ-01</span><span class="fq-voice">asked in finance's voice</span><span class="pill bad">BLOCKER</span></div>
+  <p class="fq-q">"Some of those 'forgot' charges convert into paying customers who stay. If we remind everyone, how much revenue are we handing back — and are you asking me to approve a number you can't state?"</p>
+  <p class="fq-a">The honest tension, on paper: finance believes reminders cost revenue, product believes they don't, neither has data. The experiment (REQ-D2) is what both sides agree to be bound by.</p>
+  <div class="fq-f">→ BLK-01 · commercial · high · ask: finance lead · <b>OPEN</b></div>
+ </div>
+ <div class="faqcard">
+  <div class="fq-h"><span class="fq-id">RFAQ-01</span><span class="fq-voice">asked in a regulator's voice</span><span class="pill bad">BLOCKER</span></div>
+  <p class="fq-q">"In which of our markets is the reminder we're designing <b>already a legal obligation</b> we haven't been meeting?"</p>
+  <p class="fq-a">Not answerable by an AI — routed to compliance as a question. If the answer is yes anywhere, the timeline stops being ours to set.</p>
+  <div class="fq-f">→ BLK-02 · regulatory · high · ask: compliance lead · <b>OPEN</b></div>
+ </div>`
  +`<div class="pb">
   <div class="pb-r"><span>GATE ASKED</span><div>"Which blocker do you already suspect the answer to — and are you avoiding asking because of it?"</div></div>
   <div class="pb-r hit"><span>YOU ADMITTED</span><div>"BLK-02. I suspect some markets already require this notice — which makes us late, not generous. Asking anyway is the point."</div></div>
@@ -794,7 +812,7 @@ cannot be measured — each is
  </div>
  <table style="margin-top:1rem"><tr><th>Metric</th><th>Measures</th><th>Baseline</th></tr>
  <tr><td><b>Surprise Rate</b> (north star)</td><td>PR para 1 — "nobody gets charged by surprise"</td><td>computable today <span class="tag t-obs">[OBSERVED]</span></td></tr>
- <tr><td>M3 conversion, reminded vs holdback</td><td>C5 — the finance fear</td><td>5-quarter history <span class="tag t-obs">[OBSERVED]</span></td></tr>
+ <tr><td>M3 conversion — reminded vs. no-reminder group</td><td>C5 — the finance fear</td><td>5-quarter history <span class="tag t-obs">[OBSERVED]</span></td></tr>
  <tr><td>M4 silent-surprised proxy</td><td>C7</td><td><span class="tag t-unk">[UNKNOWN]</span> — R1 builds the join</td></tr></table>
  <div class="callout"><b>CUT FROM THE NARRATIVE</b> C6 — "bad reviews hurt conversion" — can't be
  measured honestly (attribution soup). It stays [ASSUMED] and OUT of the launch story: the case
@@ -804,11 +822,14 @@ cannot be measured — each is
  gate:`The experiment (M3) is the artifact that ends the finance-vs-product argument with a number instead of a meeting — and finance co-owns its design (BLK-01), deliberately, so the readout binds both sides.`},
 
 {n:6,t:"Requirements",why:"Only now. And every one cites the paragraph it came from.",
- prompt:`<span class="pk">Stage 6.</span> Requirements with <span class="ps">Source: lines,
-Given/When/Then</span>, D/DP grouping. Anything
-whose chain touches [ASSUMED] is flagged.
+ prompt:`<span class="pk">Stage 6.</span> Requirements from the customer's
+side — <span class="ps">as a / I want / so that, a Source:
+line, and Given/When/Then</span> — grouped
+discovery vs delivery. Anything built on an
+[ASSUMED] claim is flagged.
 <span class="pn2">Anything with no source goes to Flagged —
-don't delete it, don't source-wash it.</span>`,
+don't delete it, don't invent a source
+for it.</span>`,
  art:`<div class="trace2">
   <div><h4 style="margin-bottom:.5rem">01-press-release.md · paragraph 3</h4>
    <p class="src-para" id="src3">Two days before the first charge, we tell you — an email and an
@@ -826,20 +847,22 @@ don't delete it, don't source-wash it.</span>`,
  verdict:"VERDICT: PASS",vclass:"",
  gate:`REQ-D2 (the experiment) is flagged RESTS ON ASSUMPTION — it inherits C5 from intake, four stages later, still tagged. That's provenance doing its job: the tag can't be laundered on the way down.`},
 
-{n:7,t:"Release plan",why:"Vertical slices and a DAG — where this becomes tickets, not prose.",
- prompt:`<span class="pk">Stage 7.</span> Vertical slices — <span class="ps">independently
-shippable, independently testable</span>. Every
-requirement in exactly one slice.
+{n:7,t:"Release plan",why:"Slices that ship on their own, plus a dependency map — where this becomes tickets, not prose.",
+ prompt:`<span class="pk">Stage 7.</span> Cut the work into slices —
+<span class="ps">each one shippable on its own, testable
+on its own</span>. Every requirement in exactly
+one slice.
 <span class="pn2">Blocked slices are NOT SCHEDULABLE, with
 the owner who unblocks them.</span>
 Then run export_jira.py.`,
- art:`<pre class="dag">R1 ──▶ R3   <span class="blk">[BLOCKED BY BLK-01 · BLK-05]</span>
+ art:`<h4 style="margin-bottom:.45rem">What waits on what</h4>
+<pre class="dag">R1 ──▶ R3   <span class="blk">[BLOCKED BY BLK-01 · BLK-05]</span>
 
 R2 ──▶ R4   <span class="blk">[BLOCKED BY BLK-02]</span></pre>
 <table><tr><th></th><th>Ships</th><th>Proves</th><th>Status</th></tr>
 <tr><td><code>R1</code> Measure the fury</td><td>The surprise join — baseline before anything changes. Dark.</td><td>the true size of the problem (M4)</td><td><span class="pill ok">today</span></td></tr>
 <tr><td><code>R2</code> No-surprise surfaces</td><td>Day-12 banner + honest receipts. In-app only, no vendor risk.</td><td>surprises drop even if email never ships</td><td><span class="pill ok">today</span></td></tr>
-<tr><td><code>R3</code> Reminder + experiment</td><td>The T-48h email with the holdback attached</td><td>the finance question, with a number</td><td><span class="pill bad">BLK-01 · one meeting</span></td></tr>
+<tr><td><code>R3</code> Reminder + experiment</td><td>The 48-hour-warning email, plus a compare group that gets none</td><td>the finance question, with a number</td><td><span class="pill bad">BLK-01 · one meeting</span></td></tr>
 <tr><td><code>R4</code> One-tap cancel</td><td>All three surfaces; parity rule asserted in CI</td><td>the one-tap promise holds per market</td><td><span class="pill bad">BLK-02 · one memo</span></td></tr></table>
 <div class="fchips">
  <span class="fchip"><b>export_jira.py</b> → 4 epics · 7 stories · Source: lines preserved verbatim</span>
@@ -919,11 +942,13 @@ of?" — <i>"'Cancelling takes one tap' — some markets may prescribe more step
 BLK-02. "Would a team reorganise a quarter around the subheading?" — <i>"Support would. Finance
 wouldn't — which is why the experiment exists."</i></p><p class="ask">Both recorded in DECISIONS.md beside the verdict.</p>`}};
 const REQS6=[
- {id:"REQ-DP1 · The T-48h reminder",src:"Source: PR para 3 / EFAQ-03",
-  st:"One email, ≥48h before the first charge, price and date, equal keep and cancel actions.",
+ {id:"REQ-DP1 · The 48-hour warning",src:"Source: PR para 3 / EFAQ-03",
+  story:"<b>As a</b> trial user who forgot I signed up, <b>I want</b> to be told before I'm charged, <b>so that</b> the first I hear of it is never my bank statement.",
+  st:"One email, at least 48h before the first charge — price, date, and equal keep / cancel buttons.",
   gwt:"GIVEN a trial reaching day 12\nWHEN  the reminder sends\nTHEN  it precedes the charge by ≥48h — and a send\n      failure is logged, never silently absorbed"},
- {id:"REQ-DP2 · The in-app backstop banner",src:"Source: PR para 3 / 03-demo-spec.md F1",
-  st:"From day 12, a banner with date, price, and the same two actions — the backstop for unopened email.",
+ {id:"REQ-DP2 · The in-app backstop",src:"Source: PR para 3 / 03-demo-spec.md F1",
+  story:"<b>As a</b> trial user who never opens email, <b>I want</b> the app itself to warn me, <b>so that</b> an unread inbox doesn't cost me $12.",
+  st:"From day 12, a banner with date, price, and the same two actions — the safety net for unopened email.",
   gwt:"GIVEN a trial user with the email unopened\nWHEN  they open the app on day 12+\nTHEN  the banner shows date, price, keep, one-tap cancel"}];
 
 let mode="full", sel=0, fsel=0;
@@ -950,7 +975,7 @@ function moveRail(){
 
 /* the 8 checks, named once, shown at every gate */
 const DIMNAMES={1:"Specific customer",2:"Evidence tagged",3:"Today's alternative named",
-  4:"Strategic fit",5:"Cites upstream",6:"Falsifiability",7:"Plain language",8:"Nothing stubbed"};
+  4:"Strategic fit",5:"Cites upstream",6:"Claims are testable",7:"Plain language",8:"Nothing stubbed"};
 function criticHTML(dims,verdict,vclass,gate){
   const got={}; (dims||[]).forEach(([n,,v,cls])=>got[n]=[v,cls]);
   const row=n=>{const [v,cls]=got[n]||(n===4||n===6?["question routed","q"]:["PASS","pass"]);
@@ -1033,7 +1058,7 @@ const HTMLPAGES={3:["demos/surprise-charge-demo.html","03-demo.html"],4:["demos/
 const PBDOC=[
 `MODEL PUSHBACK · Stage 0 · the interrogation (4 of 6 challenges used)
 
-CHALLENGE 1 of 6 · costume scan
+CHALLENGE 1 of 6 · problem, or solution?
 You said: "We need to send trial-ending reminder emails — people are getting
 charged without realizing and it's killing us in reviews."
 It pushed: "Reminder emails are the fix. What did you OBSERVE before you
@@ -1041,24 +1066,24 @@ concluded it?"
 Changed: the feature request became an observation — 38% of refunds cite
 "forgot to cancel"; "surprise charge" is the #1 ticket category in week 3.
 
-CHALLENGE 2 of 6 · enumerable customer
+CHALLENGE 2 of 6 · who, exactly?
 You said: "It's happening to trial users."
-It pushed: "'Trial users' is a bare role. Who exactly? Could you name ten?"
+It pushed: "'Trial users' is a label, not a person. Could you name ten?"
 Changed: the forgot-cohort — stopped opening by day 3, charged on day 14.
 Two queryable fields; a real list.
 
-CHALLENGE 3 of 6 · causality scan
+CHALLENGE 3 of 6 · prove the "because"
 You said: "They refund because they feel tricked."
 It pushed: "The refunds are observed. The 'because' is its own claim."
 Changed: reviews say "tricked" [REPORTED]; the causal link stays [ASSUMED].
 
-CHALLENGE 4 of 6 · number hygiene
+CHALLENGE 4 of 6 · source that number
 You said: "It's killing us in reviews."
 It pushed: "Any data connecting reviews to conversion?"
 Changed: none exists — tagged [ASSUMED], and out of the meeting vocabulary.
 
-Challenges 5–6: unused. The kill-condition question was answered without
-pushback and recorded.`,
+Challenges 5–6: unused. "What would make this not worth doing?" was
+answered without pushback and recorded.`,
 `MODEL PUSHBACK · Stage 1 · the judge, then the gate
 
 VERDICT ON DRAFT 1: REVISE — dimension 1 (customer specificity)
@@ -1175,7 +1200,7 @@ function render(animate){
     $("#c-critic").innerHTML=criticHTML(s.dims,s.verdict,s.vclass,s.gate);
   }
   if(sel===6){
-    $("#reqs6").innerHTML=REQS6.map(r=>`<div class="req"><span class="rid">${r.id}</span><span class="rsrc">${r.src}</span><p class="rst">${r.st}</p><pre class="gwt">${r.gwt}</pre></div>`).join("");
+    $("#reqs6").innerHTML=REQS6.map(r=>`<div class="req"><span class="rid">${r.id}</span><span class="rsrc">${r.src}</span><p class="rstory">${r.story}</p><p class="rst">${r.st}</p><pre class="gwt">${r.gwt}</pre></div>`).join("");
     $$("#reqs6 .req").forEach(el=>{
       const on=v=>{const p=$("#src3"); if(p)p.classList.toggle("lit",v); el.classList.toggle("on",v)};
       el.addEventListener("mouseenter",()=>on(true)); el.addEventListener("mouseleave",()=>on(false));
@@ -1289,8 +1314,8 @@ $$("#slots .slot").forEach(el=>{
     const f=ev.dataTransfer&&ev.dataTransfer.files&&ev.dataTransfer.files[0];
     picked[k]=f?f.name:"(dropped item)";fn.textContent=picked[k];cb.checked=true;el.classList.add("on");updateBuilder()});
 });
-const DIMSTATE=[[1,"Customer specificity","auth"],[2,"Evidence presence","telemetry"],[3,"Alternative named","prds"],
- [4,"Strategic fit","strategy"],[5,"Traceability","auth"],[6,"Falsifiability","ownership"],[7,"Clarity","auth"],[8,"Completeness","auth"]];
+const DIMSTATE=[[1,"Specific customer","auth"],[2,"Evidence tagged","telemetry"],[3,"Today's alternative named","prds"],
+ [4,"Strategic fit","strategy"],[5,"Cites upstream","auth"],[6,"Claims are testable","ownership"],[7,"Plain language","auth"],[8,"Nothing stubbed","auth"]];
 function updateBuilder(){
   const n=Object.keys(picked).length, has=k=>k in picked;
   const q=11-(has("strategy")?2:0)-(has("metrics")?1:0)-(has("telemetry")?1:0)-(has("prds")?1:0)-(has("ownership")?2:0);
