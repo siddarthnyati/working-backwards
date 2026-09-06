@@ -373,8 +373,9 @@ footer a{color:var(--ink-2)}
 .xr{display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:.7rem;padding:.65rem .8rem;
   border-bottom:1px solid var(--rule);font-size:.85rem;line-height:1.5;color:var(--ink-2)}
 .xr:last-child{border-bottom:0}
-.xr .xn{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--accent-ink);padding-top:.1rem}
-.xr .xn i{font-style:normal;color:var(--ink-3);font-size:.6rem}
+.xr .xn{font-family:var(--mono);font-size:.7rem;font-weight:600;color:#fff;background:var(--accent);
+  width:1.45rem;height:1.45rem;border-radius:999px;display:flex;align-items:center;justify-content:center;margin-top:.05rem}
+.xr .xn i{display:none}
 .xr .xk{font-family:var(--mono);font-size:.6rem;letter-spacing:.07em;text-transform:uppercase;
   color:var(--accent-ink);background:var(--accent-soft);border-radius:3px;padding:.08rem .4rem;
   display:inline-block;margin-bottom:.3rem}
@@ -432,6 +433,36 @@ th{background:var(--paper-2)}
 
 /* persona line in prompts */
 .pmtd .pu{color:#9db4d8;font-style:italic}
+
+/* metric tiles (stage 5) */
+.mtiles{display:grid;grid-template-columns:1fr 1fr;gap:.7rem;margin-top:1rem}
+@media(max-width:700px){.mtiles{grid-template-columns:1fr}}
+.mtile{border:1px solid var(--rule);border-radius:6px;background:var(--paper);padding:.8rem .95rem;min-width:0}
+.mtile.ns{grid-column:1/-1;background:var(--accent-soft);border-color:var(--accent);border-left-width:3px}
+.mtile .mk2{font-family:var(--mono);font-size:.58rem;letter-spacing:.09em;color:var(--ink-3);display:block}
+.mtile.ns .mk2{color:var(--accent-ink)}
+.mtile .mv{font-family:var(--serif);font-size:1.12rem;color:var(--ink);display:block;margin:.18rem 0 .3rem}
+.mtile.ns .mv{font-size:1.35rem}
+.mtile .md2{font-size:.78rem;color:var(--ink-2);line-height:1.45;display:block}
+.mtile .mb2{font-family:var(--mono);font-size:.62rem;color:var(--ink-3);display:block;margin-top:.5rem;padding-top:.45rem;border-top:1px dashed var(--rule)}
+
+/* faq card color states */
+.faqcard.warnc{border-left:3px solid var(--warn)}
+.faqcard.badc{border-left:3px solid var(--bad)}
+.fq-voice{padding:.1rem .5rem;border-radius:999px;border:1px solid}
+.fq-voice.w{color:var(--warn);border-color:var(--warn);background:var(--warn-soft)}
+.fq-voice.b{color:var(--bad);border-color:var(--bad);background:var(--bad-soft)}
+.fq-q{font-size:.95rem}
+.fq-al{font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;color:var(--ok);display:block;margin:0 .8rem .15rem}
+
+/* intake: verbatim callout + challenge badges */
+.verb{border:1px solid color-mix(in srgb,var(--accent) 38%,transparent);border-left:3px solid var(--accent);
+  background:var(--accent-soft);border-radius:6px;padding:.7rem .9rem;margin-bottom:.9rem;
+  font-size:.95rem;line-height:1.6;color:var(--ink)}
+.verb .vlab{font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;color:var(--accent-ink);display:block;margin-bottom:.3rem}
+.xch-h{display:flex;justify-content:space-between;gap:.8rem;font-family:var(--mono);font-size:.6rem;
+  letter-spacing:.08em;color:var(--ink-2);background:var(--paper-2);padding:.45rem .8rem;border-bottom:1px solid var(--rule)}
+.xch-h b{color:var(--accent-ink)}
 </style>
 </head>
 <body>
@@ -673,26 +704,29 @@ const STAGES=[
  prompt:`<span class="pu">I'm a busy VP of Product, arriving
 with a fix already in my head.</span>
 
-Run the working-backwards skill, <span class="pk">Stage 0
-only</span> — as an interrogation. Start by asking
-me what's on my mind and <span class="ps">record my answer
-verbatim</span>. Then: how I first noticed it, what
-data I've personally seen, who it's happening
-to (push until I can name ten real
-customers), what would
-make it NOT worth fixing, and what I believe
-but haven't checked.
-<span class="pn2">Challenge my weak answers — up to six
-times, counting out loud.</span> Tag every claim.
+<span class="pk">Stage 0 — run it as an interrogation:</span>
+1. What's on my mind — <span class="ps">record it
+   verbatim</span>
+2. How I first noticed it
+3. What data I've personally seen
+4. Who exactly — <span class="ps">until I can name
+   ten real customers</span>
+5. What would make this NOT worth fixing
+6. What I believe but haven't checked
+
+<span class="pn2">Challenge my weak answers — six max,
+counted out loud.</span>
+Tag every claim.
 <span class="pn2">Do not write the press release.</span>`,
- art:`<p class="para" style="margin-bottom:.7rem"><span class="mark">VERBATIM</span>"We need to send
+ art:`<div class="verb"><span class="vlab">WHAT YOU SAID · VERBATIM, ON THE RECORD</span>"We need to send
  trial-ending reminder emails — people are getting charged without realizing and it's killing us
- in reviews." <span class="tag t-asm">a solution wearing a problem costume</span></p>
+ in reviews." <span class="tag t-asm">a solution wearing a problem costume</span></div>
  <div class="xch">
-  <div class="xr"><span class="xn">1<i>/6</i></span><div><span class="xk">Problem, or solution?</span><p class="xq">"Reminder emails are a fix. What did you actually <b>observe</b> before you chose it?"</p><p class="xa">The request became evidence: 38% of refunds cite "forgot to cancel"; "surprise charge" is the #1 support topic in week 3.</p></div></div>
-  <div class="xr"><span class="xn">2<i>/6</i></span><div><span class="xk">Who, exactly?</span><p class="xq">"'Trial users' is a label, not a person. Could you name ten of them?"</p><p class="xa">A real, queryable group: the <b>forgot-cohort</b> — stopped opening the app by day 3, still charged on day 14.</p></div></div>
-  <div class="xr"><span class="xn">3<i>/6</i></span><div><span class="xk">Prove the "because"</span><p class="xq">"The refunds are data. 'Because they feel tricked' is a separate claim — where's it from?"</p><p class="xa">Split honestly: "tricked" comes from reviews [REPORTED]; the causal link stays a belief [ASSUMED].</p></div></div>
-  <div class="xr"><span class="xn">4<i>/6</i></span><div><span class="xk">Source that number</span><p class="xq">"'Killing us in reviews' — is there any data connecting reviews to lost sales?"</p><p class="xa">None exists. Tagged [ASSUMED] — and retired from meetings until someone measures it.</p></div></div>
+  <div class="xch-h"><span>THE PUSHBACK</span><span><b>4 of 6</b> CHALLENGES USED</span></div>
+  <div class="xr"><span class="xn">1</span><div><span class="xk">Problem, or solution?</span><p class="xq">"Reminder emails are a fix. What did you actually <b>observe</b> before you chose it?"</p><p class="xa">The request became evidence: 38% of refunds cite "forgot to cancel" <span class="tag t-obs">[OBSERVED]</span>; "surprise charge" is the #1 support topic in week 3 <span class="tag t-obs">[OBSERVED]</span>.</p></div></div>
+  <div class="xr"><span class="xn">2</span><div><span class="xk">Who, exactly?</span><p class="xq">"'Trial users' is a label, not a person. Could you name ten of them?"</p><p class="xa">A real, queryable group: the <b>forgot-cohort</b> — stopped opening the app by day 3, still charged on day 14.</p></div></div>
+  <div class="xr"><span class="xn">3</span><div><span class="xk">Prove the "because"</span><p class="xq">"The refunds are data. 'Because they feel tricked' is a separate claim — where's it from?"</p><p class="xa">Split honestly: "tricked" comes from reviews <span class="tag t-rep">[REPORTED]</span>; the causal link stays a belief <span class="tag t-asm">[ASSUMED]</span>.</p></div></div>
+  <div class="xr"><span class="xn">4</span><div><span class="xk">Source that number</span><p class="xq">"'Killing us in reviews' — is there any data connecting reviews to lost sales?"</p><p class="xa">None exists. Tagged <span class="tag t-asm">[ASSUMED]</span> — and retired from meetings until someone measures it.</p></div></div>
  </div>
  <table style="margin-top:1rem"><tr><th></th><th>Claim</th><th>Provenance</th></tr>
  <tr><td>C1</td><td>38% of refunds cite "forgot to cancel"</td><td><span class="tag t-obs">[OBSERVED]</span> refund log</td></tr>
@@ -707,12 +741,15 @@ times, counting out loud.</span> Tag every claim.
  prompt:`<span class="pu">I'm the VP who has to sell this
 upward tomorrow.</span>
 
-<span class="pk">Stage 1.</span> Write the press release from the
-intake: the problem in the customer's voice,
-what people do today and why it falls short,
-the why-now. <span class="ps">Number the paragraphs —
-requirements will cite them.</span>
-<span class="pn2">Never invent a figure: write
+<span class="pk">Stage 1 — write the ending first:</span>
+1. The problem, in the customer's voice
+2. What people do today — and why it
+   falls short
+3. The why-now
+4. <span class="ps">Number the paragraphs — requirements
+   will cite them</span>
+
+<span class="pn2">Never invent a figure — write
 [NEEDS EVIDENCE] instead.</span>
 <span class="pn2">Do not write the FAQs.</span>`,
  art:"DRAFT_TOGGLE",
@@ -722,23 +759,28 @@ requirements will cite them.</span>
  prompt:`<span class="pu">I'm walking into the leadership
 review that could kill this.</span>
 
-<span class="pk">Stage 2.</span> Three FAQ sets — customers,
-leadership, per-market. <span class="ps">Ask the HOSTILE version
-of every internal question, in the voice of
-the leader who would ask it.</span> Every BLOCKER
-gets an owner role and stays OPEN —
-<span class="pn2">you resolve nothing.</span>`,
- art:`<div class="faqcard">
-  <div class="fq-h"><span class="fq-id">IFAQ-01</span><span class="fq-voice">asked in finance's voice</span><span class="pill bad">BLOCKER</span></div>
+<span class="pk">Stage 2 — three FAQ sets:</span>
+1. Customers — what they'll ask
+2. Leadership — <span class="ps">the HOSTILE version,
+   in the voice of who would ask it</span>
+3. Per-market rules
+4. Every BLOCKER gets an owner role
+   and stays OPEN
+
+<span class="pn2">You resolve nothing.</span>`,
+ art:`<div class="faqcard warnc">
+  <div class="fq-h"><span class="fq-id">IFAQ-01</span><span class="fq-voice w">finance's voice</span><span class="pill bad">BLOCKER</span></div>
   <p class="fq-q">"Some of those 'forgot' charges convert into paying customers who stay. If we remind everyone, how much revenue are we handing back — and are you asking me to approve a number you can't state?"</p>
-  <p class="fq-a">The honest tension, on paper: finance believes reminders cost revenue, product believes they don't, neither has data. The experiment (REQ-D2) is what both sides agree to be bound by.</p>
-  <div class="fq-f">→ BLK-01 · commercial · high · ask: finance lead · <b>OPEN</b></div>
+  <span class="fq-al">THE HONEST ANSWER, ON PAPER</span>
+  <p class="fq-a">Finance believes reminders cost revenue, product believes they don't, neither has data. The experiment (REQ-D2) is what both sides agree to be bound by.</p>
+  <div class="fq-f">→ BLK-01 · commercial · high · ask: <b style="color:var(--warn)">finance lead</b> · <b>OPEN</b></div>
  </div>
- <div class="faqcard">
-  <div class="fq-h"><span class="fq-id">RFAQ-01</span><span class="fq-voice">asked in a regulator's voice</span><span class="pill bad">BLOCKER</span></div>
+ <div class="faqcard badc">
+  <div class="fq-h"><span class="fq-id">RFAQ-01</span><span class="fq-voice b">a regulator's voice</span><span class="pill bad">BLOCKER</span></div>
   <p class="fq-q">"In which of our markets is the reminder we're designing <b>already a legal obligation</b> we haven't been meeting?"</p>
+  <span class="fq-al">THE HONEST ANSWER, ON PAPER</span>
   <p class="fq-a">Not answerable by an AI — routed to compliance as a question. If the answer is yes anywhere, the timeline stops being ours to set.</p>
-  <div class="fq-f">→ BLK-02 · regulatory · high · ask: compliance lead · <b>OPEN</b></div>
+  <div class="fq-f">→ BLK-02 · regulatory · high · ask: <b style="color:var(--bad)">compliance lead</b> · <b>OPEN</b></div>
  </div>`
  +`<div class="pb">
   <div class="pb-r"><span>GATE ASKED</span><div>"Which blocker do you already suspect the answer to — and are you avoiding asking because of it?"</div></div>
@@ -753,11 +795,13 @@ gets an owner role and stays OPEN —
  prompt:`<span class="pu">I have ten minutes in front of
 leadership — show, don't tell.</span>
 
-<span class="pk">Stage 3.</span> Narrate the experience end to end:
-screens, primary flow, <span class="ps">failure states — what
-fails and exactly what the user sees.</span>
-Produce both outputs: 03-demo-spec.md and
-03-demo.html, the leadership one-pager.
+<span class="pk">Stage 3 — the demo, end to end:</span>
+1. Screens, and the primary flow
+2. <span class="ps">Failure states — what breaks, and
+   exactly what the user sees</span>
+3. Two outputs: 03-demo-spec.md and
+   03-demo.html, the one-pager
+
 <span class="pn2">Add "what this deliberately does
 not show."</span>`,
  art:`<div class="mock-grid">
@@ -804,12 +848,14 @@ not show."</span>`,
  prompt:`<span class="pu">I'm the support agent facing the
 angriest customer on launch day.</span>
 
-<span class="pk">Stage 4.</span> Draft the customer-facing docs
-from the approved PR and external FAQ.
+<span class="pk">Stage 4 — the customer help page:</span>
+1. Draft from the approved press
+   release and the customer FAQ
+2. Write for someone reading it angry
+
 <span class="pn2">Where a paragraph won't come, do NOT
-write around it — record it under "could
-not be written yet" with the blocker
-behind it.</span>`,
+write around it — file it under "could
+not be written yet", with its blocker.</span>`,
  art:`<div class="docpage">
   <div class="doc-crumb">HELP CENTER › <b>Billing</b> › Cancelling &nbsp;·&nbsp; the page a customer actually lands on</div>
   <h5>Cancelling</h5>
@@ -831,21 +877,25 @@ behind it.</span>`,
  prompt:`<span class="pu">I'm the analyst who must defend
 every number on this dashboard.</span>
 
-<span class="pk">Stage 5.</span> North star and input metrics,
-<span class="ps">each tied to a PR claim.</span>
-<span class="pn2">Baselines you don't have are [UNKNOWN],
-not estimates.</span> Close with the claims that
-cannot be measured — each is
-<span class="pk">instrument-or-cut</span>.`,
+<span class="pk">Stage 5 — make every claim measurable:</span>
+1. One north star, tied to a PR claim
+2. Input metrics — <span class="ps">each cites the
+   claim it guards</span>
+3. <span class="pn2">Baselines you don't have are
+[UNKNOWN] — never estimates</span>
+4. End with the unmeasurable claims —
+   each is <span class="pk">instrument, or cut</span>`,
  art:`<div class="pb">
   <div class="pb-r"><span>GATE ASKED</span><div>"Which metric would you quietly game if your bonus depended on it?"</div></div>
   <div class="pb-r hit"><span>YOU ADMITTED</span><div>"Reminder open rate — I'd send at 9am Tuesday and call it engagement."</div></div>
   <div class="pb-r"><span>WHAT CHANGED</span><div>The north star became <b>Surprise Rate</b> — % of first charges followed by a refund or "surprise" ticket within 7 days. It counts the fury, not the email. And it's computable from existing data, so the baseline exists before anything ships.</div></div>
  </div>
- <table style="margin-top:1rem"><tr><th>Metric</th><th>Measures</th><th>Baseline</th></tr>
- <tr><td><b>Surprise Rate</b> (north star)</td><td>PR para 1 — "nobody gets charged by surprise"</td><td>computable today <span class="tag t-obs">[OBSERVED]</span></td></tr>
- <tr><td>M3 conversion — reminded vs. no-reminder group</td><td>C5 — the finance fear</td><td>5-quarter history <span class="tag t-obs">[OBSERVED]</span></td></tr>
- <tr><td>M4 silent-surprised proxy</td><td>C7</td><td><span class="tag t-unk">[UNKNOWN]</span> — R1 builds the join</td></tr></table>
+ <div class="mtiles">
+  <div class="mtile ns"><span class="mk2">★ NORTH STAR · GUARDS PR PARA 1 — "NOBODY GETS CHARGED BY SURPRISE"</span><span class="mv">Surprise Rate</span><span class="md2">% of first charges followed by a refund or a "surprise" ticket within 7 days. It counts the fury, not the email opens.</span><span class="mb2">baseline: computable from existing data <span class="tag t-obs">[OBSERVED]</span> · exists before anything ships</span></div>
+  <div class="mtile"><span class="mk2">M2 · GUARDS PR PARA 3</span><span class="mv">Cancel-before-charge rate</span><span class="md2">Of the forgot-cohort, how many now cancel in time — instead of refunding in anger after.</span><span class="mb2">baseline: <span class="tag t-unk">[UNKNOWN]</span> until the R1 join exists</span></div>
+  <div class="mtile"><span class="mk2">M3 · SETTLES C5, THE FINANCE FEAR</span><span class="mv">Conversion — reminded vs. not</span><span class="md2">The experiment: does warning people actually cost revenue? The readout binds both sides.</span><span class="mb2">baseline: 5-quarter history <span class="tag t-obs">[OBSERVED]</span></span></div>
+  <div class="mtile"><span class="mk2">M4 · SIZES C7, THE SILENT MAJORITY</span><span class="mv">The silent-surprised</span><span class="md2">Charged → never active again → gone by month 2. The angriest customers are the ones who never write in.</span><span class="mb2">baseline: <span class="tag t-unk">[UNKNOWN]</span> — R1 builds the join</span></div>
+ </div>
  <div class="callout"><b>CUT FROM THE NARRATIVE</b> C6 — "bad reviews hurt conversion" — can't be
  measured honestly (attribution soup). It stays [ASSUMED] and OUT of the launch story: the case
  stands on refunds and tickets alone.</div>`,
@@ -857,14 +907,16 @@ cannot be measured — each is
  prompt:`<span class="pu">I'm the engineer picking this up
 Monday morning, cold.</span>
 
-<span class="pk">Stage 6.</span> Requirements from the customer's
-side — <span class="ps">as a / I want / so that, a Source:
-line, and Given/When/Then</span> — grouped
-discovery vs delivery. Anything built on an
-[ASSUMED] claim is flagged.
-<span class="pn2">Anything with no source goes to Flagged —
-don't delete it, don't invent a source
-for it.</span>`,
+<span class="pk">Stage 6 — requirements, finally:</span>
+1. <span class="ps">As a / I want / so that</span> — the
+   customer's side first
+2. A Source: line on every one
+3. Given / When / Then acceptance
+4. Built on [ASSUMED]? → flagged
+
+<span class="pn2">No source → the Flagged section.
+Don't delete it, don't invent
+a source for it.</span>`,
  art:`<div class="trace2">
   <div><h4 style="margin-bottom:.5rem">01-press-release.md · paragraph 3</h4>
    <p class="src-para" id="src3">Two days before the first charge, we tell you — an email and an
@@ -893,13 +945,13 @@ for it.</span>`,
  prompt:`<span class="pu">I'm the delivery lead loading the
 tracker this afternoon.</span>
 
-<span class="pk">Stage 7.</span> Cut the work into slices —
-<span class="ps">each one shippable on its own, testable
-on its own</span>. Every requirement in exactly
-one slice.
-<span class="pn2">Blocked slices are NOT SCHEDULABLE, with
-the owner who unblocks them.</span>
-Then run export_jira.py.`,
+<span class="pk">Stage 7 — cut it into slices:</span>
+1. <span class="ps">Each slice shippable alone,
+   testable alone</span>
+2. Every requirement in exactly one
+3. <span class="pn2">Blocked = NOT SCHEDULABLE — name
+who unblocks it. Never a date.</span>
+4. Then run export_jira.py`,
  art:`<h4 style="margin-bottom:.45rem">What waits on what</h4>
 <pre class="dag">R1 ──▶ R3   <span class="blk">[BLOCKED BY BLK-01 · BLK-05]</span>
 
@@ -927,12 +979,15 @@ R2 ──▶ R4   <span class="blk">[BLOCKED BY BLK-02]</span></pre>
  prompt:`<span class="pu">I'm the sponsor deciding go or
 no-go by end of day.</span>
 
-<span class="pk">Stage 8.</span> Confidence block first, blockers
-by severity, assumptions that must hold,
-<span class="ps">top three reasons this fails — most
-likely first</span> — and <span class="pn2">the smallest set of
-answers that would change the
-recommendation.</span> Then run build_report.py.`,
+<span class="pk">Stage 8 — the readiness brief:</span>
+1. Confidence block first
+2. Blockers, by severity
+3. Assumptions that must hold
+4. <span class="ps">Top three ways this fails —
+   most likely first</span>
+5. <span class="pn2">The smallest set of answers that
+would change the recommendation</span>
+6. Then run build_report.py`,
  art:`<pre class="logbox">SESSION CONFIDENCE · surprise-charge · after Stage 8
 Claims:        3 observed · 1 reported · 2 assumed · 1 unknown
 Requirements:  7 total · 1 resting on assumption · 0 unsourced
