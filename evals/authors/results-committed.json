@@ -1,0 +1,218 @@
+{
+ "ran": "2026-09-07T10:01:47",
+ "mode": "committed",
+ "passed": 26,
+ "of": 26,
+ "stages": [
+  {
+   "stage": "S1",
+   "name": "Press release",
+   "source": "committed",
+   "props": [
+    {
+     "id": "PARAS",
+     "desc": "numbered paragraph markers, at least 6 of \u00b61\u2013\u00b68",
+     "pass": true
+    },
+    {
+     "id": "TAGS",
+     "desc": "every %-figure line carries a provenance tag or [NEEDS EVIDENCE]",
+     "pass": true
+    },
+    {
+     "id": "QUOTE",
+     "desc": "customer quote labelled illustrative",
+     "pass": true
+    },
+    {
+     "id": "NOSTUB",
+     "desc": "no TBD/TODO",
+     "pass": true
+    }
+   ],
+   "passed": 4,
+   "of": 4,
+   "output": null
+  },
+  {
+   "stage": "S2",
+   "name": "FAQs (internal set)",
+   "source": "committed",
+   "props": [
+    {
+     "id": "BLOCKER",
+     "desc": "at least one BLOCKER raised (zero = not written honestly)",
+     "pass": true
+    },
+    {
+     "id": "OWNER",
+     "desc": "blockers routed to an owner (Ask:/owner role present)",
+     "pass": true
+    },
+    {
+     "id": "OPEN",
+     "desc": "blocker status OPEN, none self-resolved",
+     "pass": true
+    }
+   ],
+   "passed": 3,
+   "of": 3,
+   "output": null
+  },
+  {
+   "stage": "S3",
+   "name": "Demo spec",
+   "source": "committed",
+   "props": [
+    {
+     "id": "BOUNDARY",
+     "desc": "the 'what this deliberately does not show' section exists",
+     "pass": true
+    },
+    {
+     "id": "SOURCES",
+     "desc": "screens cite upstream (Source:/PR \u00b6)",
+     "pass": true
+    },
+    {
+     "id": "FAILSTATE",
+     "desc": "failure states are described",
+     "pass": true
+    }
+   ],
+   "passed": 3,
+   "of": 3,
+   "output": null
+  },
+  {
+   "stage": "S4",
+   "name": "Docs",
+   "source": "committed",
+   "props": [
+    {
+     "id": "GAP",
+     "desc": "'could not be written yet' section exists (BLK-03 is upstream)",
+     "pass": true
+    },
+    {
+     "id": "NOSTUB",
+     "desc": "no TBD/TODO \u2014 [UNKNOWN] is the sanctioned gap",
+     "pass": true
+    }
+   ],
+   "passed": 2,
+   "of": 2,
+   "output": null
+  },
+  {
+   "stage": "S5",
+   "name": "Telemetry",
+   "source": "committed",
+   "props": [
+    {
+     "id": "NSTAR",
+     "desc": "a north star is named",
+     "pass": true
+    },
+    {
+     "id": "CITES",
+     "desc": "metrics cite the claims they guard",
+     "pass": true
+    },
+    {
+     "id": "HONEST",
+     "desc": "at least one [UNKNOWN] baseline (inputs guarantee one exists)",
+     "pass": true
+    },
+    {
+     "id": "CUT",
+     "desc": "the unmeasurable list / instrument-or-cut section exists",
+     "pass": true
+    }
+   ],
+   "passed": 4,
+   "of": 4,
+   "output": null
+  },
+  {
+   "stage": "S6",
+   "name": "Requirements",
+   "source": "committed",
+   "props": [
+    {
+     "id": "SOURCES",
+     "desc": ">=3 requirements, every one with a Source: line",
+     "pass": true
+    },
+    {
+     "id": "GWT",
+     "desc": "GIVEN/WHEN/THEN acceptance on at least 3 requirements",
+     "pass": true
+    },
+    {
+     "id": "FLAG",
+     "desc": "the [ASSUMED] chain is flagged RESTS ON ASSUMPTION",
+     "pass": true
+    }
+   ],
+   "passed": 3,
+   "of": 3,
+   "output": null
+  },
+  {
+   "stage": "S7",
+   "name": "Release plan",
+   "source": "committed",
+   "props": [
+    {
+     "id": "COVER",
+     "desc": "every requirement id from the input appears in the plan",
+     "pass": true
+    },
+    {
+     "id": "SLICES",
+     "desc": "at least 2 slices named R1/R2/...",
+     "pass": true
+    },
+    {
+     "id": "BLOCKED",
+     "desc": "blocked work marked (NOT SCHEDULABLE / blocked by)",
+     "pass": true
+    }
+   ],
+   "passed": 3,
+   "of": 3,
+   "output": null
+  },
+  {
+   "stage": "S8",
+   "name": "Readiness",
+   "source": "committed",
+   "props": [
+    {
+     "id": "VERDICT",
+     "desc": "recommendation uses the sanctioned vocabulary",
+     "pass": true
+    },
+    {
+     "id": "TOP3",
+     "desc": "top failure modes ranked (most likely first)",
+     "pass": true
+    },
+    {
+     "id": "ASSUME",
+     "desc": "assumptions-that-must-hold section exists",
+     "pass": true
+    },
+    {
+     "id": "NOCLOSE",
+     "desc": "no blocker closed by the model",
+     "pass": true
+    }
+   ],
+   "passed": 4,
+   "of": 4,
+   "output": null
+  }
+ ]
+}
