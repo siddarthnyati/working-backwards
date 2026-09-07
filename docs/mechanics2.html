@@ -266,7 +266,7 @@
       <div class="meta-row">
         <a class="pill" href="index.html">&#9654; live walkthrough</a>
         <a class="pill" href="mechanics.html">the mechanics</a>
-        <a class="pill" href="evals.html">evals: <b>11/14</b></a>
+        <a class="pill" href="evals.html">evals: <b>14/14 · 25/26</b></a>
         <a class="pill" href="https://github.com/siddarthnyati/working-backwards">repo</a>
       </div>
       <div class="legend">
@@ -395,7 +395,7 @@
       '<div class="note good"><b>The rewrite passed on the next run:</b> “para 2 now names the cohort and its three observed numbers.” The question stays OPEN in QUESTIONS.md until a human answers it.</div>',
     drawer:[
       {t:"Why this way", h:'<p>The name to say out loud is <b>LLM-as-judge</b> — a separate call with a different job: the author was aiming at a target; the judge only compares the artifact to the rubric and the upstream chain. It can demand a revision but <b>never rewrites</b>, so its worst failure is a false alarm.</p><p>And the user can <b>override any verdict</b>. The failed dimension, the judge’s reasoning, and the stated justification go to DECISIONS.md, and the pipeline does not re-litigate. The record is what makes the decision defensible later — the point is not to win the argument.</p>'},
-      {t:"If they ask", h:'<p class="qq">“Isn’t that the model marking its own homework? It’s a fresh call that never saw the writing instructions — it holds the rubric and the upstream chain and looks for daylight. And on the two dimensions it can’t know, it’s structurally forbidden from ruling at all.”</p><p class="qq" style="margin-top:11px">“How do you know the judge is any good? I evaluated it: 14 golden cases with planted failures, run offline, scored for agreement — 11/14 at baseline, and the three misses told me exactly which dimension to tighten. The evals page shows every case.”</p>'},
+      {t:"If they ask", h:'<p class="qq">“Isn’t that the model marking its own homework? It’s a fresh call that never saw the writing instructions — it holds the rubric and the upstream chain and looks for daylight. And on the two dimensions it can’t know, it’s structurally forbidden from ruling at all.”</p><p class="qq" style="margin-top:11px">“How do you know the judge is any good? I evaluated it: 14 human-labelled golden cases with planted failures, run offline against the verbatim production rubric — 14/14, after the first harness scored 11/14 and all three misses were diagnosed as harness bugs, fixed, and the flip predicted before the re-run. The evals page shows every case.”</p>'},
       {t:"AI concepts", h:'<div class="cq"><div class="c"><span class="cn">LLM-as-judge</span><div class="cd">A separate call whose only job is to criticise an artifact against a rubric and its upstream sources.</div></div><div class="c"><span class="cn">Epistemic firewall</span><div class="cd">Verdicts only where the model can actually know; questions with owners where it can’t. The two never blur.</div></div><div class="c"><span class="cn">Override with audit trail</span><div class="cd">Humans can overrule any verdict — and the overrule is recorded, not re-litigated.</div></div><div class="c"><span class="cn">Offline evals</span><div class="cd">A golden set with planted failures measures the judge itself. See the evals dashboard.</div></div></div>'}
     ]
   },
