@@ -88,6 +88,15 @@
   .pwhy{padding:13px 20px;border-bottom:1px solid var(--line);font-size:.97rem;color:var(--ink);background:var(--paper);display:flex;gap:11px;align-items:flex-start}
   .pwhy .k{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:7px;flex:0 0 auto;margin-top:2px;background:var(--stage-soft);color:var(--stage-ink);border:1px solid color-mix(in srgb,var(--stage) 26%,transparent);white-space:nowrap}
   .pwhy b{font-weight:600}
+  .pline{padding:8px 20px;border-bottom:1px solid var(--line);font-size:.87rem;font-style:italic;color:var(--ink-soft);background:var(--card);display:flex;gap:10px;align-items:baseline}
+  .pline b{color:var(--stage-ink);font-style:normal;font-family:"JetBrains Mono",monospace;font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
+  .ostrip{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:9px 20px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--stage-soft) 45%,var(--card))}
+  .ostrip .of{font-family:"JetBrains Mono",monospace;font-size:9.5px;font-weight:700;background:var(--ink);color:var(--paper);padding:3px 9px;border-radius:5px;white-space:nowrap}
+  .ostrip .ow{font-size:.82rem;font-style:italic;color:var(--ink-soft)}
+  .ostrip .ofor{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:9.5px;color:var(--ink-faint);white-space:nowrap}
+  .ostrip .ofor b{color:var(--stage-ink)}
+  .rr .story{text-align:left;font-family:"Public Sans",sans-serif;font-weight:400;font-style:italic;font-size:.84rem;color:var(--ink)}
+  .rr .story b{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:8.5px;color:var(--green);text-transform:uppercase;letter-spacing:.05em}
 
   .pgrid{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.12fr) minmax(0,1.14fr);flex:1}
   @media(max-width:1000px){.pgrid{grid-template-columns:1fr}}
@@ -346,18 +355,18 @@
       '<div class="rr"><span class="rk">Kill condition</span><span class="rv">churn merely moves earlier</span></div>'+
       '</div>'+
       '<p class="cap">The declared disagreement — finance believes reminders cost revenue, product believes they don’t — goes in labelled, instead of being smoothed over.</p>',
-    midLab:"The prompt", midHtml:'<div class="pmt"><div class="pmh"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system prompt · narrative author</span></div>'+'<pre class="pmb">You are the NARRATIVE AUTHOR. Write the launch\nannouncement as if it already shipped —\nthe ending first.\n\n<span class="kw">STRUCTURE ¶1–¶8:</span> heading · who + benefit ·\ndated summary · the problem in the customer’s\nvoice, every claim tagged · the solution · what\nthey do TODAY · quotes · getting started\n\nNumber the paragraphs — <span class="st">requirements will\ncite them by ¶ number.</span>\n<span class="hl2">Never invent a figure. No source = write\n[NEEDS EVIDENCE: what to measure] and keep\ngoing.</span>\n\nDo NOT write the FAQs.</pre></div>'+'<div class="pmf"><b>The highlighted rule is the anti-hallucination one.</b> Press releases beg for numbers. A visible gap is honest and fixable; a plausible invented one gets quoted back at you in a leadership review.</div>',
+    midLab:"The prompt", midHtml:'<div class="pmt"><div class="pmh"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system prompt · narrative author</span></div>'+'<pre class="pmb">You are the NARRATIVE AUTHOR. Write the launch\nannouncement as if it already shipped —\nthe ending first.\n\n<span class="kw">STRUCTURE para 1–8:</span> heading · who + benefit ·\ndated summary · the problem in the customer’s\nvoice, every claim tagged · the solution · what\nthey do TODAY · quotes · getting started\n\nNumber the paragraphs — <span class="st">requirements will\ncite them by number.</span>\n<span class="hl2">Never invent a figure. No source = write\n[NEEDS EVIDENCE: what to measure] and keep\ngoing.</span>\n\nDo NOT write the FAQs.</pre></div>'+'<div class="pmf"><b>The highlighted rule is the anti-hallucination one.</b> Press releases beg for numbers. A visible gap is honest and fixable; a plausible invented one gets quoted back at you in a leadership review.</div>',
     outLab:"Out — draft one", outHtml:
       '<div class="doc">'+
       '<div class="dh"><div class="crumb">wb/surprise-charge / 01-press-release-draft1.md</div><div class="dt">The trial that ends politely</div></div>'+
       '<div class="db">'+
-      '<h4>¶2 — who this is for</h4><p><span class="bad">Everyone hates surprise charges.</span> We’re ending them: before a trial converts, we say so — and cancelling takes one tap…</p>'+
-      '<h4>¶6 — customer quote</h4><p>“The charge showed up and I felt scammed — which is stupid, because I liked the app.” <span class="tag-u">[illustrative construction]</span></p>'+
+      '<h4>para 2 — who this is for</h4><p><span class="bad">Everyone hates surprise charges.</span> We’re ending them: before a trial converts, we say so — and cancelling takes one tap…</p>'+
+      '<h4>para 6 — customer quote</h4><p>“The charge showed up and I felt scammed — which is stupid, because I liked the app.” <span class="tag-u">[illustrative construction]</span></p>'+
       '</div></div>'+
-      '<div class="note"><b>There is a problem in this draft</b> — the highlighted opener. The intake spent two challenges finding the real customer, and ¶2 threw that work away. Hold that thought.</div>',
+      '<div class="note"><b>There is a problem in this draft</b> — the highlighted opener. The intake spent two challenges finding the real customer, and para 2 threw that work away. Hold that thought.</div>',
     drawer:[
-      {t:"Why this way", h:'<p>The paragraphs are numbered because <b>¶ markers are load-bearing</b>: stage 6 requirements cite their source as <code>PR ¶3</code>, and a script later resolves every citation. The numbering isn’t formatting — it’s the substrate the whole traceability chain hangs on.</p><p>Customer quotes follow the same honesty rule as figures: labelled <b>[illustrative construction]</b>, never attributed to a named customer, real or realistic-sounding.</p>'},
-      {t:"Full prompt", h:'<pre class="code">You are the NARRATIVE AUTHOR. Your job: write the launch announcement\nas if it already shipped — the ending first.\n\nSTRUCTURE (all eight, in order):\n1. Heading a customer would recognise\n2. Subheading: who + the benefit, one sentence\n3. Dated summary paragraph\n4. The problem, in the customer’s voice, every claim tagged\n5. The solution — what they see and do\n6. What customers do TODAY and why it falls short\n7. One customer quote, labelled [illustrative construction]\n   + a spokesperson quote that answers “why now?”\n8. Getting started\n\nRULES:\n- Number the paragraphs ¶1–¶8. Requirements will cite them by number.\n- Never invent a figure. No source = write\n  [NEEDS EVIDENCE: what to measure] and keep going.\n- Carry every provenance tag inline from the intake.\n\nOUTPUT: 01-press-release.md.\nDo NOT write the FAQs.</pre>'},
+      {t:"Why this way", h:'<p>The paragraphs are numbered because <b>para markers are load-bearing</b>: stage 6 requirements cite their source as <code>PR para 3</code>, and a script later resolves every citation. The numbering isn’t formatting — it’s the substrate the whole traceability chain hangs on.</p><p>Customer quotes follow the same honesty rule as figures: labelled <b>[illustrative construction]</b>, never attributed to a named customer, real or realistic-sounding.</p>'},
+      {t:"Full prompt", h:'<pre class="code">You are the NARRATIVE AUTHOR. Your job: write the launch announcement\nas if it already shipped — the ending first.\n\nSTRUCTURE (all eight, in order):\n1. Heading a customer would recognise\n2. Subheading: who + the benefit, one sentence\n3. Dated summary paragraph\n4. The problem, in the customer’s voice, every claim tagged\n5. The solution — what they see and do\n6. What customers do TODAY and why it falls short\n7. One customer quote, labelled [illustrative construction]\n   + a spokesperson quote that answers “why now?”\n8. Getting started\n\nRULES:\n- Number the paragraphs para 1–8. Requirements will cite them by number.\n- Never invent a figure. No source = write\n  [NEEDS EVIDENCE: what to measure] and keep going.\n- Carry every provenance tag inline from the intake.\n\nOUTPUT: 01-press-release.md.\nDo NOT write the FAQs.</pre>'},
       {t:"AI concepts", h:'<div class="cq"><div class="c"><span class="cn">Grounded generation</span><div class="cd">The author writes only from the tagged ledger it was handed — never from recall, so there’s no blank space to fill with invention.</div></div><div class="c"><span class="cn">Calibrated abstention</span><div class="cd">[NEEDS EVIDENCE] is a sanctioned way to not know. Models fabricate hardest when the alternative is an empty sentence.</div></div><div class="c"><span class="cn">Traceability substrate</span><div class="cd">Numbered paragraphs give every later requirement a machine-checkable address to cite.</div></div></div>'}
     ]
   },
@@ -366,7 +375,7 @@
     badge:'<span class="actor"><span class="dot d-llm"></span>LLM agent</span>',
     runs:"runs after every stage",
     whyKind:"llm",
-    why:'<b>The model, because this is a meaning question.</b> “Is the customer in ¶2 specific enough to list ten of?” is not a regex. Eight dimensions: <b>six structural get a real verdict</b> — PASS / REVISE / BLOCK — and <b>two substantive get only a question with an owner</b>, never a verdict.',
+    why:'<b>The model, because this is a meaning question.</b> “Is the customer in para 2 specific enough to list ten of?” is not a regex. Eight dimensions: <b>six structural get a real verdict</b> — PASS / REVISE / BLOCK — and <b>two substantive get only a question with an owner</b>, never a verdict.',
     inLab:"In — artifact vs. rubric", inHtml:
       '<ul class="steps">'+
       '<li><span class="ck">a</span><span><b>The artifact</b> just written — here, press release draft 1.</span></li>'+
@@ -378,12 +387,12 @@
     outLab:"Out — the verdict", outHtml:
       '<div class="verdict"><span class="vp">Revise</span><span>1 of 6 structural dimensions failed · draft 1</span></div>'+
       '<div class="flag"><div class="fh"><span class="fa">dimension 1 · customer specificity</span><span class="sev s-high">Revise</span></div>'+
-      '<div class="fp">¶2 opens “Everyone hates surprise charges.” <b>Everyone is not a customer</b> — the intake already did this work and the press release threw it away.</div>'+
-      '<div class="fx">→ Rewrite ¶2 around the forgot-cohort, with its numbers and their tags.</div></div>'+
+      '<div class="fp">para 2 opens “Everyone hates surprise charges.” <b>Everyone is not a customer</b> — the intake already did this work and the press release threw it away.</div>'+
+      '<div class="fx">→ Rewrite para 2 around the forgot-cohort, with its numbers and their tags.</div></div>'+
       '<div class="flag"><div class="fh"><span class="fa">dimension 4 · strategic fit</span><span class="sev s-q">Question</span></div>'+
       '<div class="fp">Q-04 · Is reducing refund fury a company priority this cycle, or a team’s virtue project?</div>'+
       '<div class="fx q">→ Ask: VP Product · not evaluable from the document alone</div></div>'+
-      '<div class="note good"><b>The rewrite passed on the next run:</b> “¶2 now names the cohort and its three observed numbers.” The question stays OPEN in QUESTIONS.md until a human answers it.</div>',
+      '<div class="note good"><b>The rewrite passed on the next run:</b> “para 2 now names the cohort and its three observed numbers.” The question stays OPEN in QUESTIONS.md until a human answers it.</div>',
     drawer:[
       {t:"Why this way", h:'<p>The name to say out loud is <b>LLM-as-judge</b> — a separate call with a different job: the author was aiming at a target; the judge only compares the artifact to the rubric and the upstream chain. It can demand a revision but <b>never rewrites</b>, so its worst failure is a false alarm.</p><p>And the user can <b>override any verdict</b>. The failed dimension, the judge’s reasoning, and the stated justification go to DECISIONS.md, and the pipeline does not re-litigate. The record is what makes the decision defensible later — the point is not to win the argument.</p>'},
       {t:"If they ask", h:'<p class="qq">“Isn’t that the model marking its own homework? It’s a fresh call that never saw the writing instructions — it holds the rubric and the upstream chain and looks for daylight. And on the two dimensions it can’t know, it’s structurally forbidden from ruling at all.”</p><p class="qq" style="margin-top:11px">“How do you know the judge is any good? I evaluated it: 14 golden cases with planted failures, run offline, scored for agreement — 11/14 at baseline, and the three misses told me exactly which dimension to tighten. The evals page shows every case.”</p>'},
@@ -397,7 +406,7 @@
     whyKind:"llm",
     why:'<b>The model, instructed to be hostile.</b> The internal FAQ exists to find the questions that detonate in a leadership review. Generating the uncomfortable version — not “how do we handle retention” but “what do we show the regulator” — is judgement work, and it’s cheaper to hear it from the pipeline than from the CFO.',
     inLab:"In — the approved PR", inHtml:
-      '<div class="chips tight"><span class="chip">01-press-release.md ¶1–¶8</span><span class="chip gy">the evidence ledger</span></div>'+
+      '<div class="chips tight"><span class="chip">01-press-release.md para 1–8</span><span class="chip gy">the evidence ledger</span></div>'+
       '<p class="cap">Three separate role-conditioned passes: a customer, a hostile executive, a regional compliance reviewer. Each bank reads the same press release with different teeth.</p>',
     midLab:"The prompt", midHtml:'<div class="pmt"><div class="pmh"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system prompt · three interrogators</span></div>'+'<pre class="pmb">You are three INTERROGATORS: a customer, a\nhostile executive, and a regional compliance\nreviewer.\n\n2. Internal — what finance, legal, security,\n   ops and data leaders ask. <span class="kw">Ask the HOSTILE\n   version.</span>\n\nTAG every answer: <span class="st">ANSWERED (with provenance)\n/ OPEN / BLOCKER.</span> Every BLOCKER gets an owner\nROLE and a question its owner can answer in\nfive minutes.\n\nNEVER: resolve a blocker yourself · give a\ncompliance conclusion · soften a question.\n<span class="hl2">An internal bank with zero blockers was not\nwritten honestly.</span></pre></div>'+'<div class="pmf"><b>The highlighted line makes comfort a failure mode.</b> If nothing here is uncomfortable, the critic says so — that’s a failure of the bank, not a compliment.</div>',
     outLab:"Out — the questions that hurt", outHtml:
@@ -405,7 +414,7 @@
       '<div class="tb">“Some of those ‘forgot’ charges convert into paying customers who stay. If we remind everyone, how much revenue are we handing back — <b>and are you asking me to approve a number you can’t state?</b>”</div></div>'+
       '<div class="tkt"><div class="th"><span class="tk">IFAQ-02 · Platform</span><span class="tt">BLOCKER → BLK-05</span></div>'+
       '<div class="tb">“The reminder must land <b>before</b> the charge. Billing runs on a vendor webhook; email has its own queue. <b>Who owns the guarantee that T-48h means T-48h?</b>”</div></div>'+
-      '<div class="tally"><span><b>3</b> banks</span><span>·</span><span><b>5</b> blockers, each with an owner role</span><span>·</span><span><b>0</b> resolved by the model</span></div>'+
+      '<div class="tally"><span><b>3</b> sets</span><span>·</span><span><b>5</b> blockers, each with an owner role</span><span>·</span><span><b>0</b> resolved by the model</span></div>'+
       '<div class="note"><b>Blockers are questions, never findings.</b> The model cannot mark its own question resolved — <code>Status</code> is only ever changed by the user. A blocker it closed itself would be worse than one it never raised.</div>',
     drawer:[
       {t:"Why this way", h:'<p>Each uncomfortable question becomes a <b>blocker with a category, a severity, an owner role, and a five-minute phrasing</b> — structured escalation instead of a vague worry. IFAQ-04 (legal) is the classic: “do auto-renewal rules in some markets already require the notice we weren’t sending?” — the question that changes the project from improvement to remediation, found at stage 2 instead of at launch.</p>'},
@@ -420,14 +429,14 @@
     whyKind:"llm",
     why:'<b>The model, under three honesty rules.</b> The demo spec must never let silence render as success. The docs must record what could not be written yet — a stalled paragraph is a product gap. And <b>if the press release claims it, telemetry must measure it</b> — or the claim comes out.',
     inLab:"In — the PR’s claims", inHtml:
-      '<div class="chips tight"><span class="chip">¶3 “we tell you before we bill”</span><span class="chip">¶5 “one tap to cancel”</span><span class="chip">¶7 the finance disagreement</span></div>'+
+      '<div class="chips tight"><span class="chip">para 3 “we tell you before we bill”</span><span class="chip">para 5 “one tap to cancel”</span><span class="chip">para 7 the finance disagreement</span></div>'+
       '<p class="cap">Every promise the press release makes arrives here as a liability: each must become a demo beat, a doc section, and a metric — or be cut upstream.</p>',
     midLab:"The prompt — telemetry, the sharpest of the three", midHtml:'<div class="pmt"><div class="pmh"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system prompt · instrumentation planner</span></div>'+'<pre class="pmb">You are the INSTRUMENTATION PLANNER. Make every\npress release claim measurable — or force the\ndecision to cut it.\n\n1. One north star, precise enough that two\n   people would implement it identically.\n   <span class="kw">Gaming rule: ask “what’s the cheapest way\n   to move this number without creating the\n   value?” — and design that out.</span>\n2. Input metrics: each tied to a PR claim.\n3. The unmeasurable list: every claim with no\n   metric, each as a forced decision —\n   <span class="st">instrument it, or cut the claim.</span>\n\n<span class="hl2">A baseline you don’t have is [UNKNOWN].\nNever an estimate.</span></pre></div>'+'<div class="pmf"><b>The highlighted rule keeps the dashboard honest.</b> A target before its baseline exists is an invented number with a deadline — it gets routed to an owner as a question instead.</div>',
     outLab:"Out — the claim map", outHtml:
       '<div class="relcard">'+
       '<div class="rh">05-telemetry.md — every metric cites its claim</div>'+
-      '<div class="rr"><span class="rk">M1 · reminder ≥48h before charge</span><span class="rv">PR ¶3</span></div>'+
-      '<div class="rr"><span class="rk">M2 · cancel-before-charge rate</span><span class="rv">PR ¶3</span></div>'+
+      '<div class="rr"><span class="rk">M1 · reminder ≥48h before charge</span><span class="rv">PR para 3</span></div>'+
+      '<div class="rr"><span class="rk">M2 · cancel-before-charge rate</span><span class="rv">PR para 3</span></div>'+
       '<div class="rr"><span class="rk">M3 · conversion, reminded vs holdback</span><span class="rv a">C5 — the finance fear</span></div>'+
       '<div class="rr"><span class="rk">M4 · silent-surprised proxy</span><span class="rv u">C7 [UNKNOWN]</span></div>'+
       '</div>'+
@@ -445,13 +454,14 @@
     whyKind:"code",
     why:'<b>The model writes; code checks its citations.</b> Only now do requirements exist — and every one must cite the paragraph it derives from. A script then walks every <code>Source:</code> line and fails anything that points at nothing. Scope creep is precisely a requirement that cannot cite anything.',
     inLab:"In — the whole chain", inHtml:
-      '<div class="chips tight"><span class="chip">PR ¶1–¶8</span><span class="chip">IFAQ-01–07</span><span class="chip">M1–M4</span><span class="chip gy">5 open blockers</span></div>'+
+      '<div class="chips tight"><span class="chip">PR para 1–8</span><span class="chip">IFAQ-01–07</span><span class="chip">M1–M4</span><span class="chip gy">5 open blockers</span></div>'+
       '<p class="cap">Everything upstream is now citable by ID. A requirement is legitimate only if something up there demands it.</p>',
-    midLab:"The prompt — then the script", midHtml:'<div class="pmt"><div class="pmh"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system prompt · requirements engineer</span></div>'+'<pre class="pmb">You are the REQUIREMENTS ENGINEER.\n\nFORMAT, per requirement:\n  REQ-D1 · title\n  <span class="st">Source: PR ¶3 / IFAQ-07  ← machine-checked</span>\n  Statement: one sentence, testable\n  GIVEN / WHEN / THEN — observable from outside\n\nFLAG, never hide:\n<span class="hl2">source chain touches [ASSUMED] → RESTS ON\nASSUMPTION · no source at all → the Flagged\nsection. Do not delete it. Do not invent a\nsource for it.</span></pre></div>'+'<div class="pmf"><b>Then</b> <code>verify_sources.py</code> — plain Python — resolves every <code>Source:</code> pointer against the actual files. The model claims provenance; <b>the script proves it.</b></div>',
+    midLab:"The prompt — then the script", midHtml:'<div class="pmt"><div class="pmh"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system prompt · requirements engineer</span></div>'+'<pre class="pmb">You are the REQUIREMENTS ENGINEER.\n\nFORMAT, per requirement:\n  REQ-D1 · title\n  <span class="st">Source: PR para 3 / IFAQ-07  ← machine-checked</span>\n  Statement: one sentence, testable\n  GIVEN / WHEN / THEN — observable from outside\n\nFLAG, never hide:\n<span class="hl2">source chain touches [ASSUMED] → RESTS ON\nASSUMPTION · no source at all → the Flagged\nsection. Do not delete it. Do not invent a\nsource for it.</span></pre></div>'+'<div class="pmf"><b>Then</b> <code>verify_sources.py</code> — plain Python — resolves every <code>Source:</code> pointer against the actual files. The model claims provenance; <b>the script proves it.</b></div>',
     outLab:"Out — sourced, flagged, verified", outHtml:
       '<div class="relcard">'+
-      '<div class="rh">REQ-D2 · the reminder holdback experiment</div>'+
-      '<div class="rr"><span class="rk">Source</span><span class="rv">PR ¶7 / IFAQ-01</span></div>'+
+      '<div class="rh">REQ-D2 · the reminder experiment</div>'+
+      '<div class="rr"><span class="story"><b>As</b> the VP in the finance standoff, <b>I want</b> the revenue fear tested by a real experiment, <b>so that</b> neither belief ships unverified.</span></div>'+
+      '<div class="rr"><span class="rk">Source</span><span class="rv">PR para 7 / IFAQ-01</span></div>'+
       '<div class="rr"><span class="rk">Provenance</span><span class="rv a">RESTS ON ASSUMPTION (C5)</span></div>'+
       '<div class="rr"><span class="rk">THEN</span><span class="rv">effect size + CI, or declares itself underpowered</span></div>'+
       '</div>'+
@@ -463,7 +473,7 @@
     drawer:[
       {t:"Why this way", h:'<p>This is the <b>generate-then-verify split</b>: the model does the fuzzy work of deriving requirements, and a deterministic script does the exact work of checking that every citation resolves. Neither could do the other’s job.</p><p>And provenance rides the chain: a requirement whose sources touch an [ASSUMED] claim is flagged <b>RESTS ON ASSUMPTION</b> and listed separately at readiness — the intake’s tags surfacing five stages later, exactly where a sponsor needs them.</p>'},
       {t:"If they ask", h:'<p class="qq">“What stops the model inventing a citation? The script. It doesn’t trust the text — it resolves every Source: pointer against the actual artifacts and fails the ones that point at nothing. Trust the check, not the claim.”</p>'},
-      {t:"AI concepts", h:'<div class="cq"><div class="c"><span class="cn">Generate → verify split</span><div class="cd">Model for derivation, deterministic code for verification — each doing only what it’s reliable at.</div></div><div class="c"><span class="cn">Data lineage for scope</span><div class="cd">Requirement → ¶ → claim → tag: every line of scope has a chain of custody back to evidence.</div></div><div class="c"><span class="cn">Flag, never delete</span><div class="cd">Unsourced wants are preserved and surfaced, not silently dropped — visibility over tidiness.</div></div></div>'}
+      {t:"AI concepts", h:'<div class="cq"><div class="c"><span class="cn">Generate → verify split</span><div class="cd">Model for derivation, deterministic code for verification — each doing only what it’s reliable at.</div></div><div class="c"><span class="cn">Data lineage for scope</span><div class="cd">Requirement → para → claim → tag: every line of scope has a chain of custody back to evidence.</div></div><div class="c"><span class="cn">Flag, never delete</span><div class="cd">Unsourced wants are preserved and surfaced, not silently dropped — visibility over tidiness.</div></div></div>'}
     ]
   },
   {
@@ -475,7 +485,7 @@
     inLab:"In — requirements + blockers", inHtml:
       '<div class="chips tight"><span class="chip">7 requirements</span><span class="chip gy">BLK-01 finance co-design</span><span class="chip gy">BLK-02 per-market rules</span></div>'+
       '<p class="cap">Two blockers are still open — and that fact must survive into the plan instead of being scheduled over.</p>',
-    midLab:"The prompt — then the script", midHtml:'<div class="pmt"><div class="pmh"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system prompt · release planner</span></div>'+'<pre class="pmb">You are the RELEASE PLANNER. Cut the\nrequirements into slices that ship alone and\nprove something alone.\n\n- Slice by narrowing the customer scenario.\n  <span class="kw">NEVER by layer — schema/API/UI ships nothing\n  until everything ships.</span>\n- Every requirement in exactly ONE slice.\n- A slice on an OPEN blocker is NOT SCHEDULABLE.\n<span class="hl2">No dates on blocked slices — a date on a\nblocked slice commits to a shape nobody\nagreed to.</span>\n- Emit the dependency DAG. It must be acyclic.</pre></div>'+'<div class="pmf"><b>Then</b> <code>export_jira.py</code> parses the slices and the DAG edge list and writes <code>jira-import.csv</code> — epics, stories, dependency links — with zero retyping between plan and tracker.</div>',
+    midLab:"The prompt — then the script", midHtml:'<div class="pmt"><div class="pmh"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system prompt · release planner</span></div>'+'<pre class="pmb">You are the RELEASE PLANNER. Cut the\nrequirements into slices that ship alone and\nprove something alone.\n\n- Slice by narrowing the customer scenario.\n  <span class="kw">NEVER by layer — schema/API/UI ships nothing\n  until everything ships.</span>\n- Every requirement in exactly ONE slice.\n- A slice on an OPEN blocker is NOT SCHEDULABLE.\n<span class="hl2">No dates on blocked slices — a date on a\nblocked slice commits to a shape nobody\nagreed to.</span>\n- Draw the dependency map — no circular\nwaits.</pre></div>'+'<div class="pmf"><b>Then</b> <code>export_jira.py</code> parses the slices and the DAG edge list and writes <code>jira-import.csv</code> — epics, stories, dependency links — with zero retyping between plan and tracker.</div>',
     outLab:"Out — the plan", outHtml:
       '<div class="tlist">'+
       '<div class="row cf"><span class="id">R1</span><span class="ds">Measure the fury — the surprise join, dark</span><span class="badge b-cf">Ships today</span></div>'+
@@ -485,13 +495,13 @@
       '</div>'+
       '<div class="tally"><span><b>2</b> schedulable today</span><span>·</span><span><b>2</b> blocked — no dates, owners named</span></div>'+
       '<div class="ship" style="margin-top:11px">'+
-      '<div class="sr"><span class="ck">✓</span><span>export_jira.py → jira-import.csv</span><span class="sub">DAG acyclic · no orphans</span></div>'+
+      '<div class="sr"><span class="ck">✓</span><span>export_jira.py → jira-import.csv</span><span class="sub">map clean · no orphans</span></div>'+
       '</div>'+
       '<div class="note"><b>Why R1 first:</b> the baseline exists before anything changes, so every later claim is measurable against it. No meeting required.</div>',
     drawer:[
       {t:"Why this way", h:'<p>“No dates on blocked slices” is the plan’s version of calibrated abstention: a date on R3 before finance co-designs the experiment would commit to a shape nobody agreed to. Instead the blocked slice names <b>the exact meeting that unblocks it</b>.</p><p>The CSV export being deterministic matters for a dull, important reason: hand-copying a plan into a tracker is where scope gets double-counted. The script places every requirement exactly once because the plan already did.</p>'},
       {t:"If they ask", h:'<p class="qq">“Why not slice by layer — schema first, then API, then UI? Because a layer ships nothing until every layer ships. A narrowed customer scenario — one cohort, in-app only — is testable and valuable on its own, and R2 proves it: it reduces surprises even if the email program never ships.”</p>'},
-      {t:"AI concepts", h:'<div class="cq"><div class="c"><span class="cn">Deterministic core</span><div class="cd">The artifact-to-tracker hop is pure code — the step where silent drift usually enters has no model in it.</div></div><div class="c"><span class="cn">DAG validation</span><div class="cd">The dependency graph must be acyclic and total — checkable properties, checked mechanically.</div></div><div class="c"><span class="cn">Bounded commitment</span><div class="cd">Blocked work carries owners and unblock conditions, never dates — uncertainty stays visible in the plan.</div></div></div>'}
+      {t:"AI concepts", h:'<div class="cq"><div class="c"><span class="cn">Deterministic core</span><div class="cd">The artifact-to-tracker hop is pure code — the step where silent drift usually enters has no model in it.</div></div><div class="c"><span class="cn">DAG validation</span><div class="cd">The dependency map must have no circular waits and no orphans — checkable properties, checked mechanically.</div></div><div class="c"><span class="cn">Bounded commitment</span><div class="cd">Blocked work carries owners and unblock conditions, never dates — uncertainty stays visible in the plan.</div></div></div>'}
     ]
   },
   {
@@ -524,6 +534,25 @@
       {t:"AI concepts", h:'<div class="cq"><div class="c"><span class="cn">Human-in-the-loop gate</span><div class="cd">One accountable checkpoint between the pipeline and any commitment — the model recommends, a person decides.</div></div><div class="c"><span class="cn">Calibrated verdicts</span><div class="cd">NOT YET DECIDABLE is a legitimate answer — the GO is scoped to what the evidence actually supports.</div></div><div class="c"><span class="cn">Auditability</span><div class="cd">Overrides, verdicts and unresolved challenges all live in DECISIONS.md — the run is defensible months later.</div></div></div>'}
     ]
   }];
+
+  var PERS=[
+   'A busy VP of Product with a fix already in their head — and an AI allowed to say &ldquo;prove it&rdquo; six times.',
+   'A ghostwriter ordered to write the launch story — and forbidden to invent a single number.',
+   'A second reviewer who never watched the draft being written — and can&rsquo;t rewrite a word of it.',
+   'Your CFO, your lawyer and a regulator — simulated on purpose, before the real ones show up.',
+   'The demo audience, the support agent, and the analyst who has to defend every number.',
+   'The engineer picking this up Monday morning, cold.',
+   'The delivery lead loading the tracker this afternoon.',
+   'The sponsor deciding go or no-go — with the whole chain on one page.'];
+  var OFS=[
+   '<span class="of">00-intake.md</span><span class="ow">the evidence ledger</span><span class="ofor">written for: <b>the team — and every stage after</b></span>',
+   '<span class="of">01-press-release.md</span><span class="ow">the one-page announcement</span><span class="ofor">written for: <b>leadership</b></span>',
+   '<span class="of">DECISIONS.md + QUESTIONS.md</span><span class="ow">verdicts, and routed questions</span><span class="ofor">written for: <b>the human at the gate</b></span>',
+   '<span class="of">02-faq-&times;3 + BLOCKERS.md</span><span class="ow">the hard questions, each with an owner</span><span class="ofor">written for: <b>the leaders who&rsquo;ll ask anyway</b></span>',
+   '<span class="of">03-demo · 04-docs · 05-telemetry</span><span class="ow">the demo, the help page, the metrics</span><span class="ofor">for: <b>leadership · support · analytics</b></span>',
+   '<span class="of">06-requirements.md</span><span class="ow">engineer-ready, citation-checked</span><span class="ofor">written for: <b>the engineers who build it</b></span>',
+   '<span class="of">07-release-plan.md + jira-import.csv</span><span class="ow">the slice plan, tracker-ready</span><span class="ofor">written for: <b>the delivery tracker</b></span>',
+   '<span class="of">08-readiness.md + report.html</span><span class="ow">the go / no-go brief</span><span class="ofor">written for: <b>the sponsor deciding today</b></span>'];
 
   var TOK={human:{c:"var(--amber)",s:"var(--amber-soft)",i:"var(--amber)"},code:{c:"var(--green)",s:"var(--green-soft)",i:"var(--green)"},llm:{c:"var(--indigo)",s:"var(--indigo-soft)",i:"var(--indigo-deep)"}};
   var cur=0, openTab=-1;
@@ -558,7 +587,9 @@
     panel.innerHTML=
       '<div class="phead"><span class="pn">'+s.n+'</span>'+
         '<h3>'+s.title+'</h3>'+s.badge+'<span class="runs">'+s.runs+'</span></div>'+
+      '<div class="pline"><b>In the room</b><span>'+PERS[cur]+'</span></div>'+
       '<div class="pwhy"><span class="k">'+(s.whyKind==="llm"?"Why a model":s.whyKind==="code"?"Why code + model":"Why you")+'</span><span>'+s.why+'</span></div>'+
+      '<div class="ostrip">'+OFS[cur]+'</div>'+
       '<div class="pgrid">'+
         '<div class="side"><div class="slab in">'+s.inLab+'</div>'+s.inHtml+'</div>'+
         '<div class="side mid"><div class="slab mi">'+s.midLab+'</div>'+s.midHtml+'</div>'+
