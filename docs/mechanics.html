@@ -77,9 +77,28 @@ padding:.35rem .65rem;color:var(--ink-2);background:var(--paper)}
 .iochip b{color:var(--accent-ink);font-weight:600}
 .abody{display:grid;grid-template-columns:1.05fr 1fr;gap:1rem;padding:0 1.4rem 1.1rem;min-height:21rem}
 .promptwrap h4{margin-bottom:.5rem}
-.promptbox{font-family:var(--mono);font-size:.66rem;line-height:1.6;color:#dde3f0;
-white-space:pre-wrap;background:#161a26;border-radius:6px;padding:.95rem 1.05rem;margin:0;
-max-height:24rem;overflow:auto}
+.pbx{border-radius:7px;overflow:hidden;background:#161a26;border:1px solid #2a3044;
+box-shadow:0 5px 16px rgba(20,24,38,.18)}
+.pbxh{display:flex;align-items:center;gap:5px;padding:.42rem .7rem;background:#1e2434;border-bottom:1px solid #2a3044}
+.pbxh .pd{width:7px;height:7px;border-radius:50%;background:#3a4258}
+.pbxh .pt{margin-left:.35rem;font-family:var(--mono);font-size:.56rem;letter-spacing:.1em;
+text-transform:uppercase;color:#8d97b8;font-weight:600}
+.pbxh .vb{margin-left:auto;font-family:var(--mono);font-size:.52rem;letter-spacing:.07em;
+text-transform:uppercase;color:#9dbb9a;font-weight:700}
+.promptbox{font-family:var(--mono);font-size:.66rem;line-height:1.78;color:#dde3f0;
+white-space:pre-wrap;background:#161a26;padding:.85rem 1rem;margin:0;
+max-height:24rem;overflow:auto;border-radius:0}
+.promptbox .pk{color:#d8a94e;font-weight:600}
+.promptbox .ps{color:#9dbb9a}
+.promptbox .pn2{display:inline-block;color:#ffc773;font-weight:700;background:rgba(216,169,78,.14);
+box-shadow:inset 2px 0 0 #d8a94e;padding:.05em .45em .05em .55em;margin:.1em 0;border-radius:0 3px 3px 0;
+-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.pline{display:flex;gap:.7rem;align-items:baseline;padding:.55rem 1.4rem;border-top:1px solid var(--rule);
+border-bottom:1px solid var(--rule);background:var(--paper);font-size:.88rem;font-style:italic;color:var(--ink-2)}
+.pline b{font-family:var(--mono);font-size:.56rem;font-weight:600;letter-spacing:.1em;
+text-transform:uppercase;color:var(--accent-ink);font-style:normal;white-space:nowrap}
+.iochip.outc{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-ink)}
+.iochip.outc b{color:var(--accent-ink)}
 .tabs{display:flex;gap:0;border:1px solid var(--rule);border-radius:5px;overflow:hidden;
 width:max-content;max-width:100%;margin-bottom:.8rem;background:var(--paper)}
 .tabs button{font-family:var(--mono);font-size:.68rem;padding:.45rem .8rem;background:none;
@@ -267,7 +286,7 @@ section{padding:2.2rem 0}}
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const AGENTS=[
 {n:"0",role:"Intake Analyst",t:"Intake",io:["what's on your mind, verbatim","00-intake.md — challenge log + tagged evidence"],
- prompt:`You are the INTAKE ANALYST.
+ prompt:`<span class="pk">You are the INTAKE ANALYST.</span>
 Your job: turn what is on my mind into a
 tagged evidence ledger — and push back
 until the problem is real.
@@ -280,15 +299,15 @@ ASK ME, in order:
 5. What would make this NOT worth fixing
 6. What I believe but never checked
 
-PUSH BACK on: solution verbs · "everyone"
+<span class="pn2">PUSH BACK on: solution verbs · "everyone"
 · untagged numbers · "because" between
 facts. Budget: 6 challenges, counted
-out loud.
+out loud.</span>
 
-TAG everything: [OBSERVED] [REPORTED]
-[ASSUMED] [UNKNOWN].
-NEVER invent a figure.
-Do NOT write the press release.`,
+<span class="ps">TAG everything: [OBSERVED] [REPORTED]
+[ASSUMED] [UNKNOWN].</span>
+<span class="pn2">NEVER invent a figure.
+Do NOT write the press release.</span>`,
  push:`<ul>
 <li>Your problem contains build/add/need verbs.<span class="say">"That's the fix. What did you observe before you concluded it?"</span></li>
 <li>Your customer is "everyone."<span class="say">"Could you name ten of them? What fields would the query filter on?"</span></li>
@@ -298,9 +317,9 @@ Do NOT write the press release.`,
  ai:`<div class="cpt"><b>Bounded agency</b><span>Pushback is capped and counted — six, then it records and moves on.</span></div>
 <div class="cpt"><b>Grounding at the source</b><span>Every claim tagged before anything is generated from it.</span></div>
 <div class="cpt"><b>Calibrated abstention</b><span>Unknown stays [UNKNOWN] — never estimated into existence.</span></div>`,
- why:`The distance between your verbatim first statement and the final problem is this stage's proof of work — in the demo run, "we need reminder emails" became a measured cohort with a kill condition.`},
-{n:"1",role:"Narrative Author",t:"Press release",io:["00-intake.md","01-press-release.md — one page, ¶1–¶8"],
- prompt:`You are the NARRATIVE AUTHOR.
+ why:`The distance between your verbatim first statement and the final problem is this stage's proof of work — in the demo run, "we need reminder emails" became a measured group of real customers — plus what would make it not worth doing.`},
+{n:"1",role:"Narrative Author",t:"Press release",io:["00-intake.md","01-press-release.md — one page, paragraphs 1–8"],
+ prompt:`<span class="pk">You are the NARRATIVE AUTHOR.</span>
 Your job: write the launch announcement
 as if it already shipped — the ending
 first.
@@ -317,11 +336,11 @@ STRUCTURE, in order:
 8. Getting started
 
 RULES:
-- Number paragraphs ¶1–¶8 — requirements
-  cite them by number.
-- No source = [NEEDS EVIDENCE: ...],
-  never an invented figure.
-Do NOT write the FAQs.`,
+<span class="ps">- Number the paragraphs 1–8 —
+  requirements cite them by number.</span>
+<span class="pn2">- No source = [NEEDS EVIDENCE: ...],
+  never an invented figure.</span>
+<span class="pn2">Do NOT write the FAQs.</span>`,
  push:`<ul>
 <li>A figure appears that intake never established.<span class="say">"I don't invent numbers. Writing [NEEDS EVIDENCE] and continuing."</span></li>
 <li>The solution reads like it was written before the problem.<span class="say">"This starts from what we can build. What customer need forced this shape?"</span></li>
@@ -331,12 +350,12 @@ Do NOT write the FAQs.`,
  ai:`<div class="cpt"><b>Abstention over invention</b><span>A visible evidence gap outranks a plausible number.</span></div>
 <div class="cpt"><b>Structured output</b><span>Eight fixed sections; numbered paragraphs become citation targets.</span></div>`,
  why:`In the demo run the judge failed draft 1 in three words — "Everyone is not a customer" — and the rewrite around the forgot-cohort is what every later stage cites.`},
-{n:"2",role:"The Interrogators",t:"FAQs",io:["the approved press release","3 FAQ banks + BLOCKERS.md"],
- prompt:`You are three INTERROGATORS: a customer,
+{n:"2",role:"The Interrogators",t:"FAQs",io:["the approved press release","3 FAQ sets + BLOCKERS.md"],
+ prompt:`<span class="pk">You are three INTERROGATORS: a customer,
 a hostile executive, and a regional
-compliance reviewer.
+compliance reviewer.</span>
 
-WRITE three banks:
+WRITE three sets:
 1. External — what customers will ask
 2. Internal — the HOSTILE versions:
    "what do we show the regulator,
@@ -344,34 +363,34 @@ WRITE three banks:
 3. Regional — per-market rules, as
    public categories only
 
-TAG every answer: ANSWERED (sourced) /
-OPEN / BLOCKER.
+<span class="ps">TAG every answer: ANSWERED (sourced) /
+OPEN / BLOCKER.</span>
 Every BLOCKER: category · severity ·
 a five-minute question · owner ROLE ·
 Status: OPEN.
 
-NEVER: resolve a blocker · give a
+<span class="pn2">NEVER: resolve a blocker · give a
 compliance conclusion · soften a
-question. Zero blockers = the bank
-wasn't honest.`,
+question. Zero blockers = the set
+wasn't honest.</span>`,
  push:`<ul>
 <li>An internal question is polite.<span class="say">"That gets a polite answer. The hostile version: what happens at 3am, and who gets sued?"</span></li>
 <li>Zero blockers after the internal bank.<span class="say">"Every real initiative has something uncomfortable. Rewriting."</span></li>
 <li>An ANSWERED with no source inside it.<span class="say">"That's OPEN in costume — answered by whom, based on what?"</span></li>
 </ul><span class="budget">Budget: 2. Blockers themselves are never softened.</span>`,
- judge:`Is every "answered" actually sourced? Does any blocker assert a finding instead of asking a question? If nothing here is uncomfortable, the bank failed.<br><br><i>Your gate:</i> which blocker do you already suspect the answer to — and are you avoiding asking?`,
+ judge:`Is every "answered" actually sourced? Does any blocker assert a finding instead of asking a question? If nothing here is uncomfortable, the set failed.<br><br><i>Your gate:</i> which blocker do you already suspect the answer to — and are you avoiding asking?`,
  ai:`<div class="cpt"><b>Adversarial self-questioning</b><span>A red-team pass on your own plan, by design.</span></div>
 <div class="cpt"><b>Authority routing</b><span>Legal and finance questions get a named owner, never a generated answer.</span></div>`,
  why:`This is where the demo run found its real project: finance and product disagreed about reminder revenue, and the disagreement became an experiment both sides are bound by.`},
 {n:"3",role:"Demo Narrator",t:"Demo spec",io:["press release + FAQ answers","03-demo-spec.md + 03-demo.html one-pager"],
- prompt:`You are the DEMO NARRATOR.
+ prompt:`<span class="pk">You are the DEMO NARRATOR.</span>
 Your job: turn the press release into
 screens that can be narrated end to end
 without improvising.
 
 DESCRIBE:
 1. Each screen that changes — with
-   Source: PR ¶n
+   Source: PR para n
 2. Primary flow: actor does X → sees Y
 3. Failure states, as a table
 4. "What this deliberately does not
@@ -379,11 +398,11 @@ DESCRIBE:
    each thing out
 
 RULES:
-- Silence never renders as success.
+<span class="pn2">- Silence never renders as success.</span>
 - Unavailable ≠ failed.
-- A blocked capability ships visibly
+<span class="ps">- A blocked capability ships visibly
   absent: a disabled control with the
-  honest reason.
+  honest reason.</span>
 
 OUTPUT: the .md spec + the .html
 leadership one-pager.`,
@@ -397,9 +416,9 @@ leadership one-pager.`,
 <div class="cpt"><b>Dual output</b><span>Machine-readable spec and a human-readable page from one source of truth.</span></div>`,
  why:`Demos create commitments nobody made — the boundary section exists so leadership hears "not included, and here's the blocker" before anyone infers otherwise.`},
 {n:"4",role:"Technical Writer",t:"Docs",io:["press release + external FAQ","04-docs.md + 04-docs.html help page"],
- prompt:`You are the TECHNICAL WRITER,
+ prompt:`<span class="pk">You are the TECHNICAL WRITER,
 documenting a product that does not
-exist yet. That's the point: writing it
+exist yet.</span> That's the point: writing it
 now exposes what nobody can explain yet.
 
 WRITE: what it does · before you start ·
@@ -407,13 +426,13 @@ how to use it · failure behaviour ·
 limits · troubleshooting.
 
 THE RULE THAT MATTERS:
-When a paragraph will not come, DO NOT
-write around it. Put it under "could not
+<span class="pn2">When a paragraph will not come, DO NOT
+write around it.</span> Put it under "could not
 be written yet" with the blocker behind
 it. That list is the real deliverable.
 
-- [UNKNOWN] in a limits table = complete.
-- "TBD" = someone stopped typing. Fail.
+<span class="ps">- [UNKNOWN] in a limits table = complete.</span>
+<span class="pn2">- "TBD" = someone stopped typing. Fail.</span>
 - Voice: readable aloud on a support call.`,
  push:`<ul>
 <li>A paragraph won't come and you write around it.<span class="say">"A stalled paragraph is a product gap. It goes in 'could not be written yet' with its blocker."</span></li>
@@ -424,7 +443,7 @@ it. That list is the real deliverable.
 <div class="cpt"><b>Explicit-gap principle</b><span>A declared unknown is information; a smooth paragraph over a gap is a defect.</span></div>`,
  why:`In the demo run, "what if I was already charged?" could not be answered — and that unwritable paragraph is precisely the question support gets on day one. Now it has an owner.`},
 {n:"5",role:"Instrumentation Planner",t:"Telemetry",io:["every claim the press release makes","05-telemetry.md"],
- prompt:`You are the INSTRUMENTATION PLANNER.
+ prompt:`<span class="pk">You are the INSTRUMENTATION PLANNER.</span>
 Your job: make every press-release claim
 measurable — or force the decision to
 cut it.
@@ -434,9 +453,9 @@ DEFINE:
    two people would build it identically.
    - Include what the system CAN'T see
      in the denominator.
-   - Ask: what's the cheapest way to move
+<span class="ps">   - Ask: what's the cheapest way to move
      this number without creating the
-     value? Design that out.
+     value? Design that out.</span>
 2. Input metrics: each tied to a claim,
    each with a baseline and whether its
    instrumentation exists today.
@@ -444,8 +463,8 @@ DEFINE:
    with no metric → instrument or cut.
 
 RULES:
-- No baseline = [UNKNOWN]. Never estimate.
-- No target before its baseline exists.`,
+<span class="pn2">- No baseline = [UNKNOWN]. Never estimate.
+- No target before its baseline exists.</span>`,
  push:`<ul>
 <li>You offer an estimated baseline.<span class="say">"Is it missing, or unobtainable before instrumentation exists? Different sentences."</span></li>
 <li>A claim has no metric and no decision.<span class="say">"Instrument it, or cut it. Neither ships an unverifiable promise."</span></li>
@@ -456,27 +475,28 @@ RULES:
 <div class="cpt"><b>Measure-or-cut</b><span>Claims that can't be measured don't get to stay claims.</span></div>`,
  why:`In the demo run the author admitted they'd game open rates — so the north star became Surprise Rate, which counts the customer's fury instead of the email's delivery.`},
 {n:"6",role:"Requirements Engineer",t:"Requirements",io:["everything above","06-requirements.md — every line cites its source"],
- prompt:`You are the REQUIREMENTS ENGINEER.
+ prompt:`<span class="pk">You are the REQUIREMENTS ENGINEER.</span>
 Only now do requirements exist — and
 every one must cite the paragraph it
 came from.
 
 PER REQUIREMENT:
   REQ-D1 · title
-  Source: PR ¶3 / IFAQ-07  ← mandatory
+  <span class="ps">As a … / I want … / so that …</span>
+  <span class="ps">Source: PR para 3 / IFAQ-07 ← mandatory</span>
   Statement: one testable sentence
   GIVEN state / WHEN one action /
   THEN observable outcome
   Out of scope · Depends on
 
 FLAG, never hide:
-- chain touches [ASSUMED]
-  → RESTS ON ASSUMPTION
+<span class="ps">- chain touches [ASSUMED]
+  → RESTS ON ASSUMPTION</span>
 - open blocker shapes it
   → SHAPE PENDING, with the fork
-- NO source → the Flagged section.
+<span class="pn2"><span class="pn2">- NO source → the Flagged section.</span>
   Don't delete it. Don't invent a
-  source for it.
+  source for it.</span>
 
 Then run: verify_sources.py`,
  push:`<ul>
@@ -488,7 +508,7 @@ Then run: verify_sources.py`,
 <div class="cpt"><b>Generate → verify</b><span>The model proposes citations; a script checks them.</span></div>`,
  why:`"A requirement with no source" is the working definition of scope creep — and here it's enforceable, by a script, on every run.`},
 {n:"7",role:"Release Planner",t:"Release plan",io:["the requirement set","07-release-plan.md + jira-import.csv"],
- prompt:`You are the RELEASE PLANNER.
+ prompt:`<span class="pk">You are the RELEASE PLANNER.</span>
 Cut the requirements into slices that
 ship alone and prove something alone.
 
@@ -496,16 +516,16 @@ RULES:
 - Slice by narrowing the customer
   scenario — one integration, one
   market, detect-before-act.
-  NEVER by layer: schema/API/UI ships
-  nothing until everything ships.
+<span class="pn2">  NEVER by layer: schema/API/UI ships
+  nothing until everything ships.</span>
 - Every requirement in exactly ONE
   slice. Orphans declared, never dropped.
 - A slice on an OPEN blocker is NOT
   SCHEDULABLE — name the owner and the
   exact meeting that unblocks it.
-  No dates on blocked slices.
-- Emit the dependency DAG + edge list.
-  It must be acyclic.
+<span class="pn2">  No dates on blocked slices.</span>
+- Draw the dependency map + its edges.
+  No circular waits.
 
 Then run: export_jira.py`,
  push:`<ul>
@@ -518,7 +538,7 @@ Then run: export_jira.py`,
 <div class="cpt"><b>Schema-constrained export</b><span>The CSV comes from a script — imports can't be creatively formatted.</span></div>`,
  why:`In the demo run, two of four slices could start the same day with nobody's permission — and each blocked slice named the exact meeting that would free it.`},
 {n:"8",role:"Readiness Assessor",t:"Readiness",io:["the whole session","08-readiness.md + report.html"],
- prompt:`You are the READINESS ASSESSOR.
+ prompt:`<span class="pk">You are the READINESS ASSESSOR.</span>
 Give the sponsor a page they can decide
 from — starting with what this session
 does NOT know.
@@ -534,13 +554,13 @@ WRITE, in order:
 3. Blockers by severity, with owners
 4. Assumptions that must hold
 5. Top 3 reasons this fails —
-   MOST LIKELY first, not most dramatic
+<span class="ps">   MOST LIKELY first, not most dramatic</span>
 6. The smallest set of answers that
    would change the recommendation
 
-NEVER: close a blocker · add a new
+<span class="pn2">NEVER: close a blocker · add a new
 assumption · manufacture a verdict
-out of open questions.`,
+out of open questions.</span>`,
  push:`<ul>
 <li>The GO covers blocked slices.<span class="say">"That silently answers questions that belong to counsel. Scoping to what's unblocked."</span></li>
 <li>The failure list is ranked by drama.<span class="say">"Most likely first. The honest #1 is usually a meeting that never happens."</span></li>
@@ -551,7 +571,7 @@ out of open questions.`,
 <div class="cpt"><b>Human-in-the-loop by construction</b><span>The final gate takes no input from the model at all.</span></div>`,
  why:`"Not yet decidable" is a legitimate verdict here — a recommendation manufactured out of open questions is the exact failure this whole pipeline exists to prevent.`},
 {n:"E",role:"The Elicitor",t:"Context interview",io:["ten minutes of your answers","wb/context/elicited.md — a starter context pack"],
- prompt:`You are the ELICITOR. The user has no
+ prompt:`<span class="pk">You are the ELICITOR.</span> The user has no
 documents — but most context lives in
 heads, not files.
 
@@ -570,9 +590,9 @@ INTERVIEW, one slot at a time:
    what do you believe but never checked?
 
 RULES:
-- Everything is [REPORTED: the user].
+<span class="pn2">- Everything is [REPORTED: the user].
   Never [OBSERVED] — testimony isn't
-  a document.
+  a document.</span>
 - Hedges ("I think…") are written as
   [ASSUMED], out loud.
 - "Believed but never checked" goes
@@ -613,9 +633,9 @@ THEN:
 → PASS or REVISE, with the exact
   sentence to change.
 
-NEVER RULE ON:
+<span class="pn2">NEVER RULE ON:
 7. Strategy  8. Feasibility
-→ write a question + an owner instead.
+→ write a question + an owner instead.</span>
 
 FINAL TEST:
 Would a team commit a quarter to this
@@ -627,7 +647,7 @@ subheading?`,
    asserts a finding.
 3. Every blocker has an owner role.
 4. Honesty: if nothing here is
-   uncomfortable, the bank failed.`,
+   uncomfortable, the set failed.`,
 "3":`CHECK, in order:
 1. Every screen cites a press-release
    paragraph or FAQ answer.
@@ -677,6 +697,17 @@ CHECK, in order:
    = fail.
 3. Failure list ranked by likelihood,
    not drama.`};
+const PERS=[
+ "A busy VP of Product with a fix already in their head.",
+ "The VP who has to sell this upward tomorrow.",
+ "Your CFO, your lawyer and a regulator — simulated before the real ones show up.",
+ "Ten minutes in front of leadership — show, don't tell.",
+ "The support agent facing the angriest customer on launch day.",
+ "The analyst who must defend every number on this dashboard.",
+ "The engineer picking this up Monday morning, cold.",
+ "The delivery lead loading the tracker this afternoon.",
+ "The sponsor deciding go or no-go by end of day.",
+ "A user with plenty of context and zero documents."];
 let ai_=0, tab_=0;
 const chips=$("#achips");
 AGENTS.forEach((a,i)=>{const c=document.createElement("button");c.className="achip";
@@ -687,16 +718,17 @@ function draw(anim){
   $("#aprev").disabled=ai_===0; $("#anext").disabled=ai_===AGENTS.length-1;
   $$("#achips .achip").forEach((c,i)=>c.setAttribute("aria-current",i===ai_));
   const jp=JPROMPT[a.n];
-  const judgeTab=(jp?`<h4 style="margin:0 0 .4rem">The judge's prompt — what it is told to check</h4><pre class="promptbox" style="max-height:13rem;margin-bottom:.9rem">${jp}</pre>`:"")
+  const judgeTab=(jp?`<div class="pbx" style="margin-bottom:.9rem"><div class="pbxh"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">the judge's checklist · stage ${a.n}</span><span class="vb">same judge, every gate</span></div><pre class="promptbox" style="max-height:13rem">${jp}</pre></div>`:"")
     +`<h4 style="margin:0 0 .3rem">In plain words</h4><p class="tabpane" style="margin:0">${a.judge}</p>`;
   const TABS=[["Pushes back",a.push],["The judge & your gate",judgeTab],["AI concept",a.ai]];
   const card=$("#acard");
   card.innerHTML=`
    <div class="ahead"><div><span class="role">Agent ${a.n} · ${a.role}</span><h3>${a.t}</h3></div>
     <span class="out">→ ${a.io[1].split(" — ")[0].split(" + ")[0]}</span></div>
-   <div class="iorow"><span class="iochip"><b>IN ▸</b> ${a.io[0]}</span><span class="iochip"><b>OUT ▸</b> ${a.io[1]}</span></div>
+   <div class="pline"><b>In the room</b><span>${PERS[ai_]}</span></div>
+   <div class="iorow" style="padding-top:.9rem"><span class="iochip"><b>IN ▸</b> ${a.io[0]}</span><span class="iochip outc"><b>OUT ▸</b> ${a.io[1]}</span></div>
    <div class="abody">
-    <div class="promptwrap"><h4>The prompt</h4><pre class="promptbox">${a.prompt}</pre></div>
+    <div class="promptwrap"><h4>The prompt</h4><div class="pbx"><div class="pbxh"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system prompt · ${a.role}</span><span class="vb">operator card</span></div><pre class="promptbox">${a.prompt}</pre></div></div>
     <div><div class="tabs">${TABS.map((t,i)=>`<button aria-pressed="${i===tab_}">${t[0]}</button>`).join("")}</div>
      <div class="tabpane">${TABS[tab_][1]}</div></div>
    </div>
