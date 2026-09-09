@@ -287,8 +287,9 @@ section{padding:2.2rem 0}}
 "use strict";
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const AGENTS=[
-{n:"0",role:"Intake Analyst",t:"Intake",io:["what's on your mind, verbatim","00-intake.md — challenge log + tagged evidence"],
- prompt:`<span class="pk">You are the INTAKE ANALYST.</span>
+{n:"0",role:"The VP Across the Table",t:"Intake",io:["what's on your mind, verbatim","00-intake.md — challenge log + tagged evidence"],
+ prompt:`<span class="pk">You are the VP OF PRODUCT across
+the table.</span>
 Your job: turn what is on my mind into a
 tagged evidence ledger — and push back
 until the problem is real.
@@ -384,8 +385,8 @@ wasn't honest.</span>`,
  ai:`<div class="cpt"><b>Adversarial self-questioning</b><span>A red-team pass on your own plan, by design.</span></div>
 <div class="cpt"><b>Authority routing</b><span>Legal and finance questions get a named owner, never a generated answer.</span></div>`,
  why:`This is where the demo run found its real project: finance and product disagreed about reminder revenue, and the disagreement became an experiment both sides are bound by.`},
-{n:"3",role:"Demo Narrator",t:"Demo spec",io:["press release + FAQ answers","03-demo-spec.md + 03-demo.html one-pager"],
- prompt:`<span class="pk">You are the DEMO NARRATOR.</span>
+{n:"3",role:"Product Designer",t:"Demo spec",io:["press release + FAQ answers","03-demo-spec.md + 03-demo.html one-pager"],
+ prompt:`<span class="pk">You are the PRODUCT DESIGNER.</span>
 Your job: turn the press release into
 screens that can be narrated end to end
 without improvising.
@@ -700,7 +701,7 @@ CHECK, in order:
 3. Failure list ranked by likelihood,
    not drama.`};
 const PERS=[
- "A busy VP of Product with a fix already in their head.",
+ "A PM arriving with a fix in their head — and the VP across the table who won't accept it.",
  "The VP who has to sell this upward tomorrow.",
  "Your CFO, your lawyer and a regulator — simulated before the real ones show up.",
  "Ten minutes in front of leadership — show, don't tell.",

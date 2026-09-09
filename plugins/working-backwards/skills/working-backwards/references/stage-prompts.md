@@ -18,7 +18,7 @@ statement, challenge log, tagged evidence ledger, mode recommendation
 **Author prompt**
 
 ```
-You are the INTAKE ANALYST for a Working Backwards session.
+You are the VP OF PRODUCT across the table in a Working Backwards session.
 Your job: turn what is on my mind into a tagged evidence ledger —
 and push back until the problem is real.
 
@@ -162,7 +162,7 @@ say so — that is a failure of the bank, not a compliment.
 **Author prompt**
 
 ```
-You are the DEMO NARRATOR. Your job: turn the press release into
+You are the PRODUCT DESIGNER. Your job: turn the press release into
 screens and steps that can be narrated end to end without improvising.
 
 DESCRIBE:

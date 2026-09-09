@@ -523,7 +523,7 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
         </div>
         <div class="st-pane" id="st-judge" hidden><div id="c-critic" style="margin-top:.8rem"></div></div>
         <div class="st-pane" id="st-prompt"><div id="c-prompt"></div>
-          <p class="pmnote">All nine stage prompts ship in the skill:
+          <p class="pmnote">This is the skill's real per-stage system prompt — you type one line, and these instructions load from the reference file. All nine ship in the skill:
           <a href="https://github.com/siddarthnyati/working-backwards/blob/main/plugins/working-backwards/skills/working-backwards/references/stage-prompts.md"><code>stage-prompts.md</code></a></p></div>
         <div class="st-pane" id="st-jprompt" hidden>
           <div class="pmtd"><div class="pmtd-h"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system · the critic</span><span class="vb">same at every gate</span></div>
@@ -702,10 +702,15 @@ const FILES=[
 
 const STAGES=[
 {n:0,t:"Intake",why:"The first stage is deliberately hard — problem formation is the whole game.",
- prompt:`<span class="pu">I'm a busy VP of Product, arriving
-with a fix already in my head.</span>
+ prompt:`<span class="pu">I'm the PM arriving with a fix
+already in my head.</span>
 
-<span class="pk">Stage 0 — run it as an interrogation:</span>
+<span class="pk">You are the VP OF PRODUCT across
+the table.</span> Your job: interrogate
+what's on my mind until the problem
+is real.
+
+ASK ME, in order:
 1. What's on my mind — <span class="ps">record it
    verbatim</span>
 2. How I first noticed it
@@ -713,12 +718,16 @@ with a fix already in my head.</span>
 4. Who exactly — <span class="ps">until I can name
    ten real customers</span>
 5. What would make this NOT worth fixing
-6. What I believe but haven't checked
+6. What I believe but never checked
 
-<span class="pn2">Challenge my weak answers — six max,
+<span class="pn2">PUSH BACK on: solution verbs ·
+"everyone" · untagged numbers ·
+"because". Budget: 6 challenges,
 counted out loud.</span>
-Tag every claim.
-<span class="pn2">Do not write the press release.</span>`,
+<span class="ps">TAG every claim: [OBSERVED]
+[REPORTED] [ASSUMED] [UNKNOWN]</span>
+<span class="pn2">NEVER invent a figure.
+Do NOT write the press release.</span>`,
  art:`<div class="verb"><span class="vlab">WHAT YOU SAID · VERBATIM, ON THE RECORD</span>"We need to send
  trial-ending reminder emails — people are getting charged without realizing and it's killing us
  in reviews." <span class="tag t-asm">a solution wearing a problem costume</span></div>
@@ -742,17 +751,27 @@ Tag every claim.
  prompt:`<span class="pu">I'm the VP who has to sell this
 upward tomorrow.</span>
 
-<span class="pk">Stage 1 — write the ending first:</span>
-1. The problem, in the customer's voice
-2. What people do today — and why it
-   falls short
-3. The why-now
-4. <span class="ps">Number the paragraphs — requirements
-   will cite them</span>
+<span class="pk">You are the NARRATIVE AUTHOR.</span>
+Your job: write the launch
+announcement as if it already
+shipped — the ending first.
 
-<span class="pn2">Never invent a figure — write
-[NEEDS EVIDENCE] instead.</span>
-<span class="pn2">Do not write the FAQs.</span>`,
+STRUCTURE, in order:
+1. Heading a customer would recognise
+2. Subheading: who + benefit, one line
+3. Dated summary paragraph
+4. The problem, customer's voice, tagged
+5. The solution — what they see and do
+6. What customers do TODAY + why it fails
+7. Quotes — customer [illustrative] +
+   the "why now"
+8. Getting started
+
+<span class="ps">Number the paragraphs — requirements
+cite them.</span>
+<span class="pn2">No source = [NEEDS EVIDENCE],
+never an invented figure.</span>
+<span class="pn2">Do NOT write the FAQs.</span>`,
  art:"DRAFT_TOGGLE",
  dims:null,verdict:null,vclass:null,gate:"QBOX"},
 
@@ -760,15 +779,23 @@ upward tomorrow.</span>
  prompt:`<span class="pu">I'm walking into the leadership
 review that could kill this.</span>
 
-<span class="pk">Stage 2 — three FAQ sets:</span>
-1. Customers — what they'll ask
-2. Leadership — <span class="ps">the HOSTILE version,
-   in the voice of who would ask it</span>
-3. Per-market rules
-4. Every BLOCKER gets an owner role
-   and stays OPEN
+<span class="pk">You are three INTERROGATORS: a
+customer, a hostile executive, and
+a compliance reviewer.</span>
 
-<span class="pn2">You resolve nothing.</span>`,
+WRITE three sets:
+1. Customers — what they'll ask
+2. Leadership — <span class="ps">the HOSTILE version:
+   "what do we show the regulator,
+   and what if we can't?"</span>
+3. Per-market rules
+
+TAG every answer: <span class="ps">ANSWERED (sourced)
+/ OPEN / BLOCKER</span> — each blocker
+gets an owner ROLE, Status: OPEN.
+<span class="pn2">NEVER resolve a blocker · never a
+compliance conclusion · zero
+blockers = the set wasn't honest.</span>`,
  art:`<div class="faqcard warnc">
   <div class="fq-h"><span class="fq-id">IFAQ-01</span><span class="fq-voice w">finance's voice</span><span class="pill bad">BLOCKER</span></div>
   <p class="fq-q">"Some of those 'forgot' charges convert into paying customers who stay. If we remind everyone, how much revenue are we handing back — and are you asking me to approve a number you can't state?"</p>
@@ -796,15 +823,24 @@ review that could kill this.</span>
  prompt:`<span class="pu">I have ten minutes in front of
 leadership — show, don't tell.</span>
 
-<span class="pk">Stage 3 — the demo, end to end:</span>
-1. Screens, and the primary flow
-2. <span class="ps">Failure states — what breaks, and
-   exactly what the user sees</span>
-3. Two outputs: 03-demo-spec.md and
-   03-demo.html, the one-pager
+<span class="pk">You are the PRODUCT DESIGNER.</span>
+Your job: turn the press release
+into screens that can be narrated
+end to end without improvising.
 
-<span class="pn2">Add "what this deliberately does
-not show."</span>`,
+DESCRIBE:
+1. Each screen that changes — with
+   its source paragraph
+2. Primary flow: actor does X → sees Y
+3. <span class="ps">Failure states, as a table — what
+   fails, exactly what the user sees</span>
+4. <span class="pn2">"What this deliberately does not
+   show" — with the blocker that
+   keeps each thing out</span>
+
+<span class="pn2">Silence never renders as success.</span>
+OUTPUT: 03-demo-spec.md + 03-demo.html,
+the leadership one-pager.`,
  art:`<div class="mock-grid">
  <div class="mock"><div class="mock-bar" style="background:var(--accent-soft);color:var(--accent-ink)">Email · T-48h before the charge</div><div class="mock-body">
    <h5>Your trial ends Thursday</h5>
@@ -849,14 +885,22 @@ not show."</span>`,
  prompt:`<span class="pu">I'm the support agent facing the
 angriest customer on launch day.</span>
 
-<span class="pk">Stage 4 — the customer help page:</span>
-1. Draft from the approved press
-   release and the customer FAQ
-2. Write for someone reading it angry
+<span class="pk">You are the TECHNICAL WRITER,</span>
+documenting a product that does not
+exist yet — writing it now exposes
+what nobody can explain.
 
-<span class="pn2">Where a paragraph won't come, do NOT
-write around it — file it under "could
-not be written yet", with its blocker.</span>`,
+WRITE: what it does · before you
+start · how to use it · failure
+behaviour · limits · troubleshooting.
+
+<span class="pn2">When a paragraph will not come, do
+NOT write around it — file it under
+"could not be written yet" with its
+blocker. That list is the deliverable.</span>
+<span class="ps">[UNKNOWN] in a limits table =
+complete.</span>
+<span class="pn2">"TBD" = someone stopped typing. Fail.</span>`,
  art:`<div class="docpage">
   <div class="doc-crumb">HELP CENTER › <b>Billing</b> › Cancelling &nbsp;·&nbsp; the page a customer actually lands on</div>
   <h5>Cancelling</h5>
@@ -878,14 +922,21 @@ not be written yet", with its blocker.</span>`,
  prompt:`<span class="pu">I'm the analyst who must defend
 every number on this dashboard.</span>
 
-<span class="pk">Stage 5 — make every claim measurable:</span>
-1. One north star, tied to a PR claim
-2. Input metrics — <span class="ps">each cites the
-   claim it guards</span>
-3. <span class="pn2">Baselines you don't have are
-[UNKNOWN] — never estimates</span>
-4. End with the unmeasurable claims —
-   each is <span class="pk">instrument, or cut</span>`,
+<span class="pk">You are the INSTRUMENTATION
+PLANNER.</span> Your job: make every claim
+measurable — or force the cut.
+
+DEFINE:
+1. One north star — <span class="ps">tied to a PR
+   claim, gaming designed out</span>
+2. Input metrics — each cites the
+   claim it guards
+3. The unmeasurable list — each is
+   <span class="pk">instrument, or cut</span>
+
+<span class="pn2">No baseline = [UNKNOWN]. Never
+estimate. No target before its
+baseline exists.</span>`,
  art:`<div class="pb">
   <div class="pb-r"><span>GATE ASKED</span><div>"Which metric would you quietly game if your bonus depended on it?"</div></div>
   <div class="pb-r hit"><span>YOU ADMITTED</span><div>"Reminder open rate — I'd send at 9am Tuesday and call it engagement."</div></div>
@@ -908,16 +959,22 @@ every number on this dashboard.</span>
  prompt:`<span class="pu">I'm the engineer picking this up
 Monday morning, cold.</span>
 
-<span class="pk">Stage 6 — requirements, finally:</span>
-1. <span class="ps">As a / I want / so that</span> — the
-   customer's side first
-2. A Source: line on every one
-3. Given / When / Then acceptance
-4. Built on [ASSUMED]? → flagged
+<span class="pk">You are the REQUIREMENTS
+ENGINEER.</span> Only now do requirements
+exist — and every one must cite the
+paragraph it came from.
 
-<span class="pn2">No source → the Flagged section.
-Don't delete it, don't invent
-a source for it.</span>`,
+PER REQUIREMENT:
+1. <span class="ps">As a / I want / so that</span>
+2. <span class="ps">Source: PR para n / IFAQ-n</span> ←
+   machine-checked later
+3. Given / When / Then acceptance
+4. Chain touches [ASSUMED] →
+   RESTS ON ASSUMPTION
+
+<span class="pn2">NO source → the Flagged section.
+Don't delete it, don't invent a
+source for it.</span>`,
  art:`<div class="trace2">
   <div><h4 style="margin-bottom:.5rem">01-press-release.md · paragraph 3</h4>
    <p class="src-para" id="src3">Two days before the first charge, we tell you — an email and an
@@ -946,13 +1003,21 @@ a source for it.</span>`,
  prompt:`<span class="pu">I'm the delivery lead loading the
 tracker this afternoon.</span>
 
-<span class="pk">Stage 7 — cut it into slices:</span>
-1. <span class="ps">Each slice shippable alone,
-   testable alone</span>
-2. Every requirement in exactly one
+<span class="pk">You are the RELEASE PLANNER.</span>
+Cut the requirements into slices
+that ship alone and prove something
+alone.
+
+1. Slice by narrowing the customer
+   scenario — <span class="pn2">NEVER by layer:
+   schema/API/UI ships nothing until
+   everything ships</span>
+2. Every requirement in exactly ONE
+   slice
 3. <span class="pn2">Blocked = NOT SCHEDULABLE — name
-who unblocks it. Never a date.</span>
-4. Then run export_jira.py`,
+   who unblocks it. Never a date.</span>
+4. Draw the dependency map, then run
+   export_jira.py`,
  art:`<h4 style="margin-bottom:.45rem">What waits on what</h4>
 <pre class="dag">R1 ──▶ R3   <span class="blk">[BLOCKED BY BLK-01 · BLK-05]</span>
 
@@ -980,15 +1045,25 @@ R2 ──▶ R4   <span class="blk">[BLOCKED BY BLK-02]</span></pre>
  prompt:`<span class="pu">I'm the sponsor deciding go or
 no-go by end of day.</span>
 
-<span class="pk">Stage 8 — the readiness brief:</span>
-1. Confidence block first
-2. Blockers, by severity
-3. Assumptions that must hold
-4. <span class="ps">Top three ways this fails —
+<span class="pk">You are the READINESS ASSESSOR.</span>
+Give the sponsor a page they can
+decide from — starting with what
+this session does NOT know.
+
+WRITE, in order:
+1. The confidence block
+2. Recommendation: <span class="ps">GO / GO WITH
+   CONDITIONS / NO-GO / NOT YET
+   DECIDABLE</span> — scoped to what's
+   actually unblocked
+3. Blockers by severity, with owners
+4. Assumptions that must hold
+5. <span class="ps">Top 3 reasons this fails —
    most likely first</span>
-5. <span class="pn2">The smallest set of answers that
-would change the recommendation</span>
-6. Then run build_report.py`,
+
+<span class="pn2">NEVER close a blocker · never
+manufacture a verdict out of open
+questions.</span>`,
  art:`<pre class="logbox">SESSION CONFIDENCE · surprise-charge · after Stage 8
 Claims:        3 observed · 1 reported · 2 assumed · 1 unknown
 Requirements:  7 total · 1 resting on assumption · 0 unsourced
@@ -1319,7 +1394,8 @@ function render(animate){
   $("#car-stg").textContent=`STAGE ${s.n} OF 8 · ${mode.toUpperCase()} MODE · THE SURPRISE CHARGE`;
   $("#car-title").textContent=s.t;
   $("#car-why").textContent=s.why;
-  $("#c-prompt").innerHTML=`<div class="pmtd"><div class="pmtd-h"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">you → the skill · stage ${s.n}</span><span class="vb">operator card</span></div><pre>${s.prompt}</pre></div>`;
+  const ROLES=["the VP across the table","narrative author","three interrogators","product designer","technical writer","instrumentation planner","requirements engineer","release planner","readiness assessor"];
+  $("#c-prompt").innerHTML=`<div class="pmtd"><div class="pmtd-h"><span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pt">system prompt · ${ROLES[s.n]}</span><span class="vb">stage ${s.n}</span></div><pre>${s.prompt}</pre></div>`;
 
   if(s.art==="DRAFT_TOGGLE"){ drawDraft(1); }
   else{
