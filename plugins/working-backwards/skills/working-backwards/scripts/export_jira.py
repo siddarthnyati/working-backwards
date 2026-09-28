@@ -2,8 +2,11 @@
 """Export a Working Backwards session to a JIRA-importable CSV.
 
 Reads 06-requirements.md and 07-release-plan.md from a session directory and writes
-jira-import.csv: one Epic row per release slice, one Story row per requirement,
-epics before their stories.
+jira-import.csv: ONE Epic for the initiative (named from the press release's first
+heading), one Story row per requirement. Each story's description opens with its
+user story (the requirement's Story: line, as a / I want / so that) and its
+Acceptance Criteria ride in their own field. Release slices survive as slice-rN
+labels on every story and as the slice plan inside the epic description.
 
 The Source: line is preserved verbatim in the Description. Traceability has to
 survive the export or it dies at the import, which is the whole point.
@@ -119,9 +122,29 @@ def blocker_severities(path):
     return sev
 
 
+def epic_identity(session_dir):
+    """Initiative name + tagline from 01-press-release.md: the first H1 that isn't
+    the file's own '# <Name>' header doubles as the tagline when present."""
+    path = os.path.join(session_dir, "01-press-release.md")
+    name, tagline = os.path.basename(os.path.abspath(session_dir)), ""
+    if os.path.exists(path):
+        h1s = []
+        with open(path, encoding="utf-8") as fh:
+            for line in fh:
+                if line.startswith("# "):
+                    h1s.append(line[2:].strip())
+        if h1s:
+            name = h1s[0]
+        if len(h1s) > 1:
+            tagline = h1s[1]
+    return name, tagline
+
+
 def description_for(req):
     f = req["fields"]
     parts = []
+    if f.get("story"):
+        parts.append(f["story"])
     if f.get("statement"):
         parts.append(f["statement"])
     if f.get("source"):
@@ -159,74 +182,73 @@ def priority_for(depends_on, severities):
     return SEVERITY_PRIORITY.get(worst, "Medium")
 
 
-def build_rows(reqs, slices, severities, ac_field=True):
+def build_rows(reqs, slices, severities, epic_name, epic_tagline, ac_field=True):
     by_id = {r["id"]: r for r in reqs}
     rows, placed = [], set()
+    slice_of, slice_blocked = {}, {}
 
+    # the one epic: the initiative, carrying the slice plan in its description
+    epic_desc = []
+    if epic_tagline:
+        epic_desc.append(epic_tagline)
+    plan_lines = []
     for sl in slices:
         blocked_by = sl["fields"].get("blocked by", "").strip()
         is_blocked = bool([i for i in ids_in(blocked_by) if i.startswith("BLK-")])
-
-        epic_desc = []
-        if sl["fields"].get("ships"):
-            epic_desc.append("Ships: %s" % sl["fields"]["ships"])
-        if sl["fields"].get("requirements"):
-            epic_desc.append("Requirements: %s" % sl["fields"]["requirements"])
-        if sl["fields"].get("depends on"):
-            epic_desc.append("Depends on: %s" % sl["fields"]["depends on"])
-        if is_blocked:
-            epic_desc.append("Blocked by: %s" % blocked_by)
-        if sl["bullets"]:
-            epic_desc.append("Test harness:\n" + "\n".join("- " + b for b in sl["bullets"]))
-
-        epic_labels = "working-backwards release-slice" + (" blocked" if is_blocked else "")
-        rows.append({
-            "Issue Type": "Epic",
-            "Summary": "%s · %s" % (sl["id"], sl["title"]),
-            "Description": "\n\n".join(epic_desc),
-            "Acceptance Criteria": "",
-            "Epic Name": "%s %s" % (sl["id"], sl["title"]),
-            "Parent": "",
-            "Labels": epic_labels,
-            "Priority": priority_for(blocked_by, severities) if is_blocked else "Medium",
-        })
-
         for rid in ids_in(sl["fields"].get("requirements", "")):
-            req = by_id.get(rid)
-            if req is None:
-                continue
-            placed.add(rid)
-            ac = "\n".join(req["ac"])
-            desc = description_for(req)
-            if not ac_field and ac:
-                desc = desc + "\n\nAcceptance criteria:\n" + ac
-            rows.append({
-                "Issue Type": "Story",
-                "Summary": "%s · %s" % (req["id"], req["title"]),
-                "Description": desc,
-                "Acceptance Criteria": ac if ac_field else "",
-                "Epic Name": "",
-                "Parent": "%s %s" % (sl["id"], sl["title"]),
-                "Labels": labels_for(req, is_blocked),
-                "Priority": priority_for(req["fields"].get("depends on", ""), severities),
-            })
+            slice_of[rid] = sl["id"]
+            slice_blocked[rid] = is_blocked
+        line = "%s %s — %s" % (sl["id"], sl["title"], sl["fields"].get("ships", "").rstrip("."))
+        if is_blocked:
+            line += " [BLOCKED BY %s]" % blocked_by
+        plan_lines.append("- " + line)
+    if plan_lines:
+        epic_desc.append("Release slices (delivery order, slice-rN labels on each story):\n"
+                         + "\n".join(plan_lines))
+    epic_desc.append("Every story cites the press-release paragraph or FAQ answer that demands it.")
 
-    orphans = [r for r in reqs if r["id"] not in placed]
-    for req in orphans:
+    rows.append({
+        "Issue Type": "Epic",
+        "Summary": epic_name + (" — %s" % epic_tagline if epic_tagline else ""),
+        "Description": "\n\n".join(epic_desc),
+        "Acceptance Criteria": "",
+        "Epic Name": epic_name,
+        "Parent": "",
+        "Labels": "working-backwards",
+        "Priority": "Medium",
+    })
+
+    def story_row(req):
+        rid = req["id"]
+        placed.add(rid)
         ac = "\n".join(req["ac"])
         desc = description_for(req)
         if not ac_field and ac:
             desc = desc + "\n\nAcceptance criteria:\n" + ac
-        rows.append({
+        labels = labels_for(req, slice_blocked.get(rid, False))
+        if rid in slice_of:
+            labels += " slice-%s" % slice_of[rid].lower()
+        else:
+            labels += " unsliced"
+        return {
             "Issue Type": "Story",
-            "Summary": "%s · %s" % (req["id"], req["title"]),
+            "Summary": "%s · %s" % (rid, req["title"]),
             "Description": desc,
             "Acceptance Criteria": ac if ac_field else "",
             "Epic Name": "",
-            "Parent": "",
-            "Labels": labels_for(req, False) + " unsliced",
+            "Parent": epic_name,
+            "Labels": labels,
             "Priority": priority_for(req["fields"].get("depends on", ""), severities),
-        })
+        }
+
+    # stories in delivery order: slice by slice, then any orphans
+    for sl in slices:
+        for rid in ids_in(sl["fields"].get("requirements", "")):
+            if rid in by_id and rid not in placed:
+                rows.append(story_row(by_id[rid]))
+    orphans = [r for r in reqs if r["id"] not in placed]
+    for req in orphans:
+        rows.append(story_row(req))
     return rows, orphans
 
 
@@ -250,7 +272,9 @@ def main(argv=None):
         print("error: no requirements found in %s/06-requirements.md" % d, file=sys.stderr)
         return 1
 
-    rows, orphans = build_rows(reqs, slices, severities, ac_field=not args.no_ac_field)
+    epic_name, epic_tagline = epic_identity(d)
+    rows, orphans = build_rows(reqs, slices, severities, epic_name, epic_tagline,
+                               ac_field=not args.no_ac_field)
     out = args.output or os.path.join(d, "jira-import.csv")
 
     with open(out, "w", newline="", encoding="utf-8") as fh:

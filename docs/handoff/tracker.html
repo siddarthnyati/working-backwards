@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The tracker, after import — surprise-charge handoff</title>
+<style>
+:root{--paper:#f2eee5;--paper-2:#eae5d9;--paper-3:#e0d9c9;--ink:#1c1815;--ink-2:#4a423a;
+--ink-3:#7d7263;--rule:#cdc4b1;--accent:#9c2f1c;--accent-soft:#f0d9d2;--accent-ink:#7a2415;
+--ok:#3d5a3f;--ok-soft:#dde5d9;--warn:#8a6116;--warn-soft:#f3e8d2;--bad:#a13326;--bad-soft:#f0d9d2;
+--mono:"SF Mono",ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
+--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--paper:#16130f;--paper-2:#1e1a15;--paper-3:#272119;
+--ink:#ece5d8;--ink-2:#b8ae9d;--ink-3:#8a7f6e;--rule:#3a3227;--accent:#e2705a;
+--accent-soft:#3a1f18;--accent-ink:#f0917d;--ok:#9dbb9a;--ok-soft:#24301f;
+--warn:#d8a94e;--warn-soft:#33270e;--bad:#e2705a;--bad-soft:#3a1f18}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+font-size:17px;line-height:1.62;overflow-x:hidden}
+.wrap{max-width:52rem;margin:0 auto;padding:0 1.4rem 4rem}
+header{padding:2.4rem 0 1.2rem}
+.back{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;display:inline-block;
+margin-bottom:1rem;margin-right:1rem;color:var(--ink);text-decoration-thickness:1px}
+.back:hover{color:var(--accent)}
+.crumb{font-family:var(--mono);font-size:.64rem;color:var(--ink-3);letter-spacing:.04em}
+h1{font-weight:400;font-size:clamp(1.5rem,3.6vw,2.1rem);letter-spacing:-.015em;line-height:1.2;margin:.3rem 0 .4rem}
+.who{font-family:var(--mono);font-size:.66rem;color:var(--accent-ink);margin-bottom:1rem}
+.doc{border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);padding:1.4rem 1.6rem;
+font-size:.92rem;color:var(--ink-2)}
+.doc h1{font-size:1.35rem;color:var(--ink);margin:0 0 .8rem}
+.doc h2{font-weight:400;font-size:1.12rem;color:var(--ink);margin:1.6rem 0 .6rem;
+padding-top:1.1rem;border-top:1px solid var(--rule)}
+.doc h2:first-child{margin-top:0;padding-top:0;border-top:0}
+.doc h3{font-weight:400;font-size:1rem;color:var(--ink);margin:1.1rem 0 .4rem}
+.doc p{margin:0 0 .8rem}
+.doc strong{color:var(--ink);font-weight:600}
+.doc blockquote{margin:0 0 .8rem;padding:.6rem .9rem;border-left:3px solid var(--accent);
+background:var(--accent-soft);border-radius:0 5px 5px 0;font-size:.86rem}
+.doc blockquote p{margin:0}
+.doc ul,.doc ol{margin:0 0 .8rem;padding-left:1.2rem}
+.doc li{margin-bottom:.35rem}
+.doc code{font-family:var(--mono);font-size:.8em;background:var(--paper-3);color:var(--accent-ink);
+padding:.08em .3em;border-radius:4px}
+.doc pre{font-family:var(--mono);font-size:.72rem;line-height:1.62;white-space:pre-wrap;
+background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:.9rem 1rem;
+margin:0 0 .9rem;overflow-x:auto;color:var(--ink-2)}
+.doc hr{border:0;border-top:1px solid var(--rule);margin:1.3rem 0}
+.doc .tw{overflow-x:auto}
+.doc table{border-collapse:collapse;width:100%;font-size:.8rem;min-width:34rem;margin:0 0 .9rem}
+.doc th,.doc td{text-align:left;padding:.4rem .55rem;border-bottom:1px solid var(--rule);vertical-align:top}
+.doc th{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;
+color:var(--ink-3);font-weight:500;background:var(--paper-3)}
+.note{font-size:.8rem;color:var(--ink-3);margin-top:.9rem;line-height:1.5}
+.note a{color:var(--ink-2)}
+/* tracker cards */
+.epicc{border:1px solid var(--accent);border-radius:8px;background:var(--accent-soft);
+padding:1rem 1.2rem;margin-bottom:1rem}
+.epicc .ty{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink)}
+.epicc h2{font-weight:400;font-size:1.2rem;margin:.25rem 0 .5rem;color:var(--ink)}
+.epicc pre{font-family:var(--mono);font-size:.7rem;line-height:1.6;white-space:pre-wrap;margin:0;color:var(--ink-2)}
+.story{border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);margin-bottom:.8rem;overflow:hidden}
+.story .sh{display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap;padding:.6rem 1rem;
+background:var(--paper-3);border-bottom:1px solid var(--rule)}
+.story .ty{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.story .sm{font-size:.95rem;color:var(--ink)}
+.story .pr{font-family:var(--mono);font-size:.6rem;color:var(--ink-3);margin-left:auto}
+.story .sb{padding:.8rem 1rem}
+.ustory{font-style:italic;color:var(--ink);font-size:.9rem;margin:0 0 .6rem;line-height:1.5}
+.meta{font-family:var(--mono);font-size:.64rem;color:var(--ink-3);line-height:1.7;margin:0 0 .6rem}
+.meta b{color:var(--accent-ink);font-weight:600}
+.fld{font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;
+color:var(--ink-3);display:block;margin:.5rem 0 .25rem}
+.ac{font-family:var(--mono);font-size:.68rem;line-height:1.65;white-space:pre-wrap;color:var(--ink-2);
+background:var(--paper);border:1px solid var(--rule);border-radius:5px;padding:.65rem .8rem;margin:0}
+.lbls{margin-top:.6rem}
+.lbl{font-family:var(--mono);font-size:.56rem;border:1px solid var(--rule);border-radius:3px;
+padding:.06rem .32rem;margin-right:.3rem;color:var(--ink-3);display:inline-block;margin-bottom:.2rem}
+.lbl.hot{color:var(--bad);border-color:var(--bad);background:var(--bad-soft)}
+</style></head><body><div class="wrap">
+<header>
+  <a class="back" href="../dev-handoff.html">← what the devs get</a>
+  <a class="back" href="../index.html">← the walkthrough</a>
+  <div class="crumb">examples/surprise-charge/ · jira-import.csv</div>
+  <h1>The tracker, after import</h1>
+  <div class="who">first reader: the tracker (and the team standup)</div>
+</header>
+<div class="epicc"><span class="ty">Epic</span><h2>The Surprise Charge — The trial that ends politely</h2><pre>The trial that ends politely
+
+Release slices (delivery order, slice-rN labels on each story):
+- R1 Measure the fury — the surprise join — Surprise Rate and the silent-surprised proxy computable per cohort. Dark
+- R2 No-surprise surfaces — the day-12 banner and honest receipts. In-app only — no email infra, no vendor risk
+- R3 The reminder + the experiment — the T-48h email with the holdback experiment attached — the readout that ends the finance argument [BLOCKED BY BLK-01, BLK-05]
+- R4 One-tap cancel, everywhere — one-tap cancel from all three surfaces; the parity rule asserted in CI per market [BLOCKED BY BLK-02]
+
+Every story cites the press-release paragraph or FAQ answer that demands it.</pre></div>
+<div class="story"><div class="sh"><span class="ty">Story</span><span class="sm">REQ-D1 · Build the surprise join</span><span class="pr">priority: Medium</span></div><div class="sb"><p class="ustory">As the analyst sizing this problem, I want charges joined to refunds, tickets and activity, so that Surprise Rate is a number instead of an argument.</p><div class="meta">Charges join to refunds, &quot;surprise&quot; tickets, and activity history, so Surprise Rate and the silent-surprised proxy compute per cohort.<br>Source: PR para 2 / IFAQ-03<br>Provenance: [OBSERVED] × 2<br>Out of scope: dashboards<br>Depends on: —</div><span class="fld">Acceptance criteria</span><pre class="ac">GIVEN a cohort with charges, refunds, tickets and activity data
+WHEN  the join runs
+THEN  Surprise Rate and M4 compute with cohort sizes stated</pre><div class="lbls"><span class="lbl">working-backwards</span><span class="lbl">discovery</span><span class="lbl">slice-r1</span></div></div></div>
+<div class="story"><div class="sh"><span class="ty">Story</span><span class="sm">REQ-DP2 · The in-app backstop banner</span><span class="pr">priority: Medium</span></div><div class="sb"><p class="ustory">As a trial user who never opens email, I want the app itself to warn me, so that an unread inbox doesn&#x27;t cost me $12.</p><div class="meta">From day 12, an in-app banner states the charge date and price with the same two actions, until the user decides.<br>Source: PR para 3 / 03-demo-spec.md F1<br>Provenance: [OBSERVED] × 1<br>Out of scope: push notifications<br>Depends on: —</div><span class="fld">Acceptance criteria</span><pre class="ac">GIVEN a trial user with the email unopened
+WHEN  they open the app on day 12+
+THEN  the banner shows date, price, keep, and one-tap cancel</pre><div class="lbls"><span class="lbl">working-backwards</span><span class="lbl">delivery</span><span class="lbl">slice-r2</span></div></div></div>
+<div class="story"><div class="sh"><span class="ty">Story</span><span class="sm">REQ-DP4 · Receipts that prevent the next surprise</span><span class="pr">priority: Medium</span></div><div class="sb"><p class="ustory">As a paying customer, I want every receipt to say what happens next, so that no future charge is a surprise.</p><div class="meta">Every receipt shows amount, next renewal date, next price, and a cancel link.<br>Source: PR para 5 / EFAQ-04<br>Provenance: [OBSERVED] × 1<br>Out of scope: dunning redesign (F2 copy only)<br>Depends on: —</div><span class="fld">Acceptance criteria</span><pre class="ac">GIVEN any successful charge
+WHEN  the receipt renders
+THEN  next renewal date, price and a cancel link are present</pre><div class="lbls"><span class="lbl">working-backwards</span><span class="lbl">delivery</span><span class="lbl">slice-r2</span></div></div></div>
+<div class="story"><div class="sh"><span class="ty">Story</span><span class="sm">REQ-DP1 · The T-48h reminder</span><span class="pr">priority: High</span></div><div class="sb"><p class="ustory">As a trial user who forgot I signed up, I want to be told before I&#x27;m charged, so that the first I hear of it is never my bank statement.</p><div class="meta">One email, at least 48 hours before the first charge, stating price and date, with equal keep and one-tap-cancel actions.<br>Source: PR para 3 / EFAQ-03<br>Provenance: [OBSERVED] × 1<br>Out of scope: reminders for later renewals<br>Depends on: REQ-D1, BLK-05</div><span class="fld">Acceptance criteria</span><pre class="ac">GIVEN a trial reaching day 12
+WHEN  the reminder sends
+THEN  it precedes the charge by ≥48h (M1 records the ordering)
+AND   a send failure is logged and visible — never silently absorbed (F5)</pre><div class="lbls"><span class="lbl">working-backwards</span><span class="lbl">delivery</span><span class="lbl hot">blocked</span><span class="lbl">slice-r3</span></div></div></div>
+<div class="story"><div class="sh"><span class="ty">Story</span><span class="sm">REQ-D2 · The reminder holdback experiment</span><span class="pr">priority: Highest</span></div><div class="sb"><p class="ustory">As the VP in the finance standoff, I want the revenue fear tested by a real experiment, so that neither belief ships unverified.</p><div class="meta">A randomized holdback cohort receives no reminder; net revenue at day 60 is compared, reminded vs holdback.<br>Source: PR para 7 / IFAQ-01<br>Provenance: [OBSERVED] × 1, [ASSUMED] × 1 → RESTS ON ASSUMPTION<br>Out of scope: acting on the result<br>Depends on: REQ-D1, BLK-01<br>Conditional on: BLK-01 — finance co-owns the design, or the readout settles nothing</div><span class="fld">Acceptance criteria</span><pre class="ac">GIVEN random assignment at trial start
+WHEN  the day-60 readout runs
+THEN  it states effect size, confidence interval and cohort sizes — or declares itself underpowered rather than extending silently</pre><div class="lbls"><span class="lbl">working-backwards</span><span class="lbl">discovery</span><span class="lbl hot">rests-on-assumption</span><span class="lbl hot">shape-pending</span><span class="lbl hot">blocked</span><span class="lbl">slice-r3</span></div></div></div>
+<div class="story"><div class="sh"><span class="ty">Story</span><span class="sm">REQ-DP3 · One-tap cancel</span><span class="pr">priority: Highest</span></div><div class="sb"><p class="ustory">As a user who decided to leave, I want cancelling to be one tap from wherever I am, so that leaving is as easy as joining was.</p><div class="meta">Cancelling from reminder, banner, or receipt is one screen and one tap, confirmed immediately, data retained 30 days.<br>Source: PR para 5 / RFAQ-02<br>Provenance: [OBSERVED] × 1, [UNKNOWN] × 1<br>Out of scope: win-back offers<br>Depends on: BLK-02<br>Conditional on: BLK-02 / Q-06 — markets that prescribe a cancel method get a per-market flow, still never more steps than signup</div><span class="fld">Acceptance criteria</span><pre class="ac">GIVEN a user in the default flow
+WHEN  they tap cancel from any of the three surfaces
+THEN  cancellation completes on that screen with inline confirmation</pre><div class="lbls"><span class="lbl">working-backwards</span><span class="lbl">delivery</span><span class="lbl hot">shape-pending</span><span class="lbl hot">blocked</span><span class="lbl">slice-r4</span></div></div></div>
+<div class="story"><div class="sh"><span class="ty">Story</span><span class="sm">REQ-DP5 · The parity rule</span><span class="pr">priority: Medium</span></div><div class="sb"><p class="ustory">As a user in any market, I want cancelling to never take more steps than subscribing did, so that the exit is never a maze.</p><div class="meta">Cancelling never requires more steps than subscribing did, in any market, on any surface.<br>Source: EFAQ-02 / 03-demo-spec.md F4<br>Provenance: [OBSERVED] × 1<br>Out of scope: nothing — this rule has no exceptions<br>Depends on: REQ-DP3</div><span class="fld">Acceptance criteria</span><pre class="ac">GIVEN the subscribe flow takes N steps in a market
+WHEN  the cancel flow is measured in that market
+THEN  its step count is ≤ N, asserted in CI per market config</pre><div class="lbls"><span class="lbl">working-backwards</span><span class="lbl">delivery</span><span class="lbl hot">blocked</span><span class="lbl">slice-r4</span></div></div></div>
+<p class="note">Rendered from the committed artifact — the raw file:
+<a href="https://github.com/siddarthnyati/working-backwards/blob/main/examples/surprise-charge/jira-import.csv">jira-import.csv on GitHub</a>.
+The Surprise Charge is fictional; this is the skill's real output.</p>
+</div></body></html>

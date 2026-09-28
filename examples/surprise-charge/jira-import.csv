@@ -1,14 +1,16 @@
 Issue Type,Summary,Description,Acceptance Criteria,Epic Name,Parent,Labels,Priority
-Epic,R1 · Measure the fury,"Ships: the surprise join — Surprise Rate and the silent-surprised proxy computable per cohort. Dark.
+Epic,The Surprise Charge — The trial that ends politely,"The trial that ends politely
 
-Requirements: REQ-D1
+Release slices (delivery order, slice-rN labels on each story):
+- R1 Measure the fury — the surprise join — Surprise Rate and the silent-surprised proxy computable per cohort. Dark
+- R2 No-surprise surfaces — the day-12 banner and honest receipts. In-app only — no email infra, no vendor risk
+- R3 The reminder + the experiment — the T-48h email with the holdback experiment attached — the readout that ends the finance argument [BLOCKED BY BLK-01, BLK-05]
+- R4 One-tap cancel, everywhere — one-tap cancel from all three surfaces; the parity rule asserted in CI per market [BLOCKED BY BLK-02]
 
-Depends on: —
+Every story cites the press-release paragraph or FAQ answer that demands it.",,The Surprise Charge,,working-backwards,Medium
+Story,REQ-D1 · Build the surprise join,"As the analyst sizing this problem, I want charges joined to refunds, tickets and activity, so that Surprise Rate is a number instead of an argument.
 
-Test harness:
-- Seeded cohort computes Surprise Rate with stated sizes
-- M4 proxy joins charge → inactivity → month-2 churn",,R1 Measure the fury,,working-backwards release-slice,Medium
-Story,REQ-D1 · Build the surprise join,"Charges join to refunds, ""surprise"" tickets, and activity history, so Surprise Rate and the silent-surprised proxy compute per cohort.
+Charges join to refunds, ""surprise"" tickets, and activity history, so Surprise Rate and the silent-surprised proxy compute per cohort.
 
 Source: PR ¶2 / IFAQ-03
 
@@ -18,17 +20,10 @@ Out of scope: dashboards
 
 Depends on: —","GIVEN a cohort with charges, refunds, tickets and activity data
 WHEN  the join runs
-THEN  Surprise Rate and M4 compute with cohort sizes stated",,R1 Measure the fury,working-backwards discovery,Medium
-Epic,R2 · No-surprise surfaces,"Ships: the day-12 banner and honest receipts. In-app only — no email infra, no vendor risk.
+THEN  Surprise Rate and M4 compute with cohort sizes stated",,The Surprise Charge,working-backwards discovery slice-r1,Medium
+Story,REQ-DP2 · The in-app backstop banner,"As a trial user who never opens email, I want the app itself to warn me, so that an unread inbox doesn't cost me $12.
 
-Requirements: REQ-DP2, REQ-DP4
-
-Depends on: —
-
-Test harness:
-- Banner renders day 12+ with date, price, both actions
-- Every receipt carries next renewal date, price, cancel link",,R2 No-surprise surfaces,,working-backwards release-slice,Medium
-Story,REQ-DP2 · The in-app backstop banner,"From day 12, an in-app banner states the charge date and price with the same two actions, until the user decides.
+From day 12, an in-app banner states the charge date and price with the same two actions, until the user decides.
 
 Source: PR ¶3 / 03-demo-spec.md F1
 
@@ -38,8 +33,10 @@ Out of scope: push notifications
 
 Depends on: —","GIVEN a trial user with the email unopened
 WHEN  they open the app on day 12+
-THEN  the banner shows date, price, keep, and one-tap cancel",,R2 No-surprise surfaces,working-backwards delivery,Medium
-Story,REQ-DP4 · Receipts that prevent the next surprise,"Every receipt shows amount, next renewal date, next price, and a cancel link.
+THEN  the banner shows date, price, keep, and one-tap cancel",,The Surprise Charge,working-backwards delivery slice-r2,Medium
+Story,REQ-DP4 · Receipts that prevent the next surprise,"As a paying customer, I want every receipt to say what happens next, so that no future charge is a surprise.
+
+Every receipt shows amount, next renewal date, next price, and a cancel link.
 
 Source: PR ¶5 / EFAQ-04
 
@@ -49,20 +46,10 @@ Out of scope: dunning redesign (F2 copy only)
 
 Depends on: —","GIVEN any successful charge
 WHEN  the receipt renders
-THEN  next renewal date, price and a cancel link are present",,R2 No-surprise surfaces,working-backwards delivery,Medium
-Epic,R3 · The reminder + the experiment,"Ships: the T-48h email with the holdback experiment attached — the readout that ends the finance argument.
+THEN  next renewal date, price and a cancel link are present",,The Surprise Charge,working-backwards delivery slice-r2,Medium
+Story,REQ-DP1 · The T-48h reminder,"As a trial user who forgot I signed up, I want to be told before I'm charged, so that the first I hear of it is never my bank statement.
 
-Requirements: REQ-DP1, REQ-D2
-
-Depends on: R1
-
-Blocked by: BLK-01, BLK-05
-
-Test harness:
-- Ordering guarantee: send precedes charge by ≥48h (M1)
-- Send failure is logged, never silent (F5)
-- Holdback assignment is random and recorded at trial start",,R3 The reminder + the experiment,,working-backwards release-slice blocked,Highest
-Story,REQ-DP1 · The T-48h reminder,"One email, at least 48 hours before the first charge, stating price and date, with equal keep and one-tap-cancel actions.
+One email, at least 48 hours before the first charge, stating price and date, with equal keep and one-tap-cancel actions.
 
 Source: PR ¶3 / EFAQ-03
 
@@ -73,8 +60,10 @@ Out of scope: reminders for later renewals
 Depends on: REQ-D1, BLK-05","GIVEN a trial reaching day 12
 WHEN  the reminder sends
 THEN  it precedes the charge by ≥48h (M1 records the ordering)
-AND   a send failure is logged and visible — never silently absorbed (F5)",,R3 The reminder + the experiment,working-backwards delivery blocked,High
-Story,REQ-D2 · The reminder holdback experiment,"A randomized holdback cohort receives no reminder; net revenue at day 60 is compared, reminded vs holdback.
+AND   a send failure is logged and visible — never silently absorbed (F5)",,The Surprise Charge,working-backwards delivery blocked slice-r3,High
+Story,REQ-D2 · The reminder holdback experiment,"As the VP in the finance standoff, I want the revenue fear tested by a real experiment, so that neither belief ships unverified.
+
+A randomized holdback cohort receives no reminder; net revenue at day 60 is compared, reminded vs holdback.
 
 Source: PR ¶7 / IFAQ-01
 
@@ -86,19 +75,10 @@ Depends on: REQ-D1, BLK-01
 
 Conditional on: BLK-01 — finance co-owns the design, or the readout settles nothing","GIVEN random assignment at trial start
 WHEN  the day-60 readout runs
-THEN  it states effect size, confidence interval and cohort sizes — or declares itself underpowered rather than extending silently",,R3 The reminder + the experiment,working-backwards discovery rests-on-assumption shape-pending blocked,Highest
-Epic,"R4 · One-tap cancel, everywhere","Ships: one-tap cancel from all three surfaces; the parity rule asserted in CI per market.
+THEN  it states effect size, confidence interval and cohort sizes — or declares itself underpowered rather than extending silently",,The Surprise Charge,working-backwards discovery rests-on-assumption shape-pending blocked slice-r3,Highest
+Story,REQ-DP3 · One-tap cancel,"As a user who decided to leave, I want cancelling to be one tap from wherever I am, so that leaving is as easy as joining was.
 
-Requirements: REQ-DP3, REQ-DP5
-
-Depends on: R2
-
-Blocked by: BLK-02
-
-Test harness:
-- Cancel completes in one screen from reminder, banner, receipt
-- Parity assertion: cancel steps ≤ subscribe steps per market config",,"R4 One-tap cancel, everywhere",,working-backwards release-slice blocked,Highest
-Story,REQ-DP3 · One-tap cancel,"Cancelling from reminder, banner, or receipt is one screen and one tap, confirmed immediately, data retained 30 days.
+Cancelling from reminder, banner, or receipt is one screen and one tap, confirmed immediately, data retained 30 days.
 
 Source: PR ¶5 / RFAQ-02
 
@@ -110,8 +90,10 @@ Depends on: BLK-02
 
 Conditional on: BLK-02 / Q-06 — markets that prescribe a cancel method get a per-market flow, still never more steps than signup","GIVEN a user in the default flow
 WHEN  they tap cancel from any of the three surfaces
-THEN  cancellation completes on that screen with inline confirmation",,"R4 One-tap cancel, everywhere",working-backwards delivery shape-pending blocked,Highest
-Story,REQ-DP5 · The parity rule,"Cancelling never requires more steps than subscribing did, in any market, on any surface.
+THEN  cancellation completes on that screen with inline confirmation",,The Surprise Charge,working-backwards delivery shape-pending blocked slice-r4,Highest
+Story,REQ-DP5 · The parity rule,"As a user in any market, I want cancelling to never take more steps than subscribing did, so that the exit is never a maze.
+
+Cancelling never requires more steps than subscribing did, in any market, on any surface.
 
 Source: EFAQ-02 / 03-demo-spec.md F4
 
@@ -121,4 +103,4 @@ Out of scope: nothing — this rule has no exceptions
 
 Depends on: REQ-DP3","GIVEN the subscribe flow takes N steps in a market
 WHEN  the cancel flow is measured in that market
-THEN  its step count is ≤ N, asserted in CI per market config",,"R4 One-tap cancel, everywhere",working-backwards delivery blocked,Medium
+THEN  its step count is ≤ N, asserted in CI per market config",,The Surprise Charge,working-backwards delivery blocked slice-r4,Medium

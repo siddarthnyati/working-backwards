@@ -6,6 +6,7 @@
 
 ```
 REQ-D1 · Build the surprise join
+Story: As the analyst sizing this problem, I want charges joined to refunds, tickets and activity, so that Surprise Rate is a number instead of an argument.
 Source: PR ¶2 / IFAQ-03
 Provenance: [OBSERVED] × 2
 Statement: Charges join to refunds, "surprise" tickets, and activity history, so Surprise Rate and the silent-surprised proxy compute per cohort.
@@ -19,6 +20,7 @@ Depends on: —
 
 ```
 REQ-D2 · The reminder holdback experiment
+Story: As the VP in the finance standoff, I want the revenue fear tested by a real experiment, so that neither belief ships unverified.
 Source: PR ¶7 / IFAQ-01
 Provenance: [OBSERVED] × 1, [ASSUMED] × 1 → RESTS ON ASSUMPTION
 Statement: A randomized holdback cohort receives no reminder; net revenue at day 60 is compared, reminded vs holdback.
@@ -36,6 +38,7 @@ Status: SHAPE PENDING
 
 ```
 REQ-DP1 · The T-48h reminder
+Story: As a trial user who forgot I signed up, I want to be told before I'm charged, so that the first I hear of it is never my bank statement.
 Source: PR ¶3 / EFAQ-03
 Provenance: [OBSERVED] × 1
 Statement: One email, at least 48 hours before the first charge, stating price and date, with equal keep and one-tap-cancel actions.
@@ -50,6 +53,7 @@ Depends on: REQ-D1, BLK-05
 
 ```
 REQ-DP2 · The in-app backstop banner
+Story: As a trial user who never opens email, I want the app itself to warn me, so that an unread inbox doesn't cost me $12.
 Source: PR ¶3 / 03-demo-spec.md F1
 Provenance: [OBSERVED] × 1
 Statement: From day 12, an in-app banner states the charge date and price with the same two actions, until the user decides.
@@ -63,6 +67,7 @@ Depends on: —
 
 ```
 REQ-DP3 · One-tap cancel
+Story: As a user who decided to leave, I want cancelling to be one tap from wherever I am, so that leaving is as easy as joining was.
 Source: PR ¶5 / RFAQ-02
 Provenance: [OBSERVED] × 1, [UNKNOWN] × 1
 Statement: Cancelling from reminder, banner, or receipt is one screen and one tap, confirmed immediately, data retained 30 days.
@@ -78,6 +83,7 @@ Status: SHAPE PENDING
 
 ```
 REQ-DP4 · Receipts that prevent the next surprise
+Story: As a paying customer, I want every receipt to say what happens next, so that no future charge is a surprise.
 Source: PR ¶5 / EFAQ-04
 Provenance: [OBSERVED] × 1
 Statement: Every receipt shows amount, next renewal date, next price, and a cancel link.
@@ -91,6 +97,7 @@ Depends on: —
 
 ```
 REQ-DP5 · The parity rule
+Story: As a user in any market, I want cancelling to never take more steps than subscribing did, so that the exit is never a maze.
 Source: EFAQ-02 / 03-demo-spec.md F4
 Provenance: [OBSERVED] × 1
 Statement: Cancelling never requires more steps than subscribing did, in any market, on any surface.

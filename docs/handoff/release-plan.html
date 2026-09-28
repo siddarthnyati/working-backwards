@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Release plan — surprise-charge handoff</title>
+<style>
+:root{--paper:#f2eee5;--paper-2:#eae5d9;--paper-3:#e0d9c9;--ink:#1c1815;--ink-2:#4a423a;
+--ink-3:#7d7263;--rule:#cdc4b1;--accent:#9c2f1c;--accent-soft:#f0d9d2;--accent-ink:#7a2415;
+--ok:#3d5a3f;--ok-soft:#dde5d9;--warn:#8a6116;--warn-soft:#f3e8d2;--bad:#a13326;--bad-soft:#f0d9d2;
+--mono:"SF Mono",ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
+--serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif}
+@media (prefers-color-scheme:dark){:root{--paper:#16130f;--paper-2:#1e1a15;--paper-3:#272119;
+--ink:#ece5d8;--ink-2:#b8ae9d;--ink-3:#8a7f6e;--rule:#3a3227;--accent:#e2705a;
+--accent-soft:#3a1f18;--accent-ink:#f0917d;--ok:#9dbb9a;--ok-soft:#24301f;
+--warn:#d8a94e;--warn-soft:#33270e;--bad:#e2705a;--bad-soft:#3a1f18}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+font-size:17px;line-height:1.62;overflow-x:hidden}
+.wrap{max-width:52rem;margin:0 auto;padding:0 1.4rem 4rem}
+header{padding:2.4rem 0 1.2rem}
+.back{font-family:var(--mono);font-size:.68rem;letter-spacing:.08em;display:inline-block;
+margin-bottom:1rem;margin-right:1rem;color:var(--ink);text-decoration-thickness:1px}
+.back:hover{color:var(--accent)}
+.crumb{font-family:var(--mono);font-size:.64rem;color:var(--ink-3);letter-spacing:.04em}
+h1{font-weight:400;font-size:clamp(1.5rem,3.6vw,2.1rem);letter-spacing:-.015em;line-height:1.2;margin:.3rem 0 .4rem}
+.who{font-family:var(--mono);font-size:.66rem;color:var(--accent-ink);margin-bottom:1rem}
+.doc{border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);padding:1.4rem 1.6rem;
+font-size:.92rem;color:var(--ink-2)}
+.doc h1{font-size:1.35rem;color:var(--ink);margin:0 0 .8rem}
+.doc h2{font-weight:400;font-size:1.12rem;color:var(--ink);margin:1.6rem 0 .6rem;
+padding-top:1.1rem;border-top:1px solid var(--rule)}
+.doc h2:first-child{margin-top:0;padding-top:0;border-top:0}
+.doc h3{font-weight:400;font-size:1rem;color:var(--ink);margin:1.1rem 0 .4rem}
+.doc p{margin:0 0 .8rem}
+.doc strong{color:var(--ink);font-weight:600}
+.doc blockquote{margin:0 0 .8rem;padding:.6rem .9rem;border-left:3px solid var(--accent);
+background:var(--accent-soft);border-radius:0 5px 5px 0;font-size:.86rem}
+.doc blockquote p{margin:0}
+.doc ul,.doc ol{margin:0 0 .8rem;padding-left:1.2rem}
+.doc li{margin-bottom:.35rem}
+.doc code{font-family:var(--mono);font-size:.8em;background:var(--paper-3);color:var(--accent-ink);
+padding:.08em .3em;border-radius:4px}
+.doc pre{font-family:var(--mono);font-size:.72rem;line-height:1.62;white-space:pre-wrap;
+background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:.9rem 1rem;
+margin:0 0 .9rem;overflow-x:auto;color:var(--ink-2)}
+.doc hr{border:0;border-top:1px solid var(--rule);margin:1.3rem 0}
+.doc .tw{overflow-x:auto}
+.doc table{border-collapse:collapse;width:100%;font-size:.8rem;min-width:34rem;margin:0 0 .9rem}
+.doc th,.doc td{text-align:left;padding:.4rem .55rem;border-bottom:1px solid var(--rule);vertical-align:top}
+.doc th{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;
+color:var(--ink-3);font-weight:500;background:var(--paper-3)}
+.note{font-size:.8rem;color:var(--ink-3);margin-top:.9rem;line-height:1.5}
+.note a{color:var(--ink-2)}
+/* tracker cards */
+.epicc{border:1px solid var(--accent);border-radius:8px;background:var(--accent-soft);
+padding:1rem 1.2rem;margin-bottom:1rem}
+.epicc .ty{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink)}
+.epicc h2{font-weight:400;font-size:1.2rem;margin:.25rem 0 .5rem;color:var(--ink)}
+.epicc pre{font-family:var(--mono);font-size:.7rem;line-height:1.6;white-space:pre-wrap;margin:0;color:var(--ink-2)}
+.story{border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);margin-bottom:.8rem;overflow:hidden}
+.story .sh{display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap;padding:.6rem 1rem;
+background:var(--paper-3);border-bottom:1px solid var(--rule)}
+.story .ty{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.story .sm{font-size:.95rem;color:var(--ink)}
+.story .pr{font-family:var(--mono);font-size:.6rem;color:var(--ink-3);margin-left:auto}
+.story .sb{padding:.8rem 1rem}
+.ustory{font-style:italic;color:var(--ink);font-size:.9rem;margin:0 0 .6rem;line-height:1.5}
+.meta{font-family:var(--mono);font-size:.64rem;color:var(--ink-3);line-height:1.7;margin:0 0 .6rem}
+.meta b{color:var(--accent-ink);font-weight:600}
+.fld{font-family:var(--mono);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;
+color:var(--ink-3);display:block;margin:.5rem 0 .25rem}
+.ac{font-family:var(--mono);font-size:.68rem;line-height:1.65;white-space:pre-wrap;color:var(--ink-2);
+background:var(--paper);border:1px solid var(--rule);border-radius:5px;padding:.65rem .8rem;margin:0}
+.lbls{margin-top:.6rem}
+.lbl{font-family:var(--mono);font-size:.56rem;border:1px solid var(--rule);border-radius:3px;
+padding:.06rem .32rem;margin-right:.3rem;color:var(--ink-3);display:inline-block;margin-bottom:.2rem}
+.lbl.hot{color:var(--bad);border-color:var(--bad);background:var(--bad-soft)}
+</style></head><body><div class="wrap">
+<header>
+  <a class="back" href="../dev-handoff.html">← what the devs get</a>
+  <a class="back" href="../index.html">← the walkthrough</a>
+  <div class="crumb">examples/surprise-charge/ · 07-release-plan.md</div>
+  <h1>Release plan</h1>
+  <div class="who">first reader: the eng manager</div>
+</header>
+<div class="doc"><h1>Release plan — The Surprise Charge</h1>
+<h2>Slices</h2>
+<pre>R1 · Measure the fury
+Requirements: REQ-D1
+Depends on: —
+Blocked by: —
+Ships: the surprise join — Surprise Rate and the silent-surprised proxy computable per cohort. Dark.
+Independently testable: yes
+Test harness:
+  - Seeded cohort computes Surprise Rate with stated sizes
+  - M4 proxy joins charge → inactivity → month-2 churn
+Why first: the baseline exists before anything changes, so every later claim is measurable against it. No meeting required.</pre>
+<pre>R2 · No-surprise surfaces
+Requirements: REQ-DP2, REQ-DP4
+Depends on: —
+Blocked by: —
+Ships: the day-12 banner and honest receipts. In-app only — no email infra, no vendor risk.
+Independently testable: yes
+Test harness:
+  - Banner renders day 12+ with date, price, both actions
+  - Every receipt carries next renewal date, price, cancel link</pre>
+<pre>R3 · The reminder + the experiment
+Requirements: REQ-DP1, REQ-D2
+Depends on: R1
+Blocked by: BLK-01, BLK-05
+Ships: the T-48h email with the holdback experiment attached — the readout that ends the finance argument.
+Independently testable: yes
+Test harness:
+  - Ordering guarantee: send precedes charge by ≥48h (M1)
+  - Send failure is logged, never silent (F5)
+  - Holdback assignment is random and recorded at trial start</pre>
+<pre>R4 · One-tap cancel, everywhere
+Requirements: REQ-DP3, REQ-DP5
+Depends on: R2
+Blocked by: BLK-02
+Ships: one-tap cancel from all three surfaces; the parity rule asserted in CI per market.
+Independently testable: yes
+Test harness:
+  - Cancel completes in one screen from reminder, banner, receipt
+  - Parity assertion: cancel steps ≤ subscribe steps per market config</pre>
+<h2>Dependency DAG</h2>
+<pre>R1 ──▶ R3   [BLOCKED BY BLK-01 · BLK-05]
+
+R2 ──▶ R4   [BLOCKED BY BLK-02]</pre>
+<p>Edge list:</p>
+<pre>R1 -&gt; R3
+R2 -&gt; R4</pre>
+<p>Checks: acyclic · 7/7 requirements in exactly one slice · no orphans · no duplicates.</p>
+<h2>Not schedulable</h2>
+<div class="tw"><table><tr><th>Slice</th><th>Blocked by</th><th>Owner</th><th>What unblocks</th></tr><tr><td>R3</td><td>BLK-01</td><td>finance lead</td><td>Co-designing the holdback — one meeting</td></tr><tr><td>R3</td><td>BLK-05</td><td>platform lead</td><td>Owning the send-before-charge ordering</td></tr><tr><td>R4</td><td>BLK-02</td><td>compliance lead</td><td>The per-market cancel-method memo</td></tr></table></div>
+<p>R1 and R2 start today. Both halves of the argument get better off R1 alone.</p>
+<h2>Export</h2>
+<p><code>jira-import.csv</code> — 4 epics, 7 stories.</p></div>
+<p class="note">Rendered from the committed artifact — the raw file:
+<a href="https://github.com/siddarthnyati/working-backwards/blob/main/examples/surprise-charge/07-release-plan.md">07-release-plan.md on GitHub</a>.
+The Surprise Charge is fictional; this is the skill's real output.</p>
+</div></body></html>
