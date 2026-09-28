@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Working Backwards — what the devs get</title>
+<meta name="description" content="The engineer-ready package a Working Backwards run hands to a development team: sourced requirements, acceptance criteria, a tracker import, and the blockers deliberately kept away from the sprint.">
+<style>
+:root{
+  --paper:#f2eee5; --paper-2:#eae5d9; --paper-3:#e0d9c9;
+  --ink:#1c1815; --ink-2:#4a423a; --ink-3:#7d7263; --rule:#cdc4b1;
+  --accent:#9c2f1c; --accent-soft:#f0d9d2; --accent-ink:#7a2415;
+  --ok:#3d5a3f; --ok-soft:#dde5d9;
+  --warn:#8a6116; --warn-soft:#f3e8d2;
+  --bad:#a13326; --bad-soft:#f0d9d2;
+  --mono:"SF Mono",ui-monospace,"IBM Plex Mono",Menlo,Consolas,monospace;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#16130f; --paper-2:#1e1a15; --paper-3:#272119;
+  --ink:#ece5d8; --ink-2:#b8ae9d; --ink-3:#8a7f6e; --rule:#3a3227;
+  --accent:#e2705a; --accent-soft:#3a1f18; --accent-ink:#f0917d;
+  --ok:#9dbb9a; --ok-soft:#24301f;
+  --warn:#d8a94e; --warn-soft:#33270e;
+  --bad:#e2705a; --bad-soft:#3a1f18;
+}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+font-size:17px;line-height:1.6;overflow-x:hidden}
+.wrap{max-width:66rem;margin:0 auto;padding:0 1.4rem}
+h1,h2,h3{font-weight:400;letter-spacing:-.015em;line-height:1.18;margin:0}
+h1{font-size:clamp(1.9rem,4.6vw,2.9rem)}
+h2{font-size:1.45rem;margin-bottom:.5rem}
+h4{font-family:var(--mono);font-weight:500;font-size:.66rem;letter-spacing:.1em;
+text-transform:uppercase;color:var(--ink-3);margin:0 0 .55rem}
+p{margin:0 0 .9rem}
+a{color:var(--ink);text-decoration-thickness:1px;text-underline-offset:.18em}
+a:hover{color:var(--accent)}
+code{font-family:var(--mono);font-size:.82em}
+section{padding:2.5rem 0;border-top:1px solid var(--rule)}
+.lede{font-size:1rem;color:var(--ink-2);max-width:44rem}
+.note{font-size:.84rem;color:var(--ink-3);line-height:1.55;max-width:46rem}
+header{padding:2.8rem 0 1.8rem}
+.back{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;display:inline-block;margin-bottom:1.2rem}
+.pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.2rem}
+.pill{font-family:var(--mono);font-size:.66rem;letter-spacing:.04em;padding:.32rem .7rem;
+border:1px solid var(--rule);border-radius:999px;background:var(--paper-2);color:var(--ink-2)}
+.pill b{color:var(--ink)}
+.btn{display:inline-block;padding:.55rem 1rem;border:1px solid var(--ink);font-family:var(--mono);
+font-size:.72rem;text-decoration:none;color:var(--ink);border-radius:6px}
+.btn:hover{background:var(--ink);color:var(--paper)}
+.btn.hot{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.hot:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+
+/* file manifest */
+.mrow{display:grid;grid-template-columns:14rem minmax(0,1fr) 12rem;gap:1rem;align-items:baseline;
+padding:.7rem .9rem;border:1px solid var(--rule);border-bottom:0;background:var(--paper-2)}
+.mrow:first-of-type{border-radius:6px 6px 0 0}
+.mrow:last-of-type{border-bottom:1px solid var(--rule);border-radius:0 0 6px 6px}
+.mrow .mf{font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--paper);
+background:var(--ink);padding:.2rem .55rem;border-radius:4px;justify-self:start}
+.mrow .mw{font-size:.85rem;color:var(--ink-2)}
+.mrow .mo{font-family:var(--mono);font-size:.64rem;color:var(--accent-ink);text-align:right}
+@media(max-width:760px){.mrow{grid-template-columns:1fr}.mrow .mo{text-align:left}}
+
+/* requirement cards */
+.filters{display:flex;border:1px solid var(--rule);border-radius:6px;overflow:hidden;
+width:max-content;max-width:100%;margin:1.1rem 0}
+.filters button{font-family:var(--mono);font-size:.68rem;padding:.45rem .85rem;background:none;
+border:0;border-right:1px solid var(--rule);cursor:pointer;color:var(--ink-3)}
+.filters button:last-child{border-right:0}
+.filters button[aria-pressed=true]{background:var(--accent);color:#fff}
+.reqs{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+@media(max-width:900px){.reqs{grid-template-columns:1fr}}
+.req{border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);overflow:hidden;min-width:0}
+.req .rh{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;padding:.75rem 1rem .55rem;
+border-bottom:1px solid var(--rule);background:var(--paper-3)}
+.req .rid{font-family:var(--mono);font-size:.72rem;font-weight:600;color:var(--accent-ink)}
+.req .rt{font-size:1.02rem;color:var(--ink)}
+.badge{font-family:var(--mono);font-size:.56rem;letter-spacing:.05em;text-transform:uppercase;
+padding:.14rem .45rem;border-radius:999px;border:1px solid;margin-left:auto;white-space:nowrap}
+.b-warn{color:var(--warn);border-color:var(--warn);background:var(--warn-soft)}
+.b-bad{color:var(--bad);border-color:var(--bad);background:var(--bad-soft)}
+.b-ok{color:var(--ok);border-color:var(--ok);background:var(--ok-soft)}
+.req .rb{padding:.8rem 1rem .9rem}
+.rstory{font-style:italic;font-size:.9rem;color:var(--ink);margin:0 0 .6rem;line-height:1.5}
+.rstory b{font-style:normal;font-family:var(--mono);font-size:.56rem;letter-spacing:.06em;
+color:var(--ok);text-transform:uppercase;margin-right:.25rem}
+.rsrc{font-family:var(--mono);font-size:.64rem;color:var(--accent-ink);display:block;margin-bottom:.5rem}
+.rsrc .prov{color:var(--ink-3);margin-left:.5rem}
+.rst{font-size:.87rem;color:var(--ink-2);margin:0 0 .6rem;line-height:1.5}
+.gwt{font-family:var(--mono);font-size:.66rem;line-height:1.65;color:var(--ink-2);white-space:pre-wrap;
+background:var(--paper);border:1px solid var(--rule);border-radius:5px;padding:.7rem .8rem;margin:0 0 .6rem}
+.gwt b{color:var(--ok);font-weight:600}
+.rfoot{font-family:var(--mono);font-size:.62rem;color:var(--ink-3);line-height:1.7}
+.rfoot b{color:var(--ink-2);font-weight:600}
+.cond{font-size:.78rem;color:var(--warn);border-left:2px solid var(--warn);padding-left:.6rem;
+margin:.5rem 0 .1rem;line-height:1.5}
+
+/* ticket + tables */
+table{border-collapse:collapse;width:100%;font-size:.82rem;min-width:42rem}
+th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;
+color:var(--ink-3);font-weight:500;background:var(--paper-2)}
+td:first-child{font-family:var(--mono);font-size:.68rem;white-space:nowrap}
+tr.epic td{background:var(--paper-2);font-weight:600}
+.lbl{font-family:var(--mono);font-size:.58rem;border:1px solid var(--rule);border-radius:3px;
+padding:.06rem .3rem;margin-right:.25rem;color:var(--ink-3);white-space:nowrap;display:inline-block;margin-bottom:.15rem}
+.lbl.hot{color:var(--bad);border-color:var(--bad);background:var(--bad-soft)}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tkt{border:1px solid var(--rule);border-radius:8px;background:var(--paper-2);overflow:hidden;max-width:46rem;margin-top:1.2rem}
+.tkt .th2{display:flex;gap:.6rem;align-items:baseline;flex-wrap:wrap;padding:.65rem 1rem;
+background:var(--paper-3);border-bottom:1px solid var(--rule)}
+.tkt .tk{font-family:var(--mono);font-size:.68rem;font-weight:600;color:var(--accent-ink)}
+.tkt .tb2{padding:.8rem 1rem;font-size:.84rem;color:var(--ink-2)}
+.tkt .fld{font-family:var(--mono);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;
+color:var(--ink-3);display:block;margin:.7rem 0 .25rem}
+.tkt .fld:first-child{margin-top:0}
+.callout{border-left:3px solid var(--accent);background:var(--paper-2);padding:.85rem 1rem;
+margin-top:1.1rem;font-size:.87rem;color:var(--ink-2);border-radius:0 5px 5px 0;max-width:46rem}
+.callout.okc{border-left-color:var(--ok)}
+.dor{list-style:none;margin:.9rem 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:.5rem;max-width:46rem}
+@media(max-width:760px){.dor{grid-template-columns:1fr}}
+.dor li{display:flex;gap:.55rem;font-size:.85rem;color:var(--ink-2);line-height:1.45;
+border:1px solid var(--rule);border-radius:6px;background:var(--paper-2);padding:.55rem .7rem}
+.dor li .ck{color:var(--ok);font-family:var(--mono);font-weight:600;flex:none}
+.dag{font-family:var(--mono);font-size:.78rem;line-height:1.75;white-space:pre;overflow-x:auto;
+background:var(--paper-2);border:1px solid var(--rule);border-radius:6px;padding:.9rem 1.1rem;margin:0 0 1rem}
+.dag .blk{color:var(--bad)}
+footer{padding:2rem 0 3.2rem;border-top:1px solid var(--rule);font-size:.82rem;color:var(--ink-3)}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <a class="back" href="index.html">← the walkthrough</a>
+  <h1>What the devs get.</h1>
+  <p class="lede" style="margin-top:.8rem">A Working Backwards run doesn't end in a document that
+  needs a translation meeting — it ends in a <b>package an engineering team can start from</b>.
+  This page shows exactly what lands, from the featured run: every file, every requirement with its
+  acceptance criteria, the tracker import, and the work that is deliberately <i>not</i> handed over
+  yet. Everything below is the skill's real output from
+  <a href="https://github.com/siddarthnyati/working-backwards/tree/main/examples/surprise-charge"><code>examples/surprise-charge/</code></a>.</p>
+  <div class="pills">
+    <span class="pill"><b>7</b> requirements · <b>0</b> unsourced</span>
+    <span class="pill"><b>14</b> citations, machine-verified</span>
+    <span class="pill"><b>4</b> epics + <b>7</b> stories, one CSV</span>
+    <span class="pill"><b>2</b> slices start today · <b>2</b> stay blocked, with owners</span>
+  </div>
+</div></header>
+
+<!-- §1 the package -->
+<section><div class="wrap">
+  <h2>The handoff package — six files, each with a first reader.</h2>
+  <p class="lede">The markdown is the system of record; the report is what you send. Nothing here is
+  prose that needs interpreting — every file answers a question someone on the team will actually ask.</p>
+  <div style="margin-top:1.2rem">
+    <div class="mrow"><span class="mf">06-requirements.md</span><span class="mw">Every requirement: user story, source citation, testable statement, Given/When/Then, out-of-scope, dependencies, flags.</span><span class="mo">first reader: the tech lead</span></div>
+    <div class="mrow"><span class="mf">jira-import.csv</span><span class="mw">4 epics + 7 stories, generated by script from the plan — descriptions carry the source and provenance verbatim, labels encode discovery/delivery/blocked.</span><span class="mo">first reader: the tracker</span></div>
+    <div class="mrow"><span class="mf">07-release-plan.md</span><span class="mw">Slices that ship alone, the dependency map, and the not-schedulable table with named owners.</span><span class="mo">first reader: the eng manager</span></div>
+    <div class="mrow"><span class="mf">BLOCKERS.md</span><span class="mw">Five open questions with category, severity, and an owner role — none of them assigned to engineering.</span><span class="mo">first reader: the named owners</span></div>
+    <div class="mrow"><span class="mf">01-press-release.md</span><span class="mw">The why, one page, numbered paragraphs — the thing every requirement cites. Context without a meeting.</span><span class="mo">first reader: anyone who asks "why?"</span></div>
+    <div class="mrow"><span class="mf">report.html</span><span class="mw">The whole session compiled to one self-contained page: filterable requirements, blockers, the judge log, every artifact.</span><span class="mo">first reader: everyone else</span></div>
+  </div>
+  <p class="note" style="margin-top:.9rem">Open the real one:
+  <a href="reports/surprise-charge.html">reports/surprise-charge.html</a> — compiled by
+  <code>build_report.py</code> at the end of the run.</p>
+</div></section>
+
+<!-- §2 the requirements -->
+<section><div class="wrap">
+  <h2>The requirements — all seven, engineer-ready.</h2>
+  <p class="lede">Card anatomy, top to bottom: the <b>user story</b> (whose life changes), the
+  <b>source</b> (which paragraph demands this — machine-verified by
+  <code>verify_sources.py</code>), a <b>testable statement</b>, <b>Given / When / Then</b> observable
+  from outside the system, and the honest footer — <b>out of scope</b> (what readers would assume is
+  included and isn't) and <b>dependencies</b> by id. Flags travel with the card: an assumption from
+  intake is still an assumption here, four stages later.</p>
+
+  <div class="filters" role="group" aria-label="Filter requirements">
+    <button data-f="all" aria-pressed="true">All · 7</button>
+    <button data-f="d" aria-pressed="false">Discovery · 2</button>
+    <button data-f="dp" aria-pressed="false">Delivery · 5</button>
+    <button data-f="flag" aria-pressed="false">Flagged · 2</button>
+  </div>
+
+  <div class="reqs" id="reqs"></div>
+
+  <div class="callout okc" style="max-width:none"><b>Definition of Ready, enforced by pipeline.</b>
+  Every card above passed the same gate before reaching this page: its <code>Source:</code> resolves
+  (checked by script, not by promise) · the statement is one testable sentence · the Then is
+  observable from outside the system · it lands in exactly one release slice · anything resting on
+  an assumption says so on its face. The team never receives a vague ask, and scope creep has a
+  working definition: a requirement that can't cite anything.</div>
+</div></section>
+
+<!-- §3 the tracker -->
+<section><div class="wrap">
+  <h2>Into the tracker — no retyping, no drift.</h2>
+  <p class="lede"><code>export_jira.py</code> turns the release plan into <code>jira-import.csv</code>
+  — the plan and the tracker can't disagree, because a script wrote both from the same source.
+  Descriptions carry the source citation and provenance verbatim; labels encode what kind of work it
+  is and whether it's blocked.</p>
+  <div class="scroll" style="margin-top:1.1rem"><table>
+    <tr><th>Type</th><th>Summary</th><th>Slice</th><th>Labels</th><th>Priority</th></tr>
+    <tr class="epic"><td>Epic</td><td>R1 · Measure the fury</td><td>R1</td><td><span class="lbl">release-slice</span></td><td>Medium</td></tr>
+    <tr><td>Story</td><td>REQ-D1 · Build the surprise join</td><td>R1</td><td><span class="lbl">discovery</span></td><td>Medium</td></tr>
+    <tr class="epic"><td>Epic</td><td>R2 · No-surprise surfaces</td><td>R2</td><td><span class="lbl">release-slice</span></td><td>Medium</td></tr>
+    <tr><td>Story</td><td>REQ-DP2 · The in-app backstop banner</td><td>R2</td><td><span class="lbl">delivery</span></td><td>Medium</td></tr>
+    <tr><td>Story</td><td>REQ-DP4 · Receipts that prevent the next surprise</td><td>R2</td><td><span class="lbl">delivery</span></td><td>Medium</td></tr>
+    <tr class="epic"><td>Epic</td><td>R3 · The reminder + the experiment</td><td>R3</td><td><span class="lbl">release-slice</span> <span class="lbl hot">blocked</span></td><td>Highest</td></tr>
+    <tr><td>Story</td><td>REQ-DP1 · The T-48h reminder</td><td>R3</td><td><span class="lbl">delivery</span> <span class="lbl hot">blocked</span></td><td>High</td></tr>
+    <tr><td>Story</td><td>REQ-D2 · The reminder holdback experiment</td><td>R3</td><td><span class="lbl">discovery</span> <span class="lbl hot">rests-on-assumption</span> <span class="lbl hot">blocked</span></td><td>Highest</td></tr>
+    <tr class="epic"><td>Epic</td><td>R4 · One-tap cancel, everywhere</td><td>R4</td><td><span class="lbl">release-slice</span> <span class="lbl hot">blocked</span></td><td>Highest</td></tr>
+    <tr><td>Story</td><td>REQ-DP3 · One-tap cancel</td><td>R4</td><td><span class="lbl">delivery</span> <span class="lbl hot">shape-pending</span> <span class="lbl hot">blocked</span></td><td>Highest</td></tr>
+    <tr><td>Story</td><td>REQ-DP5 · The parity rule</td><td>R4</td><td><span class="lbl">delivery</span> <span class="lbl hot">blocked</span></td><td>Medium</td></tr>
+  </table></div>
+
+  <div class="tkt">
+    <div class="th2"><span class="tk">Story · REQ-DP1 · The T-48h reminder</span>
+      <span class="badge b-warn" style="margin-left:auto">how one ticket lands</span></div>
+    <div class="tb2">
+      <span class="fld">Description (from the CSV, verbatim)</span>
+      One email, at least 48 hours before the first charge, stating price and date, with equal keep
+      and one-tap-cancel actions.<br><br>
+      Source: PR para 3 / EFAQ-03 &nbsp;·&nbsp; Provenance: [OBSERVED] × 1<br>
+      Out of scope: reminders for later renewals &nbsp;·&nbsp; Depends on: REQ-D1, BLK-05
+      <span class="fld">Acceptance criteria (its own tracker field)</span>
+      <div class="gwt" style="margin:0"><b>GIVEN</b> a trial reaching day 12
+<b>WHEN</b>  the reminder sends
+<b>THEN</b>  it precedes the charge by ≥48h (M1 records the ordering)
+<b>AND</b>   a send failure is logged and visible — never silently absorbed (F5)</div>
+    </div>
+  </div>
+  <p class="note" style="margin-top:.9rem">The raw file:
+  <a href="https://github.com/siddarthnyati/working-backwards/blob/main/examples/surprise-charge/jira-import.csv"><code>jira-import.csv</code></a> ·
+  the check that keeps it honest: 7/7 requirements land in exactly one slice, dependency map has no
+  circular waits, no orphans, no duplicates.</p>
+</div></section>
+
+<!-- §4 not handed over -->
+<section><div class="wrap">
+  <h2>What the team is deliberately <i>not</i> asked to build yet.</h2>
+  <p class="lede">Two slices start today with nobody's permission. Two stay <b>NOT SCHEDULABLE</b> —
+  and each names the non-engineering owner and the exact meeting that unblocks it. No dates on
+  blocked work: a date on a blocked slice commits engineers to a shape nobody agreed to.</p>
+  <div class="dag" style="margin-top:1.1rem">R1 ──▶ R3   <span class="blk">[BLOCKED BY BLK-01 · BLK-05]</span>
+
+R2 ──▶ R4   <span class="blk">[BLOCKED BY BLK-02]</span></div>
+  <div class="scroll"><table style="min-width:36rem">
+    <tr><th>Slice</th><th>Blocked by</th><th>Owner</th><th>What unblocks it</th></tr>
+    <tr><td>R3</td><td>BLK-01 · commercial</td><td>finance lead</td><td>Co-designing the holdback — one meeting</td></tr>
+    <tr><td>R3</td><td>BLK-05 · dependency</td><td>platform lead</td><td>Owning the send-before-charge ordering</td></tr>
+    <tr><td>R4</td><td>BLK-02 · regulatory</td><td>compliance lead</td><td>The per-market cancel-method memo</td></tr>
+  </table></div>
+  <div class="callout"><b>The engineering-manager reading of this table:</b> your team never inherits
+  an ambiguous or politically blocked ticket. The open questions stay attached to the finance,
+  compliance, and platform owners who can actually answer them — and the sprint starts on R1 and R2,
+  which are useful even if the email program never ships.</div>
+</div></section>
+
+<!-- §5 close -->
+<section><div class="wrap">
+  <h2>The whole point.</h2>
+  <ul class="dor">
+    <li><span class="ck">✓</span><span>Every requirement cites the paragraph that demands it — verified by script, on every run.</span></li>
+    <li><span class="ck">✓</span><span>Every Then is observable from outside the system — testable without reading anyone's mind.</span></li>
+    <li><span class="ck">✓</span><span>Every assumption is flagged on the card that inherits it — nothing rests on a guess silently.</span></li>
+    <li><span class="ck">✓</span><span>Every blocked item names its owner and its unblocking meeting — no dates on other people's decisions.</span></li>
+  </ul>
+  <p class="lede" style="margin-top:1.2rem">That's the standardization: the process ends where
+  engineering begins, with nothing lost in translation on the way.</p>
+  <div style="display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem">
+    <a class="btn hot" href="reports/surprise-charge.html">Open the compiled report →</a>
+    <a class="btn" href="https://github.com/siddarthnyati/working-backwards/blob/main/examples/surprise-charge/06-requirements.md">Raw 06-requirements.md</a>
+    <a class="btn" href="index.html#walk">Back to the run</a>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <p><a href="index.html">the walkthrough</a> · <a href="mechanics.html">the mechanics</a> ·
+  <a href="eval-mechanics.html">how the evals work</a> · <a href="evals.html">evals dashboard</a> ·
+  <a href="https://github.com/siddarthnyati/working-backwards">repository</a> · The Surprise Charge
+  is fictional; every artifact on this page is the skill's real output. MIT.</p>
+</div></footer>
+
+<script>
+"use strict";
+const REQS=[
+{id:"REQ-D1",t:"Build the surprise join",kind:"d",flags:[],
+ story:"<b>As</b> the analyst sizing this problem, <b>I want</b> charges joined to refunds, tickets and activity, <b>so that</b> Surprise Rate is a number instead of an argument.",
+ src:"Source: PR para 2 / IFAQ-03",prov:"[OBSERVED] × 2",
+ st:"Charges join to refunds, \"surprise\" tickets, and activity history, so Surprise Rate and the silent-surprised proxy compute per cohort.",
+ gwt:"<b>GIVEN</b> a cohort with charges, refunds, tickets and activity data\n<b>WHEN</b>  the join runs\n<b>THEN</b>  Surprise Rate and M4 compute with cohort sizes stated",
+ oos:"dashboards",dep:"—"},
+{id:"REQ-D2",t:"The reminder holdback experiment",kind:"d",flags:["RESTS ON ASSUMPTION","SHAPE PENDING"],
+ story:"<b>As</b> the VP in the finance standoff, <b>I want</b> the revenue fear tested by a real experiment, <b>so that</b> neither belief ships unverified.",
+ src:"Source: PR para 7 / IFAQ-01",prov:"[OBSERVED] × 1 · [ASSUMED] × 1",
+ st:"A randomized holdback cohort receives no reminder; net revenue at day 60 is compared, reminded vs holdback.",
+ gwt:"<b>GIVEN</b> random assignment at trial start\n<b>WHEN</b>  the day-60 readout runs\n<b>THEN</b>  it states effect size, confidence interval and cohort\n      sizes — or declares itself underpowered rather than\n      extending silently",
+ cond:"Conditional on BLK-01 — finance co-owns the design, or the readout settles nothing.",
+ oos:"acting on the result",dep:"REQ-D1, BLK-01"},
+{id:"REQ-DP1",t:"The T-48h reminder",kind:"dp",flags:[],
+ story:"<b>As</b> a trial user who forgot I signed up, <b>I want</b> to be told before I'm charged, <b>so that</b> the first I hear of it is never my bank statement.",
+ src:"Source: PR para 3 / EFAQ-03",prov:"[OBSERVED] × 1",
+ st:"One email, at least 48 hours before the first charge, stating price and date, with equal keep and one-tap-cancel actions.",
+ gwt:"<b>GIVEN</b> a trial reaching day 12\n<b>WHEN</b>  the reminder sends\n<b>THEN</b>  it precedes the charge by ≥48h (M1 records the ordering)\n<b>AND</b>   a send failure is logged and visible — never silently\n      absorbed (F5)",
+ oos:"reminders for later renewals",dep:"REQ-D1, BLK-05"},
+{id:"REQ-DP2",t:"The in-app backstop banner",kind:"dp",flags:[],
+ story:"<b>As</b> a trial user who never opens email, <b>I want</b> the app itself to warn me, <b>so that</b> an unread inbox doesn't cost me $12.",
+ src:"Source: PR para 3 / 03-demo-spec.md F1",prov:"[OBSERVED] × 1",
+ st:"From day 12, an in-app banner states the charge date and price with the same two actions, until the user decides.",
+ gwt:"<b>GIVEN</b> a trial user with the email unopened\n<b>WHEN</b>  they open the app on day 12+\n<b>THEN</b>  the banner shows date, price, keep, and one-tap cancel",
+ oos:"push notifications",dep:"—"},
+{id:"REQ-DP3",t:"One-tap cancel",kind:"dp",flags:["SHAPE PENDING"],
+ story:"<b>As</b> a user who decided to leave, <b>I want</b> cancelling to be one tap from wherever I am, <b>so that</b> leaving is as easy as joining was.",
+ src:"Source: PR para 5 / RFAQ-02",prov:"[OBSERVED] × 1 · [UNKNOWN] × 1",
+ st:"Cancelling from reminder, banner, or receipt is one screen and one tap, confirmed immediately, data retained 30 days.",
+ gwt:"<b>GIVEN</b> a user in the default flow\n<b>WHEN</b>  they tap cancel from any of the three surfaces\n<b>THEN</b>  cancellation completes on that screen with inline\n      confirmation",
+ cond:"Conditional on BLK-02 / Q-06 — markets that prescribe a cancel method get a per-market flow, still never more steps than signup.",
+ oos:"win-back offers",dep:"BLK-02"},
+{id:"REQ-DP4",t:"Receipts that prevent the next surprise",kind:"dp",flags:[],
+ story:"<b>As</b> a paying customer, <b>I want</b> every receipt to say what happens next, <b>so that</b> no future charge is a surprise.",
+ src:"Source: PR para 5 / EFAQ-04",prov:"[OBSERVED] × 1",
+ st:"Every receipt shows amount, next renewal date, next price, and a cancel link.",
+ gwt:"<b>GIVEN</b> any successful charge\n<b>WHEN</b>  the receipt renders\n<b>THEN</b>  next renewal date, price and a cancel link are present",
+ oos:"dunning redesign (F2 copy only)",dep:"—"},
+{id:"REQ-DP5",t:"The parity rule",kind:"dp",flags:[],
+ story:"<b>As</b> a user in any market, <b>I want</b> cancelling to never take more steps than subscribing did, <b>so that</b> the exit is never a maze.",
+ src:"Source: EFAQ-02 / 03-demo-spec.md F4",prov:"[OBSERVED] × 1",
+ st:"Cancelling never requires more steps than subscribing did, in any market, on any surface.",
+ gwt:"<b>GIVEN</b> the subscribe flow takes N steps in a market\n<b>WHEN</b>  the cancel flow is measured in that market\n<b>THEN</b>  its step count is ≤ N, asserted in CI per market config",
+ oos:"nothing — this rule has no exceptions",dep:"REQ-DP3"}];
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let filter="all";
+function card(r){
+  const badges=r.flags.map(f=>`<span class="badge ${f==="RESTS ON ASSUMPTION"?"b-bad":"b-warn"}">${f}</span>`).join("")
+    ||`<span class="badge b-ok">ready</span>`;
+  return `<div class="req" data-kind="${r.kind}" data-flag="${r.flags.length?1:0}">
+   <div class="rh"><span class="rid">${r.id}</span><span class="rt">${r.t}</span>${badges}</div>
+   <div class="rb">
+    <p class="rstory">${r.story}</p>
+    <span class="rsrc">${r.src}<span class="prov">· ${r.prov}</span></span>
+    <p class="rst">${r.st}</p>
+    <div class="gwt">${r.gwt}</div>
+    ${r.cond?`<p class="cond">${r.cond}</p>`:""}
+    <div class="rfoot"><b>Out of scope:</b> ${r.oos} &nbsp;·&nbsp; <b>Depends on:</b> ${r.dep}</div>
+   </div></div>`;
+}
+function draw(){
+  $("#reqs").innerHTML=REQS.filter(r=>
+    filter==="all"||(filter==="flag"?r.flags.length:r.kind===filter)
+  ).map(card).join("");
+}
+$$(".filters button").forEach(b=>b.onclick=()=>{
+  filter=b.dataset.f;
+  $$(".filters button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  draw();
+});
+draw();
+</script>
+</body>
+</html>
