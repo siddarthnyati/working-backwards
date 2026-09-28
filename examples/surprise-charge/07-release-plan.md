@@ -80,4 +80,4 @@ R1 and R2 start today. Both halves of the argument get better off R1 alone.
 
 ## Export
 
-`jira-import.csv` — 4 epics, 7 stories.
+`jira-import.csv` — one epic (the initiative), 7 user stories, slices as labels.
